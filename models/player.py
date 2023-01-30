@@ -1,26 +1,18 @@
-import random
 
 
 class Player:
     """"
     Player class
-    Has a first name, name and birthday
+    Has a first name, name, birthday and club ID
     """
 
-    def __init__(self, fname, name, birthd, club_ID):
-        """ Init player """
+    def __init__(self, fname, name, birthd, club_id):
+        """ Init player
+        """
         self.fname = fname
         self.name = name
         self.birthd = birthd
-        self.club_ID = club_ID
+        self.club_id = club_id
 
     def __str__(self):
-        return f"{self.fname} {self.name} né le {self.birthd} et appartient au club {self.club_ID}"
-
-
-
-
-
-
-
-
+        return f"{self.fname} {self.name} né le {self.birthd} et appartient au club {self.club_id}"

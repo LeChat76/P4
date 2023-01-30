@@ -1,4 +1,4 @@
-import datetime
+
 
 class Menu:
     """ Menu class """
@@ -17,7 +17,13 @@ class Menu:
         """ Request player birthday """
         player_birthd = input("Date d'anniversaire (au format JJ/MM/AAAA) : ")
         return player_birthd
-    def prompt_player_clubID(self):
+
+    def prompt_player_clubid(self):
         """ Request player club ID """
-        player_clubID = input("ID du club (au format AB12345) : ")
-        return player_clubID
+        player_clubid = input("ID du club (au format AB12345) : ")
+        return player_clubid
+
+    def prompt_add_player(self):
+        """ Request for recording à new player """
+        new_player = input("Ajouter un autre joueur au tournoi (O/n)?")
+        return new_player

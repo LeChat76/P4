@@ -3,7 +3,7 @@ from controllers.base import Controller
 
 def main():
     controller = Controller()
-    tournament = controller.start_tournament()
+    tournament = controller.create_player_list()
 
 
 if __name__ == "__main__":
