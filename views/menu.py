@@ -1,20 +1,23 @@
-
+import datetime
 
 class Menu:
     """ Menu class """
 
-    def __init__(self):
-        self.player_fname = None
-        self.player_name = None
-        self.player_birthd = None
+    def prompt_player_fname(self):
+        """ Request player first name """
+        player_fname = input("Prénom du joueur : ")
+        return player_fname
 
-    def player_menu(self):
-        """
-        Recording menu of players
-        2 minimum
-        8 maximum
-        """
+    def prompt_player_name(self):
+        """ Request player name """
+        player_name = input("Nom du joueur : ")
+        return player_name
 
-        self.player_fname = input("Prénom du jouer : ")
-        self.player_name = input("Nom du joueur : ")
-        self.player_birthd = input("Date de naissance : ")
+    def prompt_player_birthd(self):
+        """ Request player birthday """
+        player_birthd = input("Date d'anniversaire (au format JJ/MM/AAAA) : ")
+        return player_birthd
+    def prompt_player_clubID(self):
+        """ Request player club ID """
+        player_clubID = input("ID du club (au format AB12345) : ")
+        return player_clubID
