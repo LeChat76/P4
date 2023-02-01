@@ -2,7 +2,7 @@ from controllers.base import Tournament
 import os
 
 def main():
-    """ laucnhing starting here """
+    """ launching starting here """
 
     """
     pre-req for correct launch

@@ -8,8 +8,7 @@ class Player:
     """
 
     def __init__(self, fname, name, birthd, clubid):
-        """ Init player
-        """
+        """ Init player """
         self.fname = fname
         self.name = name
         self.birthd = birthd
@@ -22,3 +21,6 @@ class Player:
         """ method for add a player in the json file """
         db = TinyDB('data/tournaments/players.json')
         db.insert({'fname': self.fname, 'name': self.name, 'birthd': self.birthd, 'clubid': self.clubid})
+
+    def delete_player(self):
+        """ method to delete a player """

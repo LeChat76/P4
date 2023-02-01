@@ -45,7 +45,7 @@ class Tournament:
     def create_player(self):
         """ Request for players """
 
-        new_player = MENU.add_player_name()
+        new_player = MENU.add_player()
 
         for player in new_player:
             add_player = Player(player[0], player[1], player[2], player[3])

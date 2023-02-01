@@ -20,4 +20,4 @@ Simply launch the script by typing "py main.py" and follow instruction :
 ## Features
 - data stored in json file
 ## Features to come 
- - no idea for the moment
+ - graphical interface (with tkinter)
