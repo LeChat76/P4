@@ -1,5 +1,5 @@
 # Software to manage chess tournament
-## _Project 4 OpenClassRooms (application with MVC pattern and POO architecture)
+## Project 4 OpenClassRooms (application with MVC pattern and POO architecture)
 This script allow users to manage a chess tournament
 ## Installation
 ```sh
