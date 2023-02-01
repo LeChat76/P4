@@ -1,11 +1,11 @@
-import datetime
-from views.menu import Menu
 from models.player import Player
+from views.menus import Menu
+MIN_PLAYER = 2
+MENU = Menu()
 
 
-class Controller:
-    """ Main controller """
-
+class Tournament:
+    """ Player controller """
     """
     premier tour : mélanger les joueurs aléatoirement
     ensuite, chaque paire de joueurs est géré de la façon suivante:
@@ -14,68 +14,47 @@ class Controller:
         * NE PAS GENERER DE PAIRE AYANT DEJA JOUE ENSEMBLE
         * choix de la couleur tiré au sort (le menu doit donc demander qui a noir et qui a blanc)
     """
+    def start_tournament(self):
+        """ start tournament method """
 
-    def create_player_list(self):
+        choix_menu = (MENU.main_menu())
+        if choix_menu == "menu_1":
+            self.menu_1()
+        elif choix_menu == "menu_2":
+            self.menu_2()
+        # elif choix_menu == "menu_3":
+        #    MENU.statistics_menu()
+        elif choix_menu == "menu_4":
+            exit()
+
+    def menu_1(self):
+        """ Tournament Menu """
+        MENU.tournament_menu()
+        if "menu_1_3":
+            self.start_tournament()
+
+    def menu_2(self):
+        choix_menu = MENU.player_menu()
+        if choix_menu == "menu_2_1":
+            self.create_player()
+        elif choix_menu == "menu_2_2":
+            self.delete_player()
+        elif choix_menu == "menu_2_3":
+            MENU.main_menu()
+
+    def create_player(self):
         """ Request for players """
-        player_fname = None
-        player_name = None
-        player_birthd = None
-        player_clubid = None
-        new_player = True
 
-        menu = Menu()
+        new_player = MENU.add_player_name()
 
-        while new_player:
-            player_fname = None
-            while not player_fname:
-                player_fname = menu.prompt_player_fname()
-                if player_fname == "":                 # juste pour debugging, à supprimer
-                    player_fname = "cedric"             # juste pour debugging, à supprimer
+        for player in new_player:
+            add_player = Player(player[0], player[1], player[2], player[3])
+            add_player.record_new_player()
 
-            player_name = None
-            while not player_name:
-                player_name = menu.prompt_player_name()
-                if player_name == "":                  # juste pour debugging, à supprimer
-                    player_name = "delauney"            # juste pour debugging, à supprimer
+        self.menu_2()
 
-            player_birthd = None
-            while not player_birthd:
-                while True:
-                    player_birthd = menu.prompt_player_birthd()
-                    if player_birthd == "":            # juste pour debugging, à supprimer
-                        player_birthd = "16/07/1975"    # juste pour debugging, à supprimer
-                    try:
-                        datetime.datetime.strptime(player_birthd, '%d/%m/%Y')
-                    except ValueError:
-                        print("Mauvais format de date. Merci de ressaisir.")
-                    else:
-                        break
-
-            player_clubid = None
-            while not player_clubid:
-                while True:
-                    player_clubid = menu.prompt_player_clubid()
-                    if player_clubid == "":            # juste pour debugging, à supprimer
-                        player_clubid = "ab12345"       # juste pour debugging, à supprimer
-                    if len(player_clubid) != 7:
-                        print("Le club ID doit comporter 7 caractères. Merci de ressaisir.")
-                    elif not player_clubid[:2].isalpha():
-                        print("Les 2 premiers caractères doivent être des lettres. Merci de ressaisir.")
-                    elif not player_clubid[2:].isnumeric():
-                        print("les 5 derniers caractères doivent être des chiffres. Merci de ressaisir.")
-                    else:
-                        break
-
-            new_player = menu.prompt_add_player()
-            if new_player == "":
-                new_player = True
-            elif new_player.upper() == "O":
-                new_player = True
-            elif new_player.upper() == "N":
-                new_player = False
-
-            player = Player(player_fname.capitalize(), player_name.capitalize(), player_birthd, player_clubid.upper())
-            print(player)
+    def delete_player(self):
+        pass
 
     def create_ran_player_list(self):
         pass

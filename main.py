@@ -1,9 +1,12 @@
-from controllers.base import Controller
+from controllers.base import Tournament
 
 
 def main():
-    controller = Controller()
-    tournament = controller.create_player_list()
+    tournament = Tournament()
+    try:
+        tournament.start_tournament()
+    except KeyboardInterrupt:
+        print("\n\nFin du script par l'utilisateur.\n")
 
 
 if __name__ == "__main__":
