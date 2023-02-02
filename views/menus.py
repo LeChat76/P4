@@ -92,6 +92,7 @@ class Menu:
         """ Requests for player first name """
 
         new_one_player = " "
+        PLAYER_LIST.clear()
 
         while new_one_player.upper() != "N":
 

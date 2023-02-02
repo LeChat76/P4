@@ -56,10 +56,24 @@ class Tournament:
 
     def delete_player(self):
         player_to_delete = MENU.delete_player_menu()
-        PLAYER.delete_player(player_to_delete)
-        if "no result":
-            print("Aucun résultat.")
-            self.menu_2()
+        resultat_delete_player = PLAYER.delete_player(player_to_delete)
+        if resultat_delete_player == "no_result":
+            choix = ""
+            while choix.upper() != "O" or choix.upper() != "N":
+                choix = input("Aucun résultat. Recommencer (O/n)? ")
+                if choix.upper() == "O" or choix == "":
+                    self.delete_player()
+                else:
+                    self.start_tournament()
+        else:
+            print(resultat_delete_player + "joueur(s) supprimé(s).")
+            choix = ""
+            while choix.upper() != "O" or choix.upper() != "N":
+                choix = input("Supprimer un autre joueur (O/n)? ")
+                if choix.upper() == "O" or choix == "":
+                    self.delete_player()
+                else:
+                    self.start_tournament()
 
     def create_ran_player_list(self):
         pass

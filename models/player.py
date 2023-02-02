@@ -35,5 +35,5 @@ class Player:
         if len(resultat) == 0:
             return "no_result"
         else:
-            print("Trouvé " + str(len(resultat)) + " correspondance(s).")
-
+            PLAYERS.remove((player.name == self.player_to_delete) & (player.tournamentid == ""))
+            return str(len(resultat))
