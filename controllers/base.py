@@ -2,6 +2,7 @@ from models.player import Player
 from views.menus import Menu
 MIN_PLAYER = 2
 MENU = Menu()
+PLAYER = Player()
 
 
 class Tournament:
@@ -11,13 +12,13 @@ class Tournament:
     ensuite, chaque paire de joueurs est géré de la façon suivante:
         * triez les joueurs par points
         * associez les joueurs par paire et par ordre de points (si joueurs avec même nb de points, choix aléatoire)
-        * NE PAS GENERER DE PAIRE AYANT DEJA JOUE ENSEMBLE
+        * NE PAS GÉNÉRER DE PAIRE AYANT DEJA JOUE ENSEMBLE
         * choix de la couleur tiré au sort (le menu doit donc demander qui a noir et qui a blanc)
     """
     def start_tournament(self):
         """ start tournament method """
 
-        choix_menu = (MENU.main_menu())
+        choix_menu = MENU.main_menu()
         if choix_menu == "menu_1":
             self.menu_1()
         elif choix_menu == "menu_2":
@@ -36,25 +37,29 @@ class Tournament:
     def menu_2(self):
         choix_menu = MENU.player_menu()
         if choix_menu == "menu_2_1":
-            self.create_player()
+            self.add_player()
         elif choix_menu == "menu_2_2":
             self.delete_player()
         elif choix_menu == "menu_2_3":
             MENU.main_menu()
 
-    def create_player(self):
+    def add_player(self):
         """ Request for players """
 
-        new_player = MENU.add_player()
+        new_player = MENU.add_player_menu()
 
         for player in new_player:
-            add_player = Player(player[0], player[1], player[2], player[3])
-            add_player.record_new_player()
+            player_to_add = Player(player[0], player[1], player[2], player[3])
+            player_to_add.record_new_player()
 
         self.menu_2()
 
     def delete_player(self):
-        pass
+        player_to_delete = MENU.delete_player_menu()
+        PLAYER.delete_player(player_to_delete)
+        if "no result":
+            print("Aucun résultat.")
+            self.menu_2()
 
     def create_ran_player_list(self):
         pass

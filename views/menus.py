@@ -88,7 +88,7 @@ class Menu:
         if choix == 3:
             return "menu_2_3"
 
-    def add_player(self):
+    def add_player_menu(self):
         """ Requests for player first name """
 
         new_one_player = " "
@@ -147,30 +147,24 @@ class Menu:
                     elif not player_clubid[2:].isnumeric():
                         print("les 5 derniers caractères doivent être des chiffres. Merci de ressaisir.")
                     else:
+                        player_clubid = str(player_clubid[:2].upper()) + str(player_clubid[2:])
                         break
 
             PLAYER_LIST.append([player_fname, player_name, player_birthd, player_clubid])
 
             new_one_player = input("Ajouter un autre joueur au tournoi (O/n)?")
 
-            # if new_one_player.upper() == "N":
-            #     break
-            # elif not new_one_player or new_one_player.upper() == "O":
-            #     self.add_player()
-            # elif not new_one_player.isalpha():
-            #     print("Merci de répondre par O ou N uniquement.")
-            #     new_one_player = " "
-
         return PLAYER_LIST
 
-    def prompt_delete_player(self):
+    def delete_player_menu(self):
         """ Request for delete player """
-        player_name = None
-        while not player_name:
+        del_player_name = None
+        while not del_player_name:
             while True:
-                player_name = input("Merci de préciser le nom de la personne à supprimer : ")
-                if player_name == "":                     # juste pour debugging, à supprimer
-                    player_name = "delauney"               # juste pour debugging, à supprimer
-                if not player_name.isalpha():
+                del_player_name = input("Merci de préciser le nom de la personne commençant par : ")
+                if del_player_name == "":                     # juste pour debugging, à supprimer
+                    del_player_name = "delauney"               # juste pour debugging, à supprimer
+                if not del_player_name.isalpha():
                     print("Merci de préciser un nom sans chiffres. Merci de ressaisir.")
-        return player_name
+                else:
+                    return del_player_name
