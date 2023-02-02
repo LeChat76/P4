@@ -2,12 +2,13 @@ from tinydb import TinyDB, Query
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')
 
-
 class Player:
     """"
     Player class
     Has a first name, name, birthday and club ID
     """
+
+
 
     def __init__(self, fname="", name="", birthd="", clubid="", tournamentid=""):
         """ Init player """

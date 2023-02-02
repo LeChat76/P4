@@ -1,16 +1,8 @@
-from controllers.base import Tournament
 import os
+
 
 def main():
     """ launching starting here """
-
-    """
-    pre-req for correct launch
-    verify if data/tournaments exists
-    """
-    data_folder = os.path.join("data", "tournaments")
-    if not os.path.exists(data_folder):
-        os.makedirs(data_folder)
 
     tournament = Tournament()
     try:
@@ -20,4 +12,12 @@ def main():
 
 
 if __name__ == "__main__":
+    """
+    pre-req for correct launch
+    verify if data/tournaments exists
+    """
+    data_folder = os.path.join(os.path.dirname(__file__), "data", "tournaments")
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+    from controllers.base import Tournament
     main()
