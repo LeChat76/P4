@@ -1,11 +1,12 @@
 import datetime
 from os import system
-
 PLAYER_LIST = []
 
 
 class Menu:
     """ Menu class """
+    def __init__(self):
+        self.question = None
 
     def main_menu(self):
         """ Root menu """
@@ -30,8 +31,8 @@ class Menu:
             return "menu_2"
         elif choix == 3:
             return "menu_3"
-        else:
-            exit()
+        elif choix == 4:
+            return "menu_4"
 
     def tournament_menu(self):
         """ Menu 1 """
@@ -93,7 +94,6 @@ class Menu:
 
     def add_player_menu(self):
         """ Requests for player first name """
-
         new_one_player = " "
         PLAYER_LIST.clear()
 
@@ -183,3 +183,14 @@ class Menu:
                     print("Nom incorrect. Merci de ressaisir.")
                 else:
                     return dis_player_name
+
+    def error(self, question):
+        """ method for asking to restart request """
+        self.question = question
+        choix = ""
+        while choix.upper() != "O" or choix.upper() != "N":
+            choix = input(self.question)
+            if choix.upper() == "O" or choix == "":
+                return "O"
+            elif choix.upper() == "N":
+                return "N"

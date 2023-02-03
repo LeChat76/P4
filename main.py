@@ -3,7 +3,6 @@ import os
 
 def main():
     """ launching starting here """
-
     tournament = Tournament()
     try:
         tournament.start_tournament()

@@ -23,7 +23,7 @@ class Tournament:
         elif choix_menu == "menu_2":
             self.menu_2()
         # elif choix_menu == "menu_3":
-        #    MENU.statistics_menu()
+        #    self.statistics_menu()
         elif choix_menu == "menu_4":
             exit()
 
@@ -42,13 +42,11 @@ class Tournament:
         elif choix_menu == "menu_2_3":
             self.delete_player()
         elif choix_menu == "menu_2_4":
-            MENU.main_menu()
+            MENU.main_menu
 
     def add_player(self):
         """ Request for players """
-
         new_player = MENU.add_player_menu()
-
         for player in new_player:
             player_to_add = Player(player[0], player[1], player[2], player[3])
             player_to_add.record_new_player()
@@ -59,34 +57,28 @@ class Tournament:
         player_to_delete = MENU.delete_player_menu()
         result = PLAYER.delete_player(player_to_delete)
         if result == "no_result":
-            choix = ""
-            while choix.upper() != "O" or choix.upper() != "N":
-                choix = input("Aucun résultat. Recommencer (O/n)? ")
-                if choix.upper() == "O" or choix == "":
-                    self.delete_player()
-                else:
-                    self.menu_2()
+            choix = MENU.error("Aucun résultat. Recommencer (O/n)? ")
+            if choix == "O":
+                self.delete_player()
+            elif choix == "N":
+                self.menu_2()
         else:
-            print(player_to_delete.upper() + " supprimé.")
-            choix = ""
-            while choix.upper() != "O" or choix.upper() != "N":
-                choix = input("Supprimer un autre joueur (O/n)? ")
-                if choix.upper() == "O" or choix == "":
-                    self.delete_player()
-                else:
-                    self.menu_2()
+            print("Personne(s) commençant par " + player_to_delete.upper() + " supprimé(s).")
+            choix = MENU.error("Supprimer un autre joueur (O/n)? ")
+            if choix == "O":
+                self.delete_player()
+            elif choix == "N":
+                self.menu_2()
 
     def display_player(self):
         player_to_display = MENU.display_player_menu()
         result = PLAYER.display_player(player_to_display)
         if result == "no_result":
-            choix = ""
-            while choix.upper() != "O" or choix.upper() != "N":
-                choix = input("Aucun résultat. Recommencer (O/n)? ")
-                if choix.upper() == "O" or choix == "":
-                    self.display_player()
-                else:
-                    self.menu_2()
+            choix = MENU.error("Aucun résultat. Recommencer (O/n)? ")
+            if choix == "O":
+                self.display_player()
+            elif choix == "N":
+                self.menu_2()
         else:
             if(len(result)) == 1:
                 print(str(len(result)) + " résultat:")
@@ -95,12 +87,10 @@ class Tournament:
             for i in range(len(result)):
                 item = result[i]
                 print(Player(item['fname'], item['name'], item['birthd'], item['clubid']))
-            choix = ""
-            while choix.upper() != "O" or choix.upper() != "N":
-                choix = input("Faire une autre recherche (O/n)? ")
-                if choix.upper() == "O" or choix == "":
+                choix = MENU.error("Faire une autre recherche (O/n)? ")
+                if choix.upper() == "O":
                     self.display_player()
-                else:
+                elif choix.upper() == "N":
                     self.menu_2()
 
     def create_ran_player_list(self):
