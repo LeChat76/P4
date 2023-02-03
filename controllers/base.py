@@ -17,6 +17,7 @@ class Tournament:
 
     def start_tournament(self):
         """ start tournament method """
+        choix_menu = None
         choix_menu = MENU.main_menu()
         if choix_menu == "menu_1":
             self.menu_1()
@@ -42,7 +43,7 @@ class Tournament:
         elif choix_menu == "menu_2_3":
             self.delete_player()
         elif choix_menu == "menu_2_4":
-            MENU.main_menu
+            self.start_tournament()
 
     def add_player(self):
         """ Request for players """
