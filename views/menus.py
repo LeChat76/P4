@@ -68,12 +68,13 @@ class Menu:
     def player_menu(self):
         """ Menu 2 """
         choix = None
-        while choix != 1 and choix != 2 and choix != 3:
+        while choix != 1 and choix != 2 and choix != 3 and choix != 4:
             system('cls')
             print("+-------------------------------+")
             print("| 1 - création d'un joueur      |")
-            print("| 2 - suppression d'un joueur   |")
-            print("| 3 - revenir au menu principal |")
+            print("| 2 - affichage des joueurs     |")
+            print("| 3 - suppression d'un joueur   |")
+            print("| 4 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():
@@ -87,6 +88,8 @@ class Menu:
             return "menu_2_2"
         if choix == 3:
             return "menu_2_3"
+        if choix == 4:
+            return "menu_2_4"
 
     def add_player_menu(self):
         """ Requests for player first name """
@@ -162,10 +165,21 @@ class Menu:
         del_player_name = None
         while not del_player_name:
             while True:
-                del_player_name = input("Merci de préciser le nom de la personne commençant par : ")
+                del_player_name = input("Merci de préciser le nom de la personne contenant : ")
                 if del_player_name == "":                     # juste pour debugging, à supprimer
                     del_player_name = "delauney"               # juste pour debugging, à supprimer
                 if not del_player_name.isalpha():
-                    print("Merci de préciser un nom sans chiffres. Merci de ressaisir.")
+                    print("Nom incorrect. Merci de ressaisir.")
                 else:
                     return del_player_name
+
+    def display_player_menu(self):
+        """ Request for display player """
+        dis_player_menu = None
+        while not dis_player_menu:
+            while True:
+                dis_player_name = input("Afficher les noms contenant : ")
+                if not dis_player_name.isalpha():
+                    print("Nom incorrect. Merci de ressaisir.")
+                else:
+                    return dis_player_name
