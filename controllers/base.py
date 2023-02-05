@@ -64,7 +64,11 @@ class Tournament:
             elif choix == "N":
                 self.menu_2()
         else:
-            print("Personne(s) commençant par " + player_to_delete.upper() + " supprimé(s).")
+            if int(result) == 1:
+                print(str(result) + " résultat.")
+            elif int(result) > 1:
+                print(str(result) + " résultats.")
+            print('Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
             choix = MENU_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
             if choix == "O":
                 self.delete_player()
@@ -79,19 +83,6 @@ class Tournament:
             if choix == "O":
                 self.display_player()
             elif choix == "N":
-                self.menu_2()
-        elif result.isnumeric():
-            if(len(result)) == 1:
-                print(str(len(result)) + " résultat:")
-            else:
-                print(str(len(result)) + " résultats:")
-            for i in range(len(result)):
-                item = result[i]
-                print(Player_model(item['fname'], item['name'], item['birthd'], item['clubid']))
-            choix = MENU_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
-            if choix.upper() == "O":
-                self.display_player()
-            elif choix.upper() == "N":
                 self.menu_2()
         elif result == "no_result" and player_to_display == "display_all":
             result = PLAYER_MODEL.display_all_players()
@@ -113,5 +104,20 @@ class Tournament:
                 self.display_player()
             elif choix.upper() == "N":
                 self.menu_2()
+        elif len(result) > 0:
+            if result == 1:
+                print(str(len(result)) + " résultat:")
+            else:
+                print(str(len(result)) + " résultats:")
+            for i in range(len(result)):
+                item = result[i]
+                print(Player_model(item['fname'], item['name'], item['birthd'], item['clubid']))
+            choix = MENU_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
+            if choix.upper() == "O":
+                self.display_player()
+            elif choix.upper() == "N":
+                self.menu_2()
+
+
     def create_ran_player_list(self):
         pass
