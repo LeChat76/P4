@@ -95,7 +95,7 @@ class Tournament:
                 self.menu_2()
         elif result == "no_result" and player_to_display == "display_all":
             result = PLAYER_MODEL.display_all_players()
-            if(len(result)) == 0:
+            if result == "no_result":
                 choix = MENU_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
                 if choix == "O":
                     self.display_player()
