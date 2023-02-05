@@ -5,7 +5,7 @@ PLAYERS = DB.table('players')
 PLAYER = Query()
 
 
-class Player_model:
+class PlayerModel:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 

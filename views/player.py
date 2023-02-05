@@ -3,7 +3,7 @@ import os
 PLAYER_LIST = []
 
 
-class Menu_view:
+class PlayerView:
     """ Menu class """
     def __init__(self):
         self.question = None

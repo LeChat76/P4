@@ -1,10 +1,10 @@
-from models.player import Player_model
-from views.menus import Menu_view
+from models.player import PlayerModel
+from views.player import PlayerView
 MIN_PLAYER = 2
-MENU_VIEW = Menu_view()
-PLAYER_MODEL = Player_model()
+PLAYER_VIEW = PlayerView()
+PLAYER_MODEL = PlayerModel()
 
-class Tournament:
+class TournamentModel:
     """ Player controller """
     """
     premier tour : mélanger les joueurs aléatoirement
@@ -18,7 +18,7 @@ class Tournament:
     def start_tournament(self):
         """ start tournament method """
         choix_menu = None
-        choix_menu = MENU_VIEW.main_menu()
+        choix_menu = PLAYER_VIEW.main_menu()
         if choix_menu == "menu_1":
             self.menu_1()
         elif choix_menu == "menu_2":
@@ -30,12 +30,12 @@ class Tournament:
 
     def menu_1(self):
         """ Tournament Menu """
-        MENU.tournament_menu()
+        PLAYER_VIEW.tournament_menu()
         if "menu_1_3":
             self.start_tournament()
 
     def menu_2(self):
-        choix_menu = MENU_VIEW.player_menu()
+        choix_menu = PLAYER_VIEW.player_menu()
         if choix_menu == "menu_2_1":
             self.add_player()
         if choix_menu == "menu_2_2":
@@ -47,18 +47,18 @@ class Tournament:
 
     def add_player(self):
         """ Request for players """
-        new_player = MENU_VIEW.add_player_menu()
+        new_player = PLAYER_VIEW.add_player_menu()
         for player in new_player:
-            player_to_add = Player_model(player[0], player[1], player[2], player[3])
+            player_to_add = PlayerModel(player[0], player[1], player[2], player[3])
             player_to_add.record_new_player()
 
         self.menu_2()
 
     def delete_player(self):
-        player_to_delete = MENU_VIEW.delete_player_menu()
+        player_to_delete = PLAYER_VIEW.delete_player_menu()
         result = PLAYER_MODEL.delete_player(player_to_delete)
         if result == "no_result":
-            choix = MENU_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+            choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
             if choix == "O":
                 self.delete_player()
             elif choix == "N":
@@ -69,17 +69,17 @@ class Tournament:
             elif int(result) > 1:
                 print(str(result) + " résultats.")
             print('Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
-            choix = MENU_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
+            choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
             if choix == "O":
                 self.delete_player()
             elif choix == "N":
                 self.menu_2()
 
     def display_player(self):
-        player_to_display = MENU_VIEW.display_player_menu()
+        player_to_display = PLAYER_VIEW.display_player_menu()
         result = PLAYER_MODEL.display_player(player_to_display)
         if result == "no_result" and not player_to_display == "display_all":
-            choix = MENU_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+            choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
             if choix == "O":
                 self.display_player()
             elif choix == "N":
@@ -87,7 +87,7 @@ class Tournament:
         elif result == "no_result" and player_to_display == "display_all":
             result = PLAYER_MODEL.display_all_players()
             if result == "no_result":
-                choix = MENU_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+                choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
                 if choix == "O":
                     self.display_player()
                 elif choix == "N":
@@ -98,8 +98,8 @@ class Tournament:
                 print(str(len(result)) + " résultats.")
             for i in range(len(result)):
                 item = result[i]
-                print(Player_model(item['fname'], item['name'], item['birthd'], item['clubid']))
-            choix = MENU_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
+                print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
+            choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
             if choix.upper() == "O":
                 self.display_player()
             elif choix.upper() == "N":
@@ -111,8 +111,8 @@ class Tournament:
                 print(str(len(result)) + " résultats:")
             for i in range(len(result)):
                 item = result[i]
-                print(Player_model(item['fname'], item['name'], item['birthd'], item['clubid']))
-            choix = MENU_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
+                print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
+            choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
             if choix.upper() == "O":
                 self.display_player()
             elif choix.upper() == "N":

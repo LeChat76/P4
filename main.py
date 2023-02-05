@@ -3,7 +3,7 @@ import os
 
 def main():
     """ launching starting here """
-    tournament = Tournament()
+    tournament = TournamentModel()
     try:
         tournament.start_tournament()
     except KeyboardInterrupt:
@@ -18,5 +18,5 @@ if __name__ == "__main__":
     data_folder = os.path.join(os.path.dirname(__file__), "data", "tournaments")
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
-    from controllers.base import Tournament
+    from controllers.base import TournamentModel
     main()
