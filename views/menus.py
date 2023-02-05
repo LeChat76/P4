@@ -1,5 +1,5 @@
 import datetime
-from os import system
+import os
 PLAYER_LIST = []
 
 
@@ -12,7 +12,7 @@ class Menu:
         """ Root menu """
         choix = None
         while choix != 1 and choix != 2 and choix != 3 and choix != 4:
-            system('cls')
+            self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - tournois                  |")
             print("| 2 - joueurs                   |")
@@ -38,7 +38,7 @@ class Menu:
         """ Menu 1 """
         choix = None
         while choix != 1 and choix != 2 and choix != 3:
-            system('cls')
+            self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - création d'un tournoi     |")
             print("| 2 - reprise d'un tournoi      |")
@@ -59,7 +59,7 @@ class Menu:
 
     def tournament_creation(self):
         """ Menu 1 - 1 """
-        system('cls')
+        self.clear_screen()
         tournament_name = None
         while not tournament_name:
             tournament_name = input("Nom du tournoi : ")
@@ -70,7 +70,7 @@ class Menu:
         """ Menu 2 """
         choix = None
         while choix != 1 and choix != 2 and choix != 3 and choix != 4:
-            system('cls')
+            self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - création d'un joueur      |")
             print("| 2 - affichage des joueurs     |")
@@ -99,7 +99,7 @@ class Menu:
 
         while new_one_player.upper() != "N":
 
-            system('cls')
+            self.clear_screen()
             player_fname = None
             while not player_fname:
                 while True:
@@ -194,3 +194,9 @@ class Menu:
                 return "O"
             elif choix.upper() == "N":
                 return "N"
+
+    def clear_screen(self):
+        if os.name == "posix":
+            os.system("cleaer")
+        else:
+            os.system('cls')

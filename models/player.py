@@ -20,7 +20,7 @@ class Player:
         self.tournamentid = tournamentid
 
     def __str__(self):
-        return f"{self.fname} {self.name} né le {self.birthd} et appartient au club {self.clubid}"
+        return f"{self.fname} {self.name} né le {self.birthd}, affilié au club {self.clubid}"
 
     def record_new_player(self):
         """ method for add a player in the json file """
