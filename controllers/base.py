@@ -95,10 +95,16 @@ class Tournament:
                 self.menu_2()
         elif result == "no_result" and player_to_display == "display_all":
             result = PLAYER_MODEL.display_all_players()
-            if(len(result)) == 1:
-                print(str(len(result)) + " résultat:")
-            else:
-                print(str(len(result)) + " résultats:")
+            if(len(result)) == 0:
+                choix = MENU_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+                if choix == "O":
+                    self.display_player()
+                elif choix == "N":
+                    self.menu_2()
+            elif(len(result)) == 1:
+                print(str(len(result)) + " résultat.")
+            elif(len(result)) > 1:
+                print(str(len(result)) + " résultats.")
             for i in range(len(result)):
                 item = result[i]
                 print(Player_model(item['fname'], item['name'], item['birthd'], item['clubid']))
