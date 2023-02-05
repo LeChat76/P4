@@ -5,7 +5,7 @@ PLAYERS = DB.table('players')
 PLAYER = Query()
 
 
-class Player:
+class Player_model:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 
@@ -43,6 +43,15 @@ class Player:
         """ method to display player """
         self.player_to_display = player_to_display
         result = PLAYERS.search(PLAYER.name.matches(self.player_to_display, flags=re.IGNORECASE))
+        if len(result) == 0:
+            return "no_result"
+        else:
+            return result
+
+    def display_all_players(self):
+        """ method to count players in player.json DB"""
+        # result = PLAYERS.search(PLAYER.name.matches())
+        result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         if len(result) == 0:
             return "no_result"
         else:

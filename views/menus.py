@@ -3,7 +3,7 @@ import os
 PLAYER_LIST = []
 
 
-class Menu:
+class Menu_view:
     """ Menu class """
     def __init__(self):
         self.question = None
@@ -178,13 +178,15 @@ class Menu:
         dis_player_menu = None
         while not dis_player_menu:
             while True:
-                dis_player_name = input("Afficher les noms contenant : ")
-                if not dis_player_name.isalpha():
+                dis_player_name = input("Afficher les noms contenant ([ENTER] = afficher tout) : ")
+                if not dis_player_name:
+                    return "display_all"
+                elif not dis_player_name.isalpha():
                     print("Nom incorrect. Merci de ressaisir.")
-                else:
+                elif dis_player_name.isalpha() and len(dis_player_name) > 0:
                     return dis_player_name
 
-    def error(self, question):
+    def choice_menu(self, question):
         """ method for asking to restart request """
         self.question = question
         choix = ""
@@ -197,6 +199,6 @@ class Menu:
 
     def clear_screen(self):
         if os.name == "posix":
-            os.system("cleaer")
-        else:
+            os.system("clear")
+        elif os.name == "nt":
             os.system('cls')
