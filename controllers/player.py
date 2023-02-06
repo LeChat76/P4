@@ -62,6 +62,8 @@ class PlayerController:
                 result = PLAYER_MODEL.display_all_players()
                 if result == "no_result":
                     choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+                    if choix == "O":
+                        continue
                     if choix == "N":
                         break
                 if(len(result)) == 1:
