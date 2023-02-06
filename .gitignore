@@ -79,4 +79,5 @@ fabric.properties
 # Environment
 /.venv/
 /data/
-/exemple_base_users.txt
+/exemple_base_players.txt
+/exemple_base_tournaments.txt

@@ -38,7 +38,7 @@ class PlayerModel:
             for i in range(len(result)):
                 item = result[i]
                 PLAYERS.remove(PLAYER.name == item["name"])
-            return str(len(result))
+            return result
 
     def display_player(self, player_to_display):
         """ method to display player """

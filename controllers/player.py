@@ -39,11 +39,14 @@ class PlayerController:
                 if choix == "N":
                     break
             else:
-                if int(result) == 1:
-                    print(str(result) + " résultat.")
-                elif int(result) > 1:
-                    print(str(result) + " résultats.")
-                print('Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
+                #if len(result) == 1:
+                #    print(str(result) + " résultat.")
+                #elif len(result) > 1:
+                #    print(str(result) + " résultats.")
+                for i in range(len(result)):
+                    item = result[i]
+                    print("Utilisateur " + item['name'] + " supprimé.")
+                print(str(len(result)) + ' Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
                 choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
                 if choix == "N":
                     break
