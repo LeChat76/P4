@@ -30,25 +30,23 @@ class PlayerController:
             player_to_add.add_player()
 
     def delete_player(self):
-        player_to_delete = PLAYER_VIEW.delete_player_menu()
-        result = PLAYER_MODEL.delete_player(player_to_delete)
-        if result == "no_result":
-            choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
-            if choix == "O":
-                self.delete_player()
-            elif choix == "N":
-                self.menu_2()
-        else:
-            if int(result) == 1:
-                print(str(result) + " résultat.")
-            elif int(result) > 1:
-                print(str(result) + " résultats.")
-            print('Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
-            choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
-            if choix == "O":
-                self.delete_player()
-            elif choix == "N":
-                self.menu_2()
+        """ method to delete players """
+        while True:
+            player_to_delete = PLAYER_VIEW.delete_player_menu()
+            result = PLAYER_MODEL.delete_player(player_to_delete)
+            if result == "no_result":
+                choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
+                if choix == "N":
+                    break
+            else:
+                if int(result) == 1:
+                    print(str(result) + " résultat.")
+                elif int(result) > 1:
+                    print(str(result) + " résultats.")
+                print('Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
+                choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
+                if choix == "N":
+                    break
 
     def display_player(self):
         while True:
