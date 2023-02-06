@@ -1,5 +1,5 @@
 from tinydb import TinyDB, Query
-DB = TinyDB('data/tournaments/tournament.json')
+DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')
 TOURNAMENT = Query()
 
@@ -29,6 +29,9 @@ class TournamentModel:
         self.tournament_start_date = tournament_start_date
         self.tournament_end_date = tournament_end_date
         self.tournament_nb_round = tournament_nb_round
+        self.tournament_current_round = None
+        self.tournament_list_round = None
+        self.tournament_list_players = None
         self.tournament_description = tournament_description
 
     def __str__(self):
@@ -39,6 +42,6 @@ class TournamentModel:
         """ method for add a tournament in the json file """
         TOURNAMENTS.insert({'name': self.tournament_name, 'town': self.tournament_town,
                             'start_date': self.tournament_start_date, 'end_date': self.tournament_end_date,
-                            'nb_round': self.tournament_nb_round, 'actual_round': self.tournament_actual_round,
+                            'nb_round': self.tournament_nb_round, 'actual_round': self.tournament_current_round,
                             'list_round': self.tournament_list_round, 'list_players': self.tournament_list_players,
                             'description': self.tournament_description})

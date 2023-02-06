@@ -20,10 +20,10 @@ class PlayerController:
             elif choix == "menu_2_3":
                 self.delete_player()
             elif choix == "menu_2_4":
-                return "main_menu"
+                break
 
     def add_player(self):
-        """ Request for players """
+        """ Method for recording new players """
         new_player = PLAYER_VIEW.add_player_menu()
         for player in new_player:
             player_to_add = PlayerModel(player[0], player[1], player[2], player[3])
@@ -56,17 +56,13 @@ class PlayerController:
             result = PLAYER_MODEL.display_player(player_to_display)
             if result == "no_result" and not player_to_display == "display_all":
                 choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
-                if choix == "O":
-                    PLAYER_VIEW.display_player_menu()
-                elif choix == "N":
-                    self.menu_2()
+                if choix == "N":
+                    break
             elif result == "no_result" and player_to_display == "display_all":
                 result = PLAYER_MODEL.display_all_players()
                 if result == "no_result":
                     choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
-                    if choix == "O":
-                        var = False
-                    elif choix == "N":
+                    if choix == "N":
                         break
                 if(len(result)) == 1:
                     print(str(len(result)) + " résultat.")
@@ -76,9 +72,7 @@ class PlayerController:
                     item = result[i]
                     print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
                 choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
-                if choix.upper() == "O":
-                    var = False
-                elif choix == "N":
+                if choix == "N":
                     break
             elif len(result) > 0:
                 if len(result) == 1:
@@ -89,11 +83,8 @@ class PlayerController:
                     item = result[i]
                     print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
                 choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
-                if choix.upper() == "O":
-                    var = False
-                elif choix.upper() == "N":
+                if choix.upper() == "N":
                     break
-
 
     def create_ran_player_list(self):
         pass

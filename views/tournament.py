@@ -9,17 +9,19 @@ class TournamentView:
     def tournament_menu(self):
         """ Menu 1 """
         choix = None
-        while choix != 1 and choix != 2 and choix != 3:
+        while choix != 1 and choix != 2 and choix != 3 and choix != 4 and choix != 5:
             self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - création d'un tournoi     |")
-            print("| 2 - reprise d'un tournoi      |")
-            print("| 3 - revenir au menu principal |")
+            print("| 2 - affichage des tournois    |")
+            print("| 3 - démarrer nouveau tournoi  |")
+            print("| 4 - reprise d'un tournoi      |")
+            print("| 5 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():
                 print("Merci de préciser un choix numérique.")
-                choix_menu_1 = None
+                choix = None
             else:
                 choix = int(choix)
         if choix == 1:
@@ -28,27 +30,33 @@ class TournamentView:
             return "menu_1_2"
         elif choix == 3:
             return "menu_1_3"
+        elif choix == 4:
+            return "menu_1_4"
+        elif choix == 5:
+            return "menu_1_5"
 
     def add_tournament_menu(self):
-        """ Requests for tournament name """
         self.clear_screen()
         new_one_tournament = " "
         TOURNAMENT_LIST.clear()
 
         while new_one_tournament.upper() != "N":
+
+            """ Requests for tournament name """
             tournament_name = None
             while not tournament_name:
                 tournament_name = input("Nom du tournoi : ")
                 if not tournament_name:                                # juste pour debugging, à supprimer
                     tournament_name = "Chess master Rouen"             # juste pour debugging, à supprimer
-            while True:
+
+            """ Requests for tournament name """
+            tournament_town = None
+            while not tournament_town:
                 tournament_town = input("Lieu du tournoi : ")
                 if not tournament_town:                                # juste pour debugging, à supprimer
                     tournament_town = "Rouen"                          # juste pour debugging, à supprimer
                 if not tournament_town.isalpha():
-                    print("Le prénom ne doit pas contenir de chiffre. Merci de ressaisir.")
-                else:
-                    break
+                    print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
 
             """ Requests for start date of tournament """
             tournament_start_date = None
@@ -95,10 +103,8 @@ class TournamentView:
             if not tournament_description:
                 tournament_description = "Juste une description de test"     # juste pour debugging, à supprimer
 
-            TOURNAMENT_LIST.append(tournament_name, tournament_town, tournament_start_date, tournament_end_date,
-                                   tournament_nb_round, tournament_description)
-
-            print(TOURNAMENT_LIST)
+            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_start_date, tournament_end_date,
+                                   tournament_nb_round, tournament_description])
 
             new_one_tournament = input("Créer un autre tournoi (O/n)?")
 
