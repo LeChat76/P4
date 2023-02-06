@@ -9,23 +9,24 @@ class PlayerModel:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 
-    def __init__(self, fname="", name="", birthd="", clubid="", tournamentid=""):
+    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", player_tournamentid=""):
         """ Init player """
         self.player_to_display = None
         self.player_to_delete = None
-        self.fname = fname
-        self.name = name
-        self.birthd = birthd
-        self.clubid = clubid
-        self.tournamentid = tournamentid
+        self.player_fname = player_fname
+        self.player_name = player_name
+        self.player_birthd = player_birthd
+        self.player_clubid = player_clubid
+        self.player_tournamentid = player_tournamentid
 
     def __str__(self):
-        return f"{self.fname} {self.name} né le {self.birthd}, affilié au club {self.clubid}"
+        return f"{self.player_fname} {self.player_name} né le {self.player_birthd}, " \
+               f"affilié au club {self.player_clubid}"
 
-    def record_new_player(self):
+    def add_player(self):
         """ method for add a player in the json file """
-        PLAYERS.insert({'fname': self.fname, 'name': self.name, 'birthd': self.birthd, 'clubid': self.clubid,
-                       'tournamentid': self.tournamentid})
+        PLAYERS.insert({'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
+                        'clubid': self.player_clubid, 'tournamentid': self.player_tournamentid})
 
     def delete_player(self, player_to_delete):
         """ method to delete a player """
@@ -50,7 +51,6 @@ class PlayerModel:
 
     def display_all_players(self):
         """ method to count players in player.json DB"""
-        # result = PLAYERS.search(PLAYER.name.matches())
         result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         if len(result) == 0:
             return "no_result"

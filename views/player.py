@@ -8,64 +8,6 @@ class PlayerView:
     def __init__(self):
         self.question = None
 
-    def main_menu(self):
-        """ Root menu """
-        choix = None
-        while choix != 1 and choix != 2 and choix != 3 and choix != 4:
-            self.clear_screen()
-            print("+-------------------------------+")
-            print("| 1 - tournois                  |")
-            print("| 2 - joueurs                   |")
-            print("| 3 - statistiques              |")
-            print("| 4 - quitter                   |")
-            print("+-------------------------------+")
-            choix = input("Quel est votre choix : ")
-            if not choix.isnumeric():
-                print("Merci de préciser un choix numérique.")
-                choix = None
-            else:
-                choix = int(choix)
-        if choix == 1:
-            return "menu_1"
-        elif choix == 2:
-            return "menu_2"
-        elif choix == 3:
-            return "menu_3"
-        elif choix == 4:
-            return "menu_4"
-
-    def tournament_menu(self):
-        """ Menu 1 """
-        choix = None
-        while choix != 1 and choix != 2 and choix != 3:
-            self.clear_screen()
-            print("+-------------------------------+")
-            print("| 1 - création d'un tournoi     |")
-            print("| 2 - reprise d'un tournoi      |")
-            print("| 3 - revenir au menu principal |")
-            print("+-------------------------------+")
-            choix = input("Quel est votre choix : ")
-            if not choix.isnumeric():
-                print("Merci de préciser un choix numérique.")
-                choix = None
-            else:
-                choix = int(choix)
-        if choix == 1:
-            return "menu_1_1"
-        elif choix == 2:
-            return "menu_1_2"
-        elif choix == 3:
-            return "menu_1_3"
-
-    def tournament_creation(self):
-        """ Menu 1 - 1 """
-        self.clear_screen()
-        tournament_name = None
-        while not tournament_name:
-            tournament_name = input("Nom du tournoi : ")
-            if not tournament_name:                             # juste pour debugging, à supprimer
-                tournament_name = "Chess master Rouen"          # juste pour debugging, à supprimer
-
     def player_menu(self):
         """ Menu 2 """
         choix = None
