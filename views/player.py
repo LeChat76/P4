@@ -140,6 +140,13 @@ class PlayerView:
                 return "N"
 
     @staticmethod
+    def multi_select_menu():
+        """ method to select multiples players """
+        choice = ""
+        choice = input("Merci de sélectionner un ou plusieurs joueurs (chiffres séparés par des virgules): ")
+
+
+    @staticmethod
     def clear_screen():
         if os.name == "posix":
             os.system("clear")

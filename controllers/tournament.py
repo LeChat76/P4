@@ -1,10 +1,12 @@
 from views.start_menu import MainMenu
 from views.tournament import TournamentView
+from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
 MAINMENU = MainMenu()
 TOURNAMENT_VIEW = TournamentView()
 TOURNAMENT_MODEL = TournamentModel()
+PLAYER_VIEW = PlayerView()
 PLAYER_MODEL = PlayerModel()
 MENU_TOURNAMENT_CREATION = 1
 MENU_TOURNAMENT_DISPLAY = 2
@@ -121,7 +123,7 @@ class TournamentController:
         """ method to begin new tournament """
         while True:
             players_available = PLAYER_MODEL.search_available_player()
-            if players_available == "no_result":
+            if players_available == "no_result" or len(players_available) == 0:
                 wait = TOURNAMENT_VIEW.choice_menu("Aucun joueur disponible. Vous devez en avoir au moins deux"
                                                    " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
                 break
@@ -130,7 +132,7 @@ class TournamentController:
                                                    " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
                 break
             else:
-                not_started_tournament = TOURNAMENT_MODEL.display_not_started_tournaments()
+                not_started_tournament = TOURNAMENT_MODEL.search_not_started_tournaments()
                 if not_started_tournament == "no_result":
                     wait = TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Vous devez en créer un nouveau."
                                                        " [ENTRER] pour continuer.")
@@ -141,5 +143,11 @@ class TournamentController:
                         item = not_started_tournament[i]
                         print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['start_date'],
                                                                        item['end_date'])))
-                    result = TOURNAMENT_VIEW.select_tournament(not_started_tournament)
+                    result = TOURNAMENT_VIEW.select_menu(not_started_tournament)
                     selected_tournament = not_started_tournament[int(result) - 1]
+            print(str(len(players_available)) + " joueurs disponibles:")
+            for i in range(len(players_available)):
+                item = players_available[i]
+                print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
+            result = PLAYER_VIEW.multi_select_menu()
+

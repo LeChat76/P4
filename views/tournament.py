@@ -143,8 +143,8 @@ class TournamentView:
             elif choix.upper() == "N":
                 return "N"
 
-    def select_tournament(self, tournaments):
-        """ methode to select tournament """
+    def select_menu(self, tournaments):
+        """ method to select tournament """
         self.tournaments = tournaments
         choice = ""
         while not choice.isnumeric():

@@ -82,7 +82,7 @@ class TournamentModel:
         return list_current_tournament
 
     @staticmethod
-    def display_not_started_tournaments():
+    def search_not_started_tournaments():
         """ method to select tournaments where nb_round # actual round """
         list_current_tournament = []
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
