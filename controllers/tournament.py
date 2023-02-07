@@ -21,10 +21,10 @@ class TournamentController:
                 self.add_tournament()
             elif choix == MENU_TOURNAMENT_DISPLAY:
                 self.display_tournament()
-            # elif choix == MENU_TOURNAMENT_START:
-            #     self.start_tournament()
+            elif choix == MENU_TOURNAMENT_START:
+                self.begin_new_tournament()
             # elif choix == MENU_TOURNAMENT_RECOVERY:
-            #     self.back_to_tournament()
+            #     self.recover_tournament()
             elif choix == MENU_TOURNAMENT_EXIT:
                 break
 
@@ -113,3 +113,23 @@ class TournamentController:
                     choix = TOURNAMENT_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
+
+    def begin_new_tournament(self):
+        # not_started_tournament = None
+        while True:
+            print("Pour démarrer un nouveau tournoi, sélectionner un tournoi non démarré.")
+            not_started_tournament = TOURNAMENT_MODEL.display_not_started_tournaments()
+            if not not_started_tournament:
+                choice = TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Voulez vous en créer un nouveau?"
+                                                     " (O/n)? ")
+                if choice.upper() == "O":
+                    self.add_tournament
+                else:
+                    break
+            else:
+                for i in range(len(not_started_tournament)):
+                    item = not_started_tournament[i]
+                    print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['start_date'],
+                                                                   item['end_date'])))
+                result = TOURNAMENT_VIEW.select_tournament(not_started_tournament)
+                selected_tournament = not_started_tournament[int(result) - 1]

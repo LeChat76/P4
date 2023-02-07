@@ -88,8 +88,9 @@ class TournamentModel:
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         if len(result) == 0:
             return "no_result"
-        for i in range(len(result)):
-            item = result[i]
-            if not item['actual_round']:
-                list_current_tournament.append(item)
-        return list_current_tournament
+        else:
+            for i in range(len(result)):
+                item = result[i]
+                if not item['actual_round']:
+                    list_current_tournament.append(item)
+            return list_current_tournament

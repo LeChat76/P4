@@ -12,6 +12,7 @@ class TournamentView:
     """ Tournament class """
 
     def __init__(self):
+        self.tournaments = None
         self.question = None
 
     def tournament_menu(self):
@@ -139,6 +140,20 @@ class TournamentView:
                 return "O"
             elif choix.upper() == "N":
                 return "N"
+
+    def select_tournament(self, tournaments):
+        """ methode to select tournament """
+        self.tournaments = tournaments
+        choice = ""
+        while not choice.isnumeric():
+            choice = input("Choisir un tournoi (renseigner un chiffre) : ")
+            if not choice.isnumeric():
+                print("Merci de saisir un chiffre.")
+            elif int(choice) > len(self.tournaments):
+                print("Choix incorrect, merci de ressaisir.")
+                choice = ""
+            elif choice.isnumeric():
+                return choice
 
     @staticmethod
     def clear_screen():
