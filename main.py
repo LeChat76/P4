@@ -9,7 +9,7 @@ def main():
     from controllers.base import ChessTournament
     tournament = ChessTournament()
     try:
-        tournament.Tournament_Start()
+        tournament.tournament_start()
     except KeyboardInterrupt:
         print("\n\nFin du script par l'utilisateur.\n")
 

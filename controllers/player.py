@@ -5,6 +5,10 @@ MIN_PLAYER = 2
 PLAYER_VIEW = PlayerView()
 PLAYER_MODEL = PlayerModel()
 MAINMENU = MainMenu()
+MENU_PLAYER_CREATION = 1
+MENU_PLAYERS_DISPLAY = 2
+MENU_PLAYERS_DELETE = 3
+MENU_PLAYERS_EXIT = 4
 
 
 class PlayerController:
@@ -13,23 +17,25 @@ class PlayerController:
         """ Player menu """
         while True:
             choix = PLAYER_VIEW.player_menu()
-            if choix == "menu_2_1":
+            if choix == MENU_PLAYER_CREATION:
                 self.add_player()
-            if choix == "menu_2_2":
+            if choix == MENU_PLAYERS_DISPLAY:
                 self.display_player()
-            elif choix == "menu_2_3":
+            elif choix == MENU_PLAYERS_DELETE:
                 self.delete_player()
-            elif choix == "menu_2_4":
+            elif choix == MENU_PLAYERS_EXIT:
                 break
 
-    def add_player(self):
+    @staticmethod
+    def add_player():
         """ Method for recording new players """
         new_player = PLAYER_VIEW.add_player_menu()
         for player in new_player:
             player_to_add = PlayerModel(player[0], player[1], player[2], player[3])
             player_to_add.add_player()
 
-    def delete_player(self):
+    @staticmethod
+    def delete_player():
         """ method to delete players """
         while True:
             player_to_delete = PLAYER_VIEW.delete_player_menu()
@@ -39,10 +45,6 @@ class PlayerController:
                 if choix == "N":
                     break
             else:
-                #if len(result) == 1:
-                #    print(str(result) + " résultat.")
-                #elif len(result) > 1:
-                #    print(str(result) + " résultats.")
                 for i in range(len(result)):
                     item = result[i]
                     print("Utilisateur " + item['name'] + " supprimé.")
@@ -51,7 +53,9 @@ class PlayerController:
                 if choix == "N":
                     break
 
-    def display_player(self):
+    @staticmethod
+    def display_player():
+        """ method to display players by selecting name or all players """
         while True:
             player_to_display = PLAYER_VIEW.display_player_menu()
             result = PLAYER_MODEL.display_player(player_to_display)

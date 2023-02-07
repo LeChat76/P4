@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
 import re
+import uuid
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')
 PLAYER = Query()
@@ -25,7 +26,7 @@ class PlayerModel:
 
     def add_player(self):
         """ method for add a player in the json file """
-        PLAYERS.insert({'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
+        PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
                         'clubid': self.player_clubid, 'tournamentid': self.player_tournamentid})
 
     def delete_player(self, player_to_delete):
@@ -49,7 +50,8 @@ class PlayerModel:
         else:
             return result
 
-    def display_all_players(self):
+    @staticmethod
+    def display_all_players():
         """ method to count players in player.json DB"""
         result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         if len(result) == 0:

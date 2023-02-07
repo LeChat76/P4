@@ -1,6 +1,11 @@
 import datetime
 import os
 TOURNAMENT_LIST = []
+MENU_TOURNAMENT_CREATION = 1
+MENU_TOURNAMENT_DISPLAY = 2
+MENU_TOURNAMENT_START = 3
+MENU_TOURNAMENT_RECOVERY = 4
+MENU_TOURNAMENT_EXIT = 5
 
 
 class TournamentView:
@@ -9,7 +14,8 @@ class TournamentView:
     def tournament_menu(self):
         """ Menu 1 """
         choix = None
-        while choix != 1 and choix != 2 and choix != 3 and choix != 4 and choix != 5:
+        while choix != MENU_TOURNAMENT_CREATION and choix != MENU_TOURNAMENT_DISPLAY and choix != MENU_TOURNAMENT_START\
+                and choix != MENU_TOURNAMENT_RECOVERY and choix != MENU_TOURNAMENT_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - création d'un tournoi     |")
@@ -24,16 +30,8 @@ class TournamentView:
                 choix = None
             else:
                 choix = int(choix)
-        if choix == 1:
-            return "menu_1_1"
-        elif choix == 2:
-            return "menu_1_2"
-        elif choix == 3:
-            return "menu_1_3"
-        elif choix == 4:
-            return "menu_1_4"
-        elif choix == 5:
-            return "menu_1_5"
+
+        return choix
 
     def add_tournament_menu(self):
         self.clear_screen()
@@ -110,7 +108,22 @@ class TournamentView:
 
         return TOURNAMENT_LIST
 
-    def clear_screen(self):
+    @staticmethod
+    def display_tournament():
+        """ method to display all tournament """
+        dis_tournament_menu = None
+        while not dis_tournament_menu:
+            while True:
+                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours ou tous[ENTER] ? ")
+                if not dis_tournament_menu:
+                    return "display_all_tournaments"
+                elif dis_tournament_menu == "t":
+                    return "display_completed_tournaments"
+                elif dis_tournament_menu == "c":
+                    return "display_current_tournaments"
+
+    @staticmethod
+    def clear_screen():
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":

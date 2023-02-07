@@ -1,6 +1,10 @@
 import datetime
 import os
 PLAYER_LIST = []
+MENU_PLAYER_CREATION = 1
+MENU_PLAYERS_DISPLAY = 2
+MENU_PLAYERS_DELETE = 3
+MENU_PLAYERS_EXIT = 4
 
 
 class PlayerView:
@@ -11,7 +15,8 @@ class PlayerView:
     def player_menu(self):
         """ Menu 2 """
         choix = None
-        while choix != 1 and choix != 2 and choix != 3 and choix != 4:
+        while choix != MENU_PLAYER_CREATION and choix != MENU_PLAYERS_DISPLAY and choix != MENU_PLAYERS_DELETE and\
+                choix != MENU_PLAYERS_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - création d'un joueur      |")
@@ -25,14 +30,7 @@ class PlayerView:
                 choix = None
             else:
                 choix = int(choix)
-        if choix == 1:
-            return "menu_2_1"
-        if choix == 2:
-            return "menu_2_2"
-        if choix == 3:
-            return "menu_2_3"
-        if choix == 4:
-            return "menu_2_4"
+        return choix
 
     def add_player_menu(self):
         """ Requests for player first name """
@@ -102,7 +100,8 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    def delete_player_menu(self):
+    @staticmethod
+    def delete_player_menu():
         """ Request for delete player """
         del_player_name = None
         while not del_player_name:
@@ -115,7 +114,8 @@ class PlayerView:
                 else:
                     return del_player_name
 
-    def display_player_menu(self):
+    @staticmethod
+    def display_player_menu():
         """ Request for display player """
         dis_player_menu = None
         while not dis_player_menu:
@@ -139,7 +139,8 @@ class PlayerView:
             elif choix.upper() == "N":
                 return "N"
 
-    def clear_screen(self):
+    @staticmethod
+    def clear_screen():
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":

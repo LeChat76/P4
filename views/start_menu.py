@@ -1,4 +1,8 @@
 import os
+MENU_TOURNAMENT = 1
+MENU_PLAYERS = 2
+MENU_REPORTS = 3
+MENU_QUIT = 4
 
 
 class MainMenu:
@@ -6,7 +10,7 @@ class MainMenu:
     def main_menu(self):
         """ Root menu """
         choix = None
-        while choix != 1 and choix != 2 and choix != 3 and choix != 4:
+        while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS and choix != MENU_REPORTS and choix != MENU_QUIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("| 1 - tournois                  |")
@@ -20,16 +24,11 @@ class MainMenu:
                 choix = None
             else:
                 choix = int(choix)
-        if choix == 1:
-            return "menu_1"
-        elif choix == 2:
-            return "menu_2"
-        elif choix == 3:
-            return "menu_3"
-        elif choix == 4:
-            return "menu_4"
 
-    def clear_screen(self):
+        return choix
+
+    @staticmethod
+    def clear_screen():
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":
