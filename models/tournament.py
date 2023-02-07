@@ -1,4 +1,5 @@
 from tinydb import TinyDB, Query
+import uuid
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')
 TOURNAMENT = Query()
@@ -40,8 +41,31 @@ class TournamentModel:
 
     def add_tournament(self):
         """ method for add a tournament in the json file """
-        TOURNAMENTS.insert({'name': self.tournament_name, 'town': self.tournament_town,
-                            'start_date': self.tournament_start_date, 'end_date': self.tournament_end_date,
-                            'nb_round': self.tournament_nb_round, 'actual_round': self.tournament_current_round,
-                            'list_round': self.tournament_list_round, 'list_players': self.tournament_list_players,
-                            'description': self.tournament_description})
+        TOURNAMENTS.insert({'tournament_uuid': str(uuid.uuid1()), 'name': self.tournament_name,
+                            'town': self.tournament_town, 'start_date': self.tournament_start_date,
+                            'end_date': self.tournament_end_date, 'nb_round': self.tournament_nb_round,
+                            'actual_round': self.tournament_current_round, 'list_round': self.tournament_list_round,
+                            'list_players': self.tournament_list_players, 'description': self.tournament_description})
+
+    @staticmethod
+    def display_all_tournaments():
+        """ method to select all tournaments and record in a list """
+        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        if len(result) == 0:
+            return "no result"
+        return result
+
+    def display_completed_tournaments(self):
+        """ method to select tournaments where nb_round = actual round """
+        list_completed_tournament = []
+        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        if len(result) == 0:
+            return "no_result"
+        for i in range(len(result)):
+            item = result[i]
+            if item['nb_round'] == item['actual_round']:
+                list_completed_tournament.append(item)
+        return list_completed_tournament
+
+    def display_current_tournaments(self):
+        pass

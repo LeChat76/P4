@@ -68,8 +68,8 @@ class PlayerView:
             while not player_birthd:
                 while True:
                     player_birthd = input("Date d'anniversaire (au format JJ/MM/AAAA) : ")
-                    if player_birthd == "":  # juste pour debugging, à supprimer
-                        player_birthd = "16/07/1975"  # juste pour debugging, à supprimer
+                    if player_birthd == "":                     # juste pour debugging, à supprimer
+                        player_birthd = "16/07/1975"            # juste pour debugging, à supprimer
                     try:
                         datetime.datetime.strptime(player_birthd, '%d/%m/%Y')
                     except ValueError:
@@ -107,7 +107,7 @@ class PlayerView:
         while not del_player_name:
             while True:
                 del_player_name = input("Merci de préciser le nom de la personne contenant : ")
-                if del_player_name == "":                     # juste pour debugging, à supprimer
+                if del_player_name == "":                      # juste pour debugging, à supprimer
                     del_player_name = "delauney"               # juste pour debugging, à supprimer
                 if not del_player_name.isalpha():
                     print("Nom incorrect. Merci de ressaisir.")

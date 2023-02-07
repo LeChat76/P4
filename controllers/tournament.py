@@ -43,8 +43,32 @@ class TournamentController:
         while True:
             tournament_to_display = TOURNAMENT_VIEW.display_tournament()
             if tournament_to_display == "display_all_tournaments":
-                pass
+                result = TOURNAMENT_MODEL.display_all_tournaments()
+                if result == "no_result":
+                    choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
+                    if choix == "N":
+                        break
+                else:
+                    for i in range(len(result)):
+                        item = result[i]
+                        print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
+                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
+                    if choix == "N":
+                        break
+
             elif tournament_to_display == "display_completed_tournaments":
-                pass
+                result = TOURNAMENT_MODEL.display_completed_tournaments()
+                if result == "no_result":
+                    choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
+                    if choix == "N":
+                        break
+                else:
+                    for i in range(len(result)):
+                        item = result[i]
+                        print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
+                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
+                    if choix == "N":
+                        break
+
             elif tournament_to_display == "display_current_tournaments":
                 pass

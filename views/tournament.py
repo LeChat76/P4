@@ -11,6 +11,9 @@ MENU_TOURNAMENT_EXIT = 5
 class TournamentView:
     """ Tournament class """
 
+    def __init__(self):
+        self.question = None
+
     def tournament_menu(self):
         """ Menu 1 """
         choix = None
@@ -121,6 +124,17 @@ class TournamentView:
                     return "display_completed_tournaments"
                 elif dis_tournament_menu == "c":
                     return "display_current_tournaments"
+
+    def choice_menu(self, question):
+        """ method for asking to restart request """
+        self.question = question
+        choix = ""
+        while choix.upper() != "O" or choix.upper() != "N":
+            choix = input(self.question)
+            if choix.upper() == "O" or choix == "":
+                return "O"
+            elif choix.upper() == "N":
+                return "N"
 
     @staticmethod
     def clear_screen():
