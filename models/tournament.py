@@ -55,7 +55,8 @@ class TournamentModel:
             return "no result"
         return result
 
-    def display_completed_tournaments(self):
+    @staticmethod
+    def display_completed_tournaments():
         """ method to select tournaments where nb_round = actual round """
         list_completed_tournament = []
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
@@ -67,5 +68,28 @@ class TournamentModel:
                 list_completed_tournament.append(item)
         return list_completed_tournament
 
-    def display_current_tournaments(self):
-        pass
+    @staticmethod
+    def display_current_tournaments():
+        """ method to select tournaments where nb_round # actual round """
+        list_current_tournament = []
+        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        if len(result) == 0:
+            return "no_result"
+        for i in range(len(result)):
+            item = result[i]
+            if item['nb_round'] != item['actual_round']:
+                list_current_tournament.append(item)
+        return list_current_tournament
+
+    @staticmethod
+    def display_not_started_tournaments():
+        """ method to select tournaments where nb_round # actual round """
+        list_current_tournament = []
+        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        if len(result) == 0:
+            return "no_result"
+        for i in range(len(result)):
+            item = result[i]
+            if not item['actual_round']:
+                list_current_tournament.append(item)
+        return list_current_tournament

@@ -113,15 +113,19 @@ class TournamentView:
 
     @staticmethod
     def display_tournament():
-        """ method to display all tournament """
-        dis_tournament_menu = None
-        while not dis_tournament_menu:
+        """ method to display tournament(s) """
+        dis_tournament_menu = ""
+        while dis_tournament_menu.upper() != "T" and dis_tournament_menu.upper() != "C" and\
+                dis_tournament_menu.upper() != "N":
             while True:
-                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours ou tous[ENTER] ? ")
+                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours, (n)on commencé ou tous[ENTER] ? ")
                 if not dis_tournament_menu:
+                    dis_tournament_menu = "ENTER"
                     return "display_all_tournaments"
                 elif dis_tournament_menu == "t":
                     return "display_completed_tournaments"
+                elif dis_tournament_menu == "n":
+                    return "display_not_started_tournaments"
                 elif dis_tournament_menu == "c":
                     return "display_current_tournaments"
 
