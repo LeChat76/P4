@@ -1,7 +1,4 @@
 import os
-DATA_FOLDER = os.path.join(os.path.dirname(__file__), "data", "tournaments")
-if not os.path.exists(DATA_FOLDER):
-    os.makedirs(DATA_FOLDER)
 from views.start_menu import MainMenu
 from controllers.player import PlayerController
 from controllers.tournament import TournamentController
@@ -12,6 +9,13 @@ MENU_TOURNAMENT = 1
 MENU_PLAYERS = 2
 MENU_REPORTS = 3
 MENU_EXIT = 4
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "data", "tournaments")
+if not os.path.exists(DATA_FOLDER):
+    os.makedirs(DATA_FOLDER)
+    with open(os.path.join(DATA_FOLDER, "players.json")):
+        pass
+    with open(os.path.join(DATA_FOLDER, "tournaments.json")):
+        pass
 
 
 class ChessTournament:
