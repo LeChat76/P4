@@ -49,6 +49,10 @@ class TournamentController:
                     if choix == "N":
                         break
                 else:
+                    if (len(result)) == 1:
+                        print(str(len(result)) + " résultat.")
+                    elif (len(result)) > 1:
+                        print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -63,6 +67,10 @@ class TournamentController:
                     if choix == "N":
                         break
                 else:
+                    if (len(result)) == 1:
+                        print(str(len(result)) + " résultat.")
+                    elif (len(result)) > 1:
+                        print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -77,6 +85,10 @@ class TournamentController:
                     if choix == "N":
                         break
                 else:
+                    if (len(result)) == 1:
+                        print(str(len(result)) + " résultat.")
+                    elif (len(result)) > 1:
+                        print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -91,6 +103,10 @@ class TournamentController:
                     if choix == "N":
                         break
                 else:
+                    if (len(result)) == 1:
+                        print(str(len(result)) + " résultat.")
+                    elif (len(result)) > 1:
+                        print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))

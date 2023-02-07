@@ -77,7 +77,7 @@ class TournamentModel:
             return "no_result"
         for i in range(len(result)):
             item = result[i]
-            if item['nb_round'] != item['actual_round']:
+            if item['nb_round'] != item['actual_round'] and item['actual_round'] is not None:
                 list_current_tournament.append(item)
         return list_current_tournament
 
