@@ -12,7 +12,7 @@ class PlayerModel:
 
     def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", player_tournamentid=""):
         """ Init player """
-        self.player_to_display = None
+        self.player_to_search = None
         self.player_to_delete = None
         self.player_fname = player_fname
         self.player_name = player_name
@@ -41,20 +41,33 @@ class PlayerModel:
                 PLAYERS.remove(PLAYER.name == item["name"])
             return result
 
-    def display_player(self, player_to_display):
+    def search_player(self, player_to_search):
         """ method to display player """
-        self.player_to_display = player_to_display
-        result = PLAYERS.search(PLAYER.name.matches(self.player_to_display, flags=re.IGNORECASE))
+        self.player_to_search = player_to_search
+        result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
         if len(result) == 0:
             return "no_result"
         else:
             return result
 
     @staticmethod
-    def display_all_players():
+    def search_all_players():
         """ method to count players in player.json DB"""
         result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         if len(result) == 0:
             return "no_result"
         else:
             return result
+
+    @staticmethod
+    def search_available_player():
+        """ method to display player without tournament associated """
+        list_players_available = []
+        result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+        if len(result) == 0:
+            return "no_result"
+        for i in range(len(result)):
+            item = result[i]
+            if not item['tournamentid']:
+                list_players_available.append(item)
+        return list_players_available

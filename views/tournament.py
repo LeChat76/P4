@@ -80,11 +80,13 @@ class TournamentView:
                 while True:
                     tournament_end_date = input("Date de fin de tournoi JJ/MM/AAAA) : ")
                     if tournament_end_date == "":                    # juste pour debugging, à supprimer
-                        tournament_end_date = "10/01/2023"           # juste pour debugging, à supprimer
+                        tournament_end_date = "11/01/2023"           # juste pour debugging, à supprimer
                     try:
                         datetime.datetime.strptime(tournament_end_date, '%d/%m/%Y')
                     except ValueError:
                         print("Mauvais format de date. Merci de ressaisir.")
+                    if tournament_end_date < tournament_start_date:
+                        print("La date de fin ne peut pas précéder la date de début. Merci de ressaisir.")
                     else:
                         break
 

@@ -1,9 +1,11 @@
 from views.start_menu import MainMenu
 from views.tournament import TournamentView
 from models.tournament import TournamentModel
+from models.player import PlayerModel
 MAINMENU = MainMenu()
 TOURNAMENT_VIEW = TournamentView()
 TOURNAMENT_MODEL = TournamentModel()
+PLAYER_MODEL = PlayerModel()
 MENU_TOURNAMENT_CREATION = 1
 MENU_TOURNAMENT_DISPLAY = 2
 MENU_TOURNAMENT_START = 3
@@ -114,22 +116,30 @@ class TournamentController:
                     if choix == "N":
                         break
 
-    def begin_new_tournament(self):
-        # not_started_tournament = None
+    @staticmethod
+    def begin_new_tournament():
+        """ method to begin new tournament """
         while True:
-            print("Pour démarrer un nouveau tournoi, sélectionner un tournoi non démarré.")
-            not_started_tournament = TOURNAMENT_MODEL.display_not_started_tournaments()
-            if not not_started_tournament:
-                choice = TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Voulez vous en créer un nouveau?"
-                                                     " (O/n)? ")
-                if choice.upper() == "O":
-                    self.add_tournament
-                else:
-                    break
+            players_available = PLAYER_MODEL.search_available_player()
+            if players_available == "no_result":
+                wait = TOURNAMENT_VIEW.choice_menu("Aucun joueur disponible. Vous devez en avoir au moins deux"
+                                                   " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
+                break
+            elif len(players_available) == 1:
+                wait = TOURNAMENT_VIEW.choice_menu("Un seul joueur disponible. Vous devez en avoir au moins deux"
+                                                   " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
+                break
             else:
-                for i in range(len(not_started_tournament)):
-                    item = not_started_tournament[i]
-                    print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['start_date'],
-                                                                   item['end_date'])))
-                result = TOURNAMENT_VIEW.select_tournament(not_started_tournament)
-                selected_tournament = not_started_tournament[int(result) - 1]
+                not_started_tournament = TOURNAMENT_MODEL.display_not_started_tournaments()
+                if not_started_tournament == "no_result":
+                    wait = TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Vous devez en créer un nouveau."
+                                                       " [ENTRER] pour continuer.")
+                    break
+                else:
+                    print("Liste des tournois non démarrés:")
+                    for i in range(len(not_started_tournament)):
+                        item = not_started_tournament[i]
+                        print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['start_date'],
+                                                                       item['end_date'])))
+                    result = TOURNAMENT_VIEW.select_tournament(not_started_tournament)
+                    selected_tournament = not_started_tournament[int(result) - 1]

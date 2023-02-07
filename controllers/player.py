@@ -58,13 +58,13 @@ class PlayerController:
         """ method to display players by selecting name or all players """
         while True:
             player_to_display = PLAYER_VIEW.display_player_menu()
-            result = PLAYER_MODEL.display_player(player_to_display)
+            result = PLAYER_MODEL.search_player(player_to_display)
             if result == "no_result" and not player_to_display == "display_all":
                 choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
                 if choix == "N":
                     break
             elif result == "no_result" and player_to_display == "display_all":
-                result = PLAYER_MODEL.display_all_players()
+                result = PLAYER_MODEL.search_all_players()
                 if result == "no_result":
                     choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
                     if choix == "O":
