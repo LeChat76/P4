@@ -1,4 +1,4 @@
-from controllers.base import ChessTournament
+import os
 
 
 def main():
@@ -11,4 +11,12 @@ def main():
 
 
 if __name__ == "__main__":
-     main()
+    DATA_FOLDER = os.path.join(os.path.dirname(__file__), "data", "tournaments")
+    if not os.path.exists(DATA_FOLDER):
+        os.makedirs(DATA_FOLDER)
+        with open(os.path.join(DATA_FOLDER, "players.json")):
+            pass
+        with open(os.path.join(DATA_FOLDER, "tournaments.json")):
+            pass
+    from controllers.base import ChessTournament
+    main()
