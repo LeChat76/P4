@@ -145,9 +145,20 @@ class TournamentController:
                                                                        item['end_date'])))
                     result = TOURNAMENT_VIEW.select_menu(not_started_tournament)
                     selected_tournament = not_started_tournament[int(result) - 1]
-            print(str(len(players_available)) + " joueurs disponibles:")
-            for i in range(len(players_available)):
-                item = players_available[i]
-                print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
-            result = PLAYER_VIEW.multi_select_menu()
+                    selected_tournament_uuid = selected_tournament['tournament_uuid']
+
+                    """ Selection of players to add to the selected tournament """
+                    while True:
+                        print(str(len(players_available)) + " joueurs disponibles:")
+                        for i in range(len(players_available)):
+                            item = players_available[i]
+                            print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
+                        result = PLAYER_VIEW.multi_select_menu(len(players_available))
+                        selected_player = players_available[int(result) - 1]
+                        player_uuid = selected_player['player_uuid']
+                        PLAYER_MODEL.update_player_tournamentid(player_uuid, selected_tournament_uuid)
+                        players_available = PLAYER_MODEL.search_available_player()
+
+
+
 

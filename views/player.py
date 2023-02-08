@@ -1,5 +1,7 @@
 import datetime
 import os
+import string
+
 PLAYER_LIST = []
 MENU_PLAYER_CREATION = 1
 MENU_PLAYERS_DISPLAY = 2
@@ -139,12 +141,19 @@ class PlayerView:
             elif choix.upper() == "N":
                 return "N"
 
-    @staticmethod
-    def multi_select_menu():
+    def multi_select_menu(self, nb_players_available):
         """ method to select multiples players """
-        choice = ""
-        choice = input("Merci de sélectionner un ou plusieurs joueurs (chiffres séparés par des virgules): ")
-
+        self.nb_players_available = nb_players_available
+        while True:
+            choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
+            if choice.isalpha():
+                print("Merci de préciser un chiffre uniquement.")
+            elif int(choice) > int(nb_players_available):
+                print("Choix incorrect. Merci de ressaisir.")
+            elif int(choice) <= 0:
+                print("Choix incorrect. Merci de ressaisir.")
+            else:
+                return choice
 
     @staticmethod
     def clear_screen():

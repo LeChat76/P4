@@ -10,15 +10,17 @@ class PlayerModel:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 
-    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", player_tournamentid=""):
+    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", player_tournament_uuid=""):
         """ Init player """
+        self.tournament_uuid = None
+        self.player_uuid = None
         self.player_to_search = None
         self.player_to_delete = None
         self.player_fname = player_fname
         self.player_name = player_name
         self.player_birthd = player_birthd
         self.player_clubid = player_clubid
-        self.player_tournamentid = player_tournamentid
+        self.player_tournament_uuid = player_tournament_uuid
 
     def __str__(self):
         return f"{self.player_fname} {self.player_name} né le {self.player_birthd}, " \
@@ -26,8 +28,9 @@ class PlayerModel:
 
     def add_player(self):
         """ method for add a player in the json file """
-        PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
-                        'clubid': self.player_clubid, 'tournamentid': self.player_tournamentid})
+        PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name,
+                        'birthd': self.player_birthd, 'clubid': self.player_clubid,
+                        'tournament_uuid': self.player_tournament_uuid})
 
     def delete_player(self, player_to_delete):
         """ method to delete a player """
@@ -71,3 +74,9 @@ class PlayerModel:
             if not item['tournamentid']:
                 list_players_available.append(item)
         return list_players_available
+
+    def update_player_tournament_uuid(self, player_uuid, tournamentid):
+        """ method to update tournamentid for a player """
+        self.player_uuid = player_uuid
+        self.tournamentid = tournamentid
+        PLAYERS.update({'tournamentid': self.tournamentid}, PLAYER.player_uuid == self.player_uuid)
