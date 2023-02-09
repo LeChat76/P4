@@ -145,9 +145,9 @@ class PlayerView:
         """ method to select multiples players """
         self.nb_players_available = nb_players_available
         self.nb_players = nb_players
-        self.clear_screen()
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
+            self.clear_screen()
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
             elif not choice:
