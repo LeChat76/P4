@@ -193,4 +193,5 @@ class TournamentController:
                 players_list_sorted = players_list_by_score[i]
                 print(players_list_sorted)
             print("Fin pour le moment.")
+            input()
             break

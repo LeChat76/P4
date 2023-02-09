@@ -120,6 +120,7 @@ class PlayerView:
     def display_player_menu():
         """ Request for display player """
         dis_player_menu = None
+        self.clear_screen()
         while not dis_player_menu:
             while True:
                 dis_player_name = input("Afficher les noms contenant ([ENTER] = afficher tout) : ")
