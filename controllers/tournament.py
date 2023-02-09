@@ -45,7 +45,7 @@ class TournamentController:
         """ method to display tournaments completed, current or all """
         while True:
             tournament_to_display = TOURNAMENT_VIEW.display_tournament()
-            if tournament_to_display == "search_all_tournaments":
+            if tournament_to_display == "display_all_tournaments":
                 result = TOURNAMENT_MODEL.search_all_tournaments()
                 if result == "no_result":
                     choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
@@ -64,7 +64,7 @@ class TournamentController:
                     if choix == "N":
                         break
 
-            elif tournament_to_display == "search_completed_tournaments":
+            elif tournament_to_display == "display_completed_tournaments":
                 result = TOURNAMENT_MODEL.search_completed_tournaments()
                 if result == "no_result":
                     choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
@@ -83,7 +83,7 @@ class TournamentController:
                     if choix == "N":
                         break
 
-            elif tournament_to_display == "search_current_tournaments":
+            elif tournament_to_display == "display_current_tournaments":
                 result = TOURNAMENT_MODEL.search_current_tournaments()
                 if result == "no_result":
                     choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
