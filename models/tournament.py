@@ -22,22 +22,20 @@ class TournamentModel:
         * une liste des joueurs enregistrés
         * description pour les remarques générales du directeur du tournoi
     """
-    def __init__(self, tournament_name="", tournament_town="", tournament_start_date="", tournament_end_date="",
-                 tournament_nb_round="", tournament_description=""):
+    def __init__(self, tournament_name="", tournament_town="", tournament_nb_round="", tournament_description=""):
         """ Init tournament """
         self.tournament_name = tournament_name
         self.tournament_town = tournament_town
-        self.tournament_start_date = tournament_start_date
-        self.tournament_end_date = tournament_end_date
         self.tournament_nb_round = tournament_nb_round
+        self.tournament_start_date = None
+        self.tournament_end_date = None
         self.tournament_current_round = None
         self.tournament_list_round = None
         self.tournament_list_players = None
         self.tournament_description = tournament_description
 
     def __str__(self):
-        return f"Tournoi {self.tournament_name} se déroulant à {self.tournament_town} du {self.tournament_start_date}" \
-               f" au {self.tournament_end_date}"
+        return f"Tournoi {self.tournament_name} se déroulant à {self.tournament_town}."
 
     def add_tournament(self):
         """ method for add a tournament in the json file """

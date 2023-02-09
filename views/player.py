@@ -1,7 +1,5 @@
 import datetime
 import os
-import string
-
 PLAYER_LIST = []
 MENU_PLAYER_CREATION = 1
 MENU_PLAYERS_DISPLAY = 2
@@ -12,6 +10,7 @@ MENU_PLAYERS_EXIT = 4
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.nb_players_available = None
         self.question = None
 
     def player_menu(self):
@@ -141,7 +140,7 @@ class PlayerView:
             elif choix.upper() == "N":
                 return "N"
 
-    def multi_select_menu(self, nb_players_available):
+    def select_available_players_menu(self, nb_players_available):
         """ method to select multiples players """
         self.nb_players_available = nb_players_available
         while True:

@@ -1,6 +1,6 @@
 import os
-MENU_TOURNAMENT = 1
-MENU_PLAYERS = 2
+MENU_PLAYERS = 1
+MENU_TOURNAMENT = 2
 MENU_REPORTS = 3
 MENU_QUIT = 4
 
@@ -13,8 +13,8 @@ class MainMenu:
         while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS and choix != MENU_REPORTS and choix != MENU_QUIT:
             self.clear_screen()
             print("+-------------------------------+")
-            print("| 1 - tournois                  |")
-            print("| 2 - joueurs                   |")
+            print("| 1 - joueurs                   |")
+            print("| 2 - tournois                  |")
             print("| 3 - statistiques              |")
             print("| 4 - quitter                   |")
             print("+-------------------------------+")

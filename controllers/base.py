@@ -12,8 +12,8 @@ from controllers.tournament import TournamentController
 MAIN_MENU = MainMenu()
 PLAYER_CONTROLLER = PlayerController()
 TOURNAMENT_CONTROLLER = TournamentController()
-MENU_TOURNAMENT = 1
-MENU_PLAYERS = 2
+MENU_PLAYERS = 1
+MENU_TOURNAMENTS = 2
 MENU_REPORTS = 3
 MENU_EXIT = 4
 
@@ -34,10 +34,10 @@ class ChessTournament:
         """ start tournament method """
         while True:
             choix = MAIN_MENU.main_menu()
-            if choix == MENU_TOURNAMENT:
-                TOURNAMENT_CONTROLLER.menu_1()
-            elif choix == MENU_PLAYERS:
-                PLAYER_CONTROLLER.menu_2()
+            if choix == MENU_PLAYERS:
+                PLAYER_CONTROLLER.menu_1()
+            elif choix == MENU_TOURNAMENTS:
+                TOURNAMENT_CONTROLLER.menu_2()
             # elif choix_menu == MENU_REPORTS:
             #    self.statistics_menu()
             elif choix == MENU_EXIT:

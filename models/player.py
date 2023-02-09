@@ -71,12 +71,12 @@ class PlayerModel:
             return "no_result"
         for i in range(len(result)):
             item = result[i]
-            if not item['tournamentid']:
+            if not item['tournament_uuid']:
                 list_players_available.append(item)
         return list_players_available
 
-    def update_player_tournament_uuid(self, player_uuid, tournamentid):
+    def update_player_tournament_uuid(self, player_uuid, tournament_uuid):
         """ method to update tournamentid for a player """
         self.player_uuid = player_uuid
-        self.tournamentid = tournamentid
-        PLAYERS.update({'tournamentid': self.tournamentid}, PLAYER.player_uuid == self.player_uuid)
+        self.tournament_uuid = tournament_uuid
+        PLAYERS.update({'tournament_uuid': self.tournament_uuid}, PLAYER.player_uuid == self.player_uuid)

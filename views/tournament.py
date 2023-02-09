@@ -57,38 +57,10 @@ class TournamentView:
                 tournament_town = input("Lieu du tournoi : ")
                 if not tournament_town:                                # juste pour debugging, à supprimer
                     tournament_town = "Rouen"                          # juste pour debugging, à supprimer
-                if not tournament_town.isalpha():
+                if any(chr.isdigit() for chr in tournament_town) is True:
                     print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
+                    tournament_town = ""
 
-            """ Requests for start date of tournament """
-            tournament_start_date = None
-            while not tournament_start_date:
-                while True:
-                    tournament_start_date = input("Date de début de tournoi JJ/MM/AAAA) : ")
-                    if tournament_start_date == "":                    # juste pour debugging, à supprimer
-                        tournament_start_date = "10/01/2023"           # juste pour debugging, à supprimer
-                    try:
-                        datetime.datetime.strptime(tournament_start_date, '%d/%m/%Y')
-                    except ValueError:
-                        print("Mauvais format de date. Merci de ressaisir.")
-                    else:
-                        break
-
-            """ Requests for end date of tournament """
-            tournament_end_date = None
-            while not tournament_end_date:
-                while True:
-                    tournament_end_date = input("Date de fin de tournoi JJ/MM/AAAA) : ")
-                    if tournament_end_date == "":                    # juste pour debugging, à supprimer
-                        tournament_end_date = "11/01/2023"           # juste pour debugging, à supprimer
-                    try:
-                        datetime.datetime.strptime(tournament_end_date, '%d/%m/%Y')
-                    except ValueError:
-                        print("Mauvais format de date. Merci de ressaisir.")
-                    if tournament_end_date < tournament_start_date:
-                        print("La date de fin ne peut pas précéder la date de début. Merci de ressaisir.")
-                    else:
-                        break
 
             """ Requests for number of rounds """
             tournament_nb_round = None
@@ -107,8 +79,7 @@ class TournamentView:
             if not tournament_description:
                 tournament_description = "Juste une description de test"     # juste pour debugging, à supprimer
 
-            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_start_date, tournament_end_date,
-                                   tournament_nb_round, tournament_description])
+            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_nb_round, tournament_description])
 
             new_one_tournament = input("Créer un autre tournoi (O/n)?")
 
@@ -121,9 +92,9 @@ class TournamentView:
         while dis_tournament_menu.upper() != "T" and dis_tournament_menu.upper() != "C" and\
                 dis_tournament_menu.upper() != "N":
             while True:
-                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours, (n)on commencé ou tous[ENTER] ? ")
+                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours, (n)on commencé ou"
+                                            " tous[ENTER] ? ")
                 if not dis_tournament_menu:
-                    dis_tournament_menu = "ENTER"
                     return "display_all_tournaments"
                 elif dis_tournament_menu == "t":
                     return "display_completed_tournaments"
@@ -152,6 +123,9 @@ class TournamentView:
             if not choice.isnumeric():
                 print("Merci de saisir un chiffre.")
             elif int(choice) > len(self.tournaments):
+                print("Choix incorrect, merci de ressaisir.")
+                choice = ""
+            elif int(choice) <= 0:
                 print("Choix incorrect, merci de ressaisir.")
                 choice = ""
             elif choice.isnumeric():

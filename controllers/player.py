@@ -13,7 +13,7 @@ MENU_PLAYERS_EXIT = 4
 
 class PlayerController:
 
-    def menu_2(self):
+    def menu_1(self):
         """ Player menu """
         while True:
             choix = PLAYER_VIEW.player_menu()

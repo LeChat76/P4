@@ -17,7 +17,7 @@ MENU_TOURNAMENT_EXIT = 5
 
 class TournamentController:
 
-    def menu_1(self):
+    def menu_2(self):
         """ Tournament Menu """
         while True:
             choix = TOURNAMENT_VIEW.tournament_menu()
@@ -37,8 +37,7 @@ class TournamentController:
         """ method to record new tournaments """
         new_tournament = TOURNAMENT_VIEW.add_tournament_menu()
         for tournament in new_tournament:
-            tournament_to_add = TournamentModel(tournament[0], tournament[1], tournament[2], tournament[3],
-                                                tournament[4], tournament[5])
+            tournament_to_add = TournamentModel(tournament[0], tournament[1], tournament[2], tournament[3])
             tournament_to_add.add_tournament()
 
     @staticmethod
@@ -101,7 +100,7 @@ class TournamentController:
                         break
 
             elif tournament_to_display == "display_not_started_tournaments":
-                result = TOURNAMENT_MODEL.display_not_started_tournaments()
+                result = TOURNAMENT_MODEL.search_not_started_tournaments()
                 if result == "no_result":
                     choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Recommencer (O/n)? ")
                     if choix == "N":
@@ -120,22 +119,18 @@ class TournamentController:
 
     @staticmethod
     def begin_new_tournament():
-        """ method to begin new tournament """
+        """ request for needed information to begin new tournament """
         while True:
             players_available = PLAYER_MODEL.search_available_player()
-            if players_available == "no_result" or len(players_available) == 0:
-                wait = TOURNAMENT_VIEW.choice_menu("Aucun joueur disponible. Vous devez en avoir au moins deux"
-                                                   " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
-                break
-            elif len(players_available) == 1:
-                wait = TOURNAMENT_VIEW.choice_menu("Un seul joueur disponible. Vous devez en avoir au moins deux"
-                                                   " disponibles pour démarrer un tournoi [ENTRER] pour continuer.")
+            if players_available == "no_result" or len(players_available) <= 1:
+                TOURNAMENT_VIEW.choice_menu("Aucun joueur disponible. Vous devez en avoir au moins deux\n"
+                                            "disponibles pour démarrer un tournoi [ENTRER] pour revenir au menu.")
                 break
             else:
                 not_started_tournament = TOURNAMENT_MODEL.search_not_started_tournaments()
                 if not_started_tournament == "no_result":
-                    wait = TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Vous devez en créer un nouveau."
-                                                       " [ENTRER] pour continuer.")
+                    TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible. Vous devez en créer un nouveau."
+                                                " [ENTRER] pour continuer.")
                     break
                 else:
                     print("Liste des tournois non démarrés:")
@@ -148,17 +143,30 @@ class TournamentController:
                     selected_tournament_uuid = selected_tournament['tournament_uuid']
 
                     """ Selection of players to add to the selected tournament """
+                    nb_players_available = len(players_available)
+                    if nb_players_available % 2 != 0:
+                        nb_players_available_pair = False
+                    else:
+                        nb_players_available_pair = True
                     while True:
-                        print(str(len(players_available)) + " joueurs disponibles:")
-                        for i in range(len(players_available)):
+                        print(str(nb_players_available) + " joueurs disponibles:")
+                        for i in range(nb_players_available):
                             item = players_available[i]
                             print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
-                        result = PLAYER_VIEW.multi_select_menu(len(players_available))
-                        selected_player = players_available[int(result) - 1]
-                        player_uuid = selected_player['player_uuid']
-                        PLAYER_MODEL.update_player_tournamentid(player_uuid, selected_tournament_uuid)
+                        result = PLAYER_VIEW.select_available_players_menu(len(players_available))
+                        selected_player_uuid = (players_available[int(result) - 1])['player_uuid']
+                        PLAYER_MODEL.update_player_tournament_uuid(selected_player_uuid, selected_tournament_uuid)
+                        nb_players_available -= 1
                         players_available = PLAYER_MODEL.search_available_player()
+                        if nb_players_available == 1 and nb_players_available_pair is False:
+                            print("Il ne reste plus qu'une personne, impossible de former une paire.\n"
+                                  "Fin de la selection.")
+                            break
+                        elif nb_players_available == 0 or nb_players_available_pair == "True":
+                            print("Plus de personne à ajouter.")
+                            break
+                    print('Tournoi "' + selected_tournament['name'] + '" prêt.')
 
-
-
-
+                    """ beginning of the tournament """
+                    print("fin")
+                    break
