@@ -120,7 +120,6 @@ class PlayerView:
     def display_player_menu():
         """ Request for display player """
         dis_player_menu = None
-        self.clear_screen()
         while not dis_player_menu:
             while True:
                 dis_player_name = input("Afficher les noms contenant ([ENTER] = afficher tout) : ")
@@ -146,6 +145,7 @@ class PlayerView:
         """ method to select multiples players """
         self.nb_players_available = nb_players_available
         self.nb_players = nb_players
+        self.clear_screen()
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
             if choice.isalpha():
