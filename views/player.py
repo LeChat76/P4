@@ -10,6 +10,7 @@ MENU_PLAYERS_EXIT = 4
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.nb_players = None
         self.nb_players_available = None
         self.question = None
 
@@ -140,13 +141,21 @@ class PlayerView:
             elif choix.upper() == "N":
                 return "N"
 
-    def select_available_players_menu(self, nb_players_available):
+    def select_available_players_menu(self, nb_players_available, nb_players):
         """ method to select multiples players """
         self.nb_players_available = nb_players_available
+        self.nb_players = nb_players
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
+            elif not choice:
+                if self.nb_players % 2 != 0:
+                    print("Vous avez sélectionné " + str(nb_players) + " joueurs. Il faut un nombre pair de\n"
+                          "joueurs pour former des équipes.")
+                    continue
+                else:
+                    return "end_players_selection"
             elif int(choice) > int(nb_players_available):
                 print("Choix incorrect. Merci de ressaisir.")
             elif int(choice) <= 0:

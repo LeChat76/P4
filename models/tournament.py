@@ -24,6 +24,7 @@ class TournamentModel:
     """
     def __init__(self, tournament_name="", tournament_town="", tournament_nb_round="", tournament_description=""):
         """ Init tournament """
+        self.tournament_uuid = None
         self.tournament_name = tournament_name
         self.tournament_town = tournament_town
         self.tournament_nb_round = tournament_nb_round
@@ -46,7 +47,7 @@ class TournamentModel:
                             'list_players': self.tournament_list_players, 'description': self.tournament_description})
 
     @staticmethod
-    def display_all_tournaments():
+    def search_all_tournaments():
         """ method to select all tournaments and record in a list """
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         if len(result) == 0:
@@ -54,7 +55,7 @@ class TournamentModel:
         return result
 
     @staticmethod
-    def display_completed_tournaments():
+    def search_completed_tournaments():
         """ method to select tournaments where nb_round = actual round """
         list_completed_tournament = []
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
@@ -67,7 +68,7 @@ class TournamentModel:
         return list_completed_tournament
 
     @staticmethod
-    def display_current_tournaments():
+    def search_current_tournaments():
         """ method to select tournaments where nb_round # actual round """
         list_current_tournament = []
         result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
@@ -92,3 +93,9 @@ class TournamentModel:
                 if not item['actual_round']:
                     list_current_tournament.append(item)
             return list_current_tournament
+
+    def search_nb_round_for_tournament(self, tournament_uuid):
+        """ method to search nb_round for a tournament """
+        self.tournament_uuid = tournament_uuid
+        result = TOURNAMENTS.search(TOURNAMENT.name.matches(self.tournament_uuid))
+        return result

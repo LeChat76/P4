@@ -1,4 +1,3 @@
-import uuid
 
 
 class Match:
@@ -23,4 +22,7 @@ class Match:
         self.player_two_score = player_two_score
 
     def store_match(self, tournament_uuid):
+        pass
+
+    def generate_match_id(self, tournament_uuid, round):
         pass

@@ -47,7 +47,7 @@ class PlayerController:
             else:
                 for i in range(len(result)):
                     item = result[i]
-                    print("Utilisateur " + item['name'] + " supprimé.")
+                    print("Utilisateur " + item['name'].capitalize() + " supprimé.")
                 print(str(len(result)) + ' Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
                 choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
                 if choix == "N":
@@ -77,7 +77,8 @@ class PlayerController:
                     print(str(len(result)) + " résultats.")
                 for i in range(len(result)):
                     item = result[i]
-                    print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
+                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'],
+                                      item['clubid']))
                 choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
                 if choix == "N":
                     break
@@ -88,7 +89,7 @@ class PlayerController:
                     print(str(len(result)) + " résultats:")
                 for i in range(len(result)):
                     item = result[i]
-                    print(PlayerModel(item['fname'], item['name'], item['birthd'], item['clubid']))
+                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'], item['clubid']))
                 choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
                 if choix.upper() == "N":
                     break
