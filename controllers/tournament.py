@@ -185,12 +185,12 @@ class TournamentController:
                     break
 
             print('Tournoi "' + selected_tournament['name'] + '" prêt.')
-            if (nb_players + 1) < int(tournament_nb_round):
-                print("Pour information : vu le faible nombre de joueurs sélectionnés et le nb de round, certains"
-                      " joueurs ne se rencontreront pas.")
-            elif (nb_players + 1) > int(tournament_nb_round):
+            if (nb_players - 1 ) < int(tournament_nb_round):
+                print("Pour information : vu le faible nombre de joueurs sélectionnés et le grand nombre de rounds,"
+                      " certains joueurs se rencontreront deux fois.")
+            elif (nb_players - 1 ) > int(tournament_nb_round):
                 print("Pour information : vu le faible nombre de rounds du tournoi et la quantité de joueurs"
-                      " sélectionnés, il est inévitables que certains se rencontrent deux fois.")
+                      " sélectionnés, certains joueurs ne se rencontreront pas.")
 
             TOURNAMENT_VIEW.choice_menu("Appuyez sur une [ENTRER] pour continuer.")
 

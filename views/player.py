@@ -10,8 +10,8 @@ MENU_PLAYERS_EXIT = 4
 class PlayerView:
     """ Menu class """
     def __init__(self):
-        self.player_two = None
         self.player_one = None
+        self.player_two = None
         self.nb_players = None
         self.nb_players_available = None
         self.question = None
@@ -175,14 +175,16 @@ class PlayerView:
         self.player_two = player_two
         while result1 != 0 and result1 != 0.5 and result1 != 1:
             result1 = input("Score du joueur " + player_one + " : ")
-            if not result1.isnumeric():
-                print("Merci de saisir uniquement une valeur numérique.")
-            elif result1.isnumeric():
+            if result1.isnumeric():
                 result1 = int(result1)
-                if result1 != 0 and result1 != 0.5 and int(result1) != 1:
+                if result1 != 0 and result1 != 0.5 and result1 != 1:
                     print("Le score ne peut être que : 0 pour le perdant\n"
                           "                            1 pour le gagnant\n"
                           "                            0.5 pour une égalité")
+            elif float(result1):
+                result1 = float(result1)
+            elif not result1.isnumeric():
+                print("Merci de saisir uniquement une valeur numérique.")
         if result1 == 0:
             print("Le score de " + player_two + " est donc 1.")
             result2 = 1

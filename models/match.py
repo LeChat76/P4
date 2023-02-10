@@ -18,19 +18,18 @@ class MatchModel:
     LES matchs sont stockés sous formes de listes "dans l'instance du tour auquel ils appartiennent"
     """
 
-    def __init__(self, tournament_uuid="", match_nb="", round_nb="", player_one="", player_two="", player_one_score="",
-                 player_two_score=""):
+    def __init__(self, tournament_uuid="", match_nb="", round_nb="", player_one_uuid="", player_two_uuid="",
+                 player_one_score="", player_two_score=""):
         self.tournament_uuid = tournament_uuid
         self.match_nb = match_nb
         self.round_nb = round_nb
-        self.player_one = player_one
-        self.player_two = player_two
+        self.player_one_uuid = player_one_uuid
+        self.player_two_uuid = player_two_uuid
         self.player_one_score = player_one_score
         self.player_two_score = player_two_score
 
     def store_match(self):
-        match_id = "T" + str(self.tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
-        MATCHS.insert({'match_uuid': str(uuid.uuid1()), 'match_id': match_id, 'player_one': self.player_one,
-                       'player_two': self.player_two, 'player_one_score': self.player_one_score,
+        match_id = "T_" + str(self.tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
+        MATCHS.insert({'match_uuid': str(uuid.uuid1()), 'match_id': match_id, 'player_one_uuid': self.player_one_uuid,
+                       'player_two_uuid': self.player_two_uuid, 'player_one_score': self.player_one_score,
                        'player_two_score': self.player_two_score})
-
