@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
-import re
 import uuid
+import re
 import random
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')

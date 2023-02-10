@@ -1,4 +1,3 @@
-import datetime
 import os
 TOURNAMENT_LIST = []
 MENU_TOURNAMENT_CREATION = 1

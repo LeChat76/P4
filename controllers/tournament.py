@@ -218,7 +218,9 @@ class TournamentController:
                     print("Tour : " + str(current_round) + "/" + nb_round + ", Match opposant " + player_one +
                           " à " + player_two + ".")
                     scores = PLAYER_VIEW.record_score(player_one, player_two)
-
+                    match = MatchModel(selected_tournament_uuid, current_match, current_round, player_one_uuid,
+                                       player_two_uuid, scores[0], scores[1])
+                    match.store_match()
                 print("Fin pour le moment.")
                 input()
                 break

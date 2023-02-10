@@ -191,7 +191,7 @@ class PlayerView:
             result2 = 0.5
         else:
             print("Le score de " + player_two + " est donc 0.")
-            result = 0
+            result2 = 0
         return result1, result2
 
     @staticmethod
