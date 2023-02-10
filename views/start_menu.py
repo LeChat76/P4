@@ -13,6 +13,8 @@ class MainMenu:
         while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS and choix != MENU_REPORTS and choix != MENU_QUIT:
             self.clear_screen()
             print("+-------------------------------+")
+            print("|            MENU               |")
+            print("+-------------------------------+")
             print("| 1 - joueurs                   |")
             print("| 2 - tournois                  |")
             print("| 3 - statistiques              |")

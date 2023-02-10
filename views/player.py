@@ -21,6 +21,8 @@ class PlayerView:
                 choix != MENU_PLAYERS_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
+            print("|          MENU JOUEUR          |")
+            print("+-------------------------------+")
             print("| 1 - création d'un joueur      |")
             print("| 2 - affichage des joueurs     |")
             print("| 3 - suppression d'un joueur   |")

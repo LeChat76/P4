@@ -97,5 +97,6 @@ class TournamentModel:
     def search_nb_round_for_tournament(self, tournament_uuid):
         """ method to search nb_round for a tournament """
         self.tournament_uuid = tournament_uuid
-        result = TOURNAMENTS.search(TOURNAMENT.name.matches(self.tournament_uuid))
+        result = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        result = result[0]['nb_round']
         return result

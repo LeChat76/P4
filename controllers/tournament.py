@@ -3,6 +3,7 @@ from views.tournament import TournamentView
 from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
+
 MAINMENU = MainMenu()
 TOURNAMENT_VIEW = TournamentView()
 TOURNAMENT_MODEL = TournamentModel()
@@ -56,7 +57,6 @@ class TournamentController:
                         print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
                         print(str(len(result)) + " résultats.")
-                    i = 0
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -75,7 +75,6 @@ class TournamentController:
                         print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
                         print(str(len(result)) + " résultats.")
-                    i = 0
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -94,7 +93,6 @@ class TournamentController:
                         print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
                         print(str(len(result)) + " résultats.")
-                    i = 0
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -113,7 +111,6 @@ class TournamentController:
                         print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
                         print(str(len(result)) + " résultats.")
-                    i = 0
                     for i in range(len(result)):
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'], item['start_date'], item['end_date']))
@@ -136,7 +133,6 @@ class TournamentController:
                                             " [ENTRER] pour continuer.")
                 break
             print("Liste des tournois non démarrés:")
-            i = 0
             for i in range(len(not_started_tournament)):
                 item = not_started_tournament[i]
                 print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['start_date'],
@@ -144,10 +140,22 @@ class TournamentController:
             result = TOURNAMENT_VIEW.select_menu(not_started_tournament)
             selected_tournament = not_started_tournament[int(result) - 1]
             selected_tournament_uuid = selected_tournament['tournament_uuid']
-
+            tournament_nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
+            """ compare nb rounds and nb players available to check if some players will play with the same 
+            players twice formula is nb round should not be superior of nb players available - 1
+             example : if there is 8 players, nb match = 7 so nb round max should be equal or inferior to 7 """
+            if int(tournament_nb_round) > (int(len(players_available)) - 1):
+                print("Ce tournoi comporte " + str(tournament_nb_round) + " round(s) donc pas assez de joueurs"
+                                                                          " disponibles pour éviter que certains ne se"
+                                                                          " rencontrent deux fois.")
+                # TOURNAMENT_VIEW.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
+                # break
             """ Selection of players to add to the selected tournament """
             nb_players = 0
             nb_players_available = len(players_available)
+            """ check if nb players available is pair because in case of
+             nb players selected is odd, sometime a player will not play 
+             so it's mandatory to select only pair numbers of players """
             if nb_players_available % 2 != 0:
                 nb_players_available_pair = False
             else:
@@ -157,7 +165,7 @@ class TournamentController:
                 for i in range(nb_players_available):
                     item = players_available[i]
                     print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
-                print(str(nb_players) + " joueur(s) sélectionné(s).")
+                print(str(nb_players) + " sélectionné(s).")
                 result = PLAYER_VIEW.select_available_players_menu(len(players_available), nb_players)
                 if result == "end_players_selection":
                     break
@@ -173,12 +181,20 @@ class TournamentController:
                 elif nb_players_available == 0 or nb_players_available_pair == "True":
                     print("Plus de personne à ajouter.")
                     break
+
             print('Tournoi "' + selected_tournament['name'] + '" prêt.')
+            if (nb_players + 1) < int(tournament_nb_round):
+                print("Pour information : vu le faible nombre de joueurs sélectionnés et le nb de round, certains"
+                      " joueurs ne se rencontreront pas.")
+            elif (nb_players + 1) > int(tournament_nb_round):
+                print("Pour information : vu le faible nombre de rounds du tournoi et la quantité de joueurs"
+                      " sélectionnés, il est inévitables que certains se rencontrent deux fois.")
+
+            TOURNAMENT_VIEW.choice_menu("Appuyez sur une [ENTRER] pour continuer.")
 
             """ beginning of the tournament """
             players_list = PLAYER_MODEL.create_player_list_with_same_t_uuid(selected_tournament_uuid)
             players_list_uuid = []
-            i = 0
             for i in range(len(players_list)):
                 player = players_list[i]
                 player[i] = player['player_uuid']
@@ -188,7 +204,6 @@ class TournamentController:
             nb_match = nb_players - 1
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
             players_list_by_score = PLAYER_MODEL.create_player_list_by_score(players_list)
-            i = 0
             for i in range(nb_players):
                 players_list_sorted = players_list_by_score[i]
                 print(players_list_sorted)

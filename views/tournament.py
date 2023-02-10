@@ -22,6 +22,8 @@ class TournamentView:
                 and choix != MENU_TOURNAMENT_RECOVERY and choix != MENU_TOURNAMENT_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
+            print("|         MENU TOURNOI          |")
+            print("+-------------------------------+")
             print("| 1 - création d'un tournoi     |")
             print("| 2 - affichage des tournois    |")
             print("| 3 - démarrer nouveau tournoi  |")
@@ -60,7 +62,6 @@ class TournamentView:
                 if any(chr.isdigit() for chr in tournament_town) is True:
                     print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
                     tournament_town = ""
-
 
             """ Requests for number of rounds """
             tournament_nb_round = None
