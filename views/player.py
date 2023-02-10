@@ -10,6 +10,8 @@ MENU_PLAYERS_EXIT = 4
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.player_two = None
+        self.player_one = None
         self.nb_players = None
         self.nb_players_available = None
         self.question = None
@@ -153,7 +155,7 @@ class PlayerView:
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
             elif not choice:
-                if self.nb_players % 2 != 0:
+                if self.nb_players % 2 != 0 or self.nb_players == 0:
                     print("Vous avez sélectionné " + str(nb_players) + " joueurs. Il faut un nombre pair de\n"
                           "joueurs pour former des équipes.")
                     continue
@@ -165,6 +167,32 @@ class PlayerView:
                 print("Choix incorrect. Merci de ressaisir.")
             else:
                 return choice
+
+    def record_score(self, player_one, player_two):
+        result1 = None
+        result2 = None
+        self.player_one = player_one
+        self.player_two = player_two
+        while result1 != 0 and result1 != 0.5 and result1 != 1:
+            result1 = input("Score du joueur " + player_one + " : ")
+            if not result1.isnumeric():
+                print("Merci de saisir uniquement une valeur numérique.")
+            elif result1.isnumeric():
+                result1 = int(result1)
+                if result1 != 0 and result1 != 0.5 and int(result1) != 1:
+                    print("Le score ne peut être que : 0 pour le perdant\n"
+                          "                            1 pour le gagnant\n"
+                          "                            0.5 pour une égalité")
+        if result1 == 0:
+            print("Le score de " + player_two + " est donc 1.")
+            result2 = 1
+        elif result1 == 0.5:
+            print("Le score de " + player_two + " est donc 0.5.")
+            result2 = 0.5
+        else:
+            print("Le score de " + player_two + " est donc 0.")
+            result = 0
+        return result1, result2
 
     @staticmethod
     def clear_screen():

@@ -1,6 +1,6 @@
 
 
-class Match:
+class MatchModel:
     """ Match class """
 
     """
@@ -13,16 +13,15 @@ class Match:
     LES matchs sont stockés sous formes de listes "dans l'instance du tour auquel ils appartiennent"
     """
 
-    def __init__(self, tournament_uuid, which_round, player_one, player_two, player_one_score, player_two_score):
+    def __init__(self, tournament_uuid, match_nb, round_nb, player_one, player_two, player_one_score, player_two_score):
         self.tournament_uuid = tournament_uuid
-        self.round = which_round
+        self.match = match_nb
+        self.round = round_nb
         self.player_one = player_one
         self.player_two = player_two
         self.player_one_score = player_one_score
         self.player_two_score = player_two_score
 
-    def store_match(self, tournament_uuid):
-        pass
+    def store_match(self):
+        match_id = "T" + self.tournament_uuid + "_R" + self.round + "_M" + self.match
 
-    def generate_match_id(self, tournament_uuid, round):
-        pass

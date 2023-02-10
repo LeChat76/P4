@@ -3,12 +3,14 @@ from views.tournament import TournamentView
 from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
+from models.match import MatchModel
 
 MAINMENU = MainMenu()
 TOURNAMENT_VIEW = TournamentView()
 TOURNAMENT_MODEL = TournamentModel()
 PLAYER_VIEW = PlayerView()
 PLAYER_MODEL = PlayerModel()
+MATCH_MODEL = MatchModel()
 MENU_TOURNAMENT_CREATION = 1
 MENU_TOURNAMENT_DISPLAY = 2
 MENU_TOURNAMENT_START = 3
@@ -201,12 +203,22 @@ class TournamentController:
                 players_list_uuid.append(player['player_uuid'])
 
             """ creation of lists of matches and rounds """
-            nb_match = nb_players - 1
+            current_round = 1
+            current_match = 1
+            nb_match = nb_players / 2
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
             players_list_by_score = PLAYER_MODEL.create_player_list_by_score(players_list)
-            for i in range(nb_players):
-                players_list_sorted = players_list_by_score[i]
-                print(players_list_sorted)
-            print("Fin pour le moment.")
-            input()
-            break
+
+            while True:
+                for i in range(0, len(players_list_by_score), 2):
+                    player_one_uuid = players_list_by_score[i]
+                    player_two_uuid = players_list_by_score[i + 1]
+                    player_one = PLAYER_MODEL.extract_player_fname_and_name(player_one_uuid)
+                    player_two = PLAYER_MODEL.extract_player_fname_and_name(player_two_uuid)
+                    print("Tour : " + str(current_round) + "/" + nb_round + ", Match opposant " + player_one +
+                          " à " + player_two + ".")
+                    scores = PLAYER_VIEW.record_score(player_one, player_two)
+
+                print("Fin pour le moment.")
+                input()
+                break

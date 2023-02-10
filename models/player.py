@@ -130,3 +130,12 @@ class PlayerModel:
         self.player = player
         player_uuid = self.player['player_uuid']
         return player_uuid
+
+    def extract_player_fname_and_name(self, player_uuid):
+        """ method to extract players' name """
+        self.player_uuid = player_uuid
+        result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
+        player_first_name = result[0]['fname']
+        player_name = result[0]['name']
+        player = player_first_name.capitalize() + " " + player_name.capitalize()
+        return player
