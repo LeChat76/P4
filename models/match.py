@@ -13,7 +13,8 @@ class MatchModel:
     LES matchs sont stockés sous formes de listes "dans l'instance du tour auquel ils appartiennent"
     """
 
-    def __init__(self, tournament_uuid, match_nb, round_nb, player_one, player_two, player_one_score, player_two_score):
+    def __init__(self, tournament_uuid="", match_nb="", round_nb="", player_one="", player_two="", player_one_score="",
+                 player_two_score=""):
         self.tournament_uuid = tournament_uuid
         self.match = match_nb
         self.round = round_nb
