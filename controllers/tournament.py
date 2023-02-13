@@ -196,31 +196,32 @@ class TournamentController:
 
             """ beginning of the tournament """
             players_list = PLAYER_MODEL.create_player_list_with_same_t_uuid(selected_tournament_uuid)
-            players_list_uuid = []
-            for i in range(len(players_list)):
-                player = players_list[i]
-                player[i] = player['player_uuid']
-                players_list_uuid.append(player['player_uuid'])
-
-            """ creation of lists of matches and rounds """
-            current_round = 1
-            current_match = 1
-            nb_match = nb_players / 2
+            # players_list_uuid = []
+            # for i in range(len(players_list)):
+            #     player = players_list[i]
+            #     player[i] = player['player_uuid']
+            #     players_list_uuid.append(player['player_uuid'])
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
-            players_list_by_score = PLAYER_MODEL.create_player_list_by_score(players_list)
+            current_round = 1
+            nb_match = int(len(players_list) / 2)
 
-            while True:
-                for i in range(0, len(players_list_by_score), 2):
+            for j in range(int(nb_round)):
+                players_list_by_score = PLAYER_MODEL.create_player_list_by_score(players_list)
+                current_match = 1
+                for i in range(0, nb_match * 2, 2):
                     player_one_uuid = players_list_by_score[i]
                     player_two_uuid = players_list_by_score[i + 1]
                     player_one = PLAYER_MODEL.extract_player_fname_and_name(player_one_uuid)
                     player_two = PLAYER_MODEL.extract_player_fname_and_name(player_two_uuid)
-                    print("Tour : " + str(current_round) + "/" + nb_round + ", Match opposant " + player_one +
-                          " à " + player_two + ".")
+                    print("Tour : " + str(current_round) + "/" + nb_round + ", match " + str(current_match)
+                          + "/" + str(nb_match) + " opposant " + player_one + " à " + player_two + ".")
                     scores = PLAYER_VIEW.record_score(player_one, player_two)
-                    match = MatchModel(selected_tournament_uuid, current_match, current_round, player_one_uuid,
+                    match = MatchModel(selected_tournament_uuid, current_round, current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
-                    match.store_match()
-                print("Fin pour le moment.")
-                input()
-                break
+                    match.create_tuple_for_match()
+                    current_match += 1
+                current_round += 1
+            match.store_match()
+            print("Fin pour le moment.")
+            input()
+            exit()
