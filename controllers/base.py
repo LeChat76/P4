@@ -1,22 +1,23 @@
 import os
-DATA_FOLDER = os.path.join(os.path.dirname(__file__), "data", "tournaments")
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "tournaments")
 if not os.path.exists(DATA_FOLDER):
     os.makedirs(DATA_FOLDER)
-    with open(os.path.join(DATA_FOLDER, "players.json")):
+    with open(os.path.join(DATA_FOLDER, "players.json"), 'w') as creating_players_file:
         pass
-    with open(os.path.join(DATA_FOLDER, "tournaments.json")):
+    with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as creating_tournaments_file:
         pass
 from views.start_menu import MainMenu
 from controllers.player import PlayerController
 from controllers.tournament import TournamentController
+from controllers.result import ResultController
 MAIN_MENU = MainMenu()
 PLAYER_CONTROLLER = PlayerController()
 TOURNAMENT_CONTROLLER = TournamentController()
+RESULT_CONTROLLER = ResultController
 MENU_PLAYERS = 1
 MENU_TOURNAMENTS = 2
-MENU_REPORTS = 3
+MENU_RESULTS = 3
 MENU_EXIT = 4
-
 
 
 class ChessTournament:
@@ -38,7 +39,7 @@ class ChessTournament:
                 PLAYER_CONTROLLER.menu_1()
             elif choix == MENU_TOURNAMENTS:
                 TOURNAMENT_CONTROLLER.menu_2()
-            # elif choix_menu == MENU_REPORTS:
-            #    self.statistics_menu()
+            elif choix == MENU_RESULTS:
+                RESULT_CONTROLLER.menu_3()
             elif choix == MENU_EXIT:
                 exit()

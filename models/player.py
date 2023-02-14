@@ -57,7 +57,7 @@ class PlayerModel:
         self.player_to_search = player_to_search
         try:
             result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
-        except:
+        except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
@@ -70,7 +70,7 @@ class PlayerModel:
         """ method to count players in player.json DB"""
         try:
             result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
-        except:
+        except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
@@ -84,7 +84,7 @@ class PlayerModel:
         list_players_available = []
         try:
             result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
-        except:
+        except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
@@ -107,7 +107,7 @@ class PlayerModel:
         players_same_t_uuid = PLAYERS.search(PLAYER.tournament_uuid.matches(self.tournament_uuid))
         return players_same_t_uuid
 
-    def create_player_list_by_score(self, players_list):
+    def create_player_list(self, players_list):
         """
         method to create player's list sorted by score
         if all score egal 0, randomized players list

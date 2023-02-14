@@ -35,7 +35,6 @@ class TournamentView:
                 choix = None
             else:
                 choix = int(choix)
-
         return choix
 
     def add_tournament_menu(self):

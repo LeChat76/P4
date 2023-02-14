@@ -185,10 +185,10 @@ class TournamentController:
                     break
 
             print('Tournoi "' + selected_tournament['name'] + '" prêt.')
-            if (nb_players - 1 ) < int(tournament_nb_round):
+            if (nb_players - 1) < int(tournament_nb_round):
                 print("Pour information : vu le faible nombre de joueurs sélectionnés et le grand nombre de rounds,"
                       " certains joueurs se rencontreront deux fois.")
-            elif (nb_players - 1 ) > int(tournament_nb_round):
+            elif (nb_players - 1) > int(tournament_nb_round):
                 print("Pour information : vu le faible nombre de rounds du tournoi et la quantité de joueurs"
                       " sélectionnés, certains joueurs ne se rencontreront pas.")
 
@@ -206,9 +206,11 @@ class TournamentController:
             nb_match = int(len(players_list) / 2)
 
             for j in range(int(nb_round)):
-                players_list_by_score = PLAYER_MODEL.create_player_list_by_score(players_list)
+                """ loop for all rounds """
+                players_list_by_score = PLAYER_MODEL.create_player_list(players_list)
                 current_match = 1
                 for i in range(0, nb_match * 2, 2):
+                    """ loop for all matches for one round"""
                     player_one_uuid = players_list_by_score[i]
                     player_two_uuid = players_list_by_score[i + 1]
                     player_one = PLAYER_MODEL.extract_player_fname_and_name(player_one_uuid)

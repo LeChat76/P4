@@ -51,8 +51,8 @@ class TournamentModel:
         """ method to select all tournaments and record in a list """
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
-        except:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+        except ValueError:
+            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
             return "no result"
@@ -64,8 +64,8 @@ class TournamentModel:
         list_completed_tournament = []
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
-        except:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+        except ValueError:
+            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
             return "no_result"
@@ -81,8 +81,8 @@ class TournamentModel:
         list_current_tournament = []
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
-        except:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+        except ValueError:
+            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
             return "no_result"
@@ -98,8 +98,8 @@ class TournamentModel:
         list_current_tournament = []
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
-        except:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+        except ValueError:
+            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
             return "no_result"
@@ -115,8 +115,8 @@ class TournamentModel:
         self.tournament_uuid = tournament_uuid
         try:
             result = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        except:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+        except ValueError:
+            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         result = result[0]['nb_round']
         return result

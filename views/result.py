@@ -1,24 +1,22 @@
 import os
-MENU_PLAYERS = 1
-MENU_TOURNAMENT = 2
-MENU_RESULTS = 3
-MENU_QUIT = 4
+MENU_RESULT_TOURNAMENT = 1
+MENU_RESULT_PLAYER = 2
+MENU_RESULT_EXIT = 3
 
 
-class MainMenu:
+class ResultView:
 
-    def main_menu(self):
-        """ Root menu """
+    def result_menu(self):
+        """ Menu 3 """
         choix = None
-        while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS and choix != MENU_RESULTS and choix != MENU_QUIT:
+        while choix != MENU_RESULT_TOURNAMENT and choix != MENU_RESULT_PLAYER:
             self.clear_screen()
             print("+-------------------------------+")
-            print("|            MENU               |")
+            print("|       MENU RESULTATS          |")
             print("+-------------------------------+")
-            print("| 1 - joueurs                   |")
-            print("| 2 - tournois                  |")
-            print("| 3 - résultats                 |")
-            print("| 4 - quitter                   |")
+            print("| 1 - score d'un tournoi        |")
+            print("| 2 - score d'un joueur         |")
+            print("| 3 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():
@@ -26,7 +24,6 @@ class MainMenu:
                 choix = None
             else:
                 choix = int(choix)
-
         return choix
 
     @staticmethod
