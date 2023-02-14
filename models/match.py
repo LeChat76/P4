@@ -3,9 +3,8 @@ import uuid
 DB = TinyDB('data/tournaments/matchs.json')
 MATCHS = DB.table('matchs')
 MATCH = Query()
-# P1 = []
-# P2 = []
 MATCHS_LIST = []
+
 
 class MatchModel:
     """ Match class """

@@ -2,6 +2,7 @@ from tinydb import TinyDB, Query
 import uuid
 import re
 import random
+
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')
 PLAYER = Query()
@@ -54,7 +55,11 @@ class PlayerModel:
     def search_player(self, player_to_search):
         """ method to display player """
         self.player_to_search = player_to_search
-        result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
+        try:
+            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         else:
@@ -63,7 +68,11 @@ class PlayerModel:
     @staticmethod
     def search_all_players():
         """ method to count players in player.json DB"""
-        result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+        try:
+            result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         else:
@@ -73,7 +82,11 @@ class PlayerModel:
     def search_available_player():
         """ method to display player without tournament uuid """
         list_players_available = []
-        result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+        try:
+            result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         for i in range(len(result)):

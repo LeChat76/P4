@@ -49,7 +49,11 @@ class TournamentModel:
     @staticmethod
     def search_all_tournaments():
         """ method to select all tournaments and record in a list """
-        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        try:
+            result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no result"
         return result
@@ -58,7 +62,11 @@ class TournamentModel:
     def search_completed_tournaments():
         """ method to select tournaments where nb_round = actual round """
         list_completed_tournament = []
-        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        try:
+            result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         for i in range(len(result)):
@@ -71,7 +79,11 @@ class TournamentModel:
     def search_current_tournaments():
         """ method to select tournaments where nb_round # actual round """
         list_current_tournament = []
-        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        try:
+            result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         for i in range(len(result)):
@@ -84,7 +96,11 @@ class TournamentModel:
     def search_not_started_tournaments():
         """ method to select tournaments where nb_round # actual round """
         list_current_tournament = []
-        result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        try:
+            result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         if len(result) == 0:
             return "no_result"
         else:
@@ -97,6 +113,10 @@ class TournamentModel:
     def search_nb_round_for_tournament(self, tournament_uuid):
         """ method to search nb_round for a tournament """
         self.tournament_uuid = tournament_uuid
-        result = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        try:
+            result = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        except:
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            exit()
         result = result[0]['nb_round']
         return result
