@@ -55,9 +55,8 @@ class PlayerController:
             player_to_display = PLAYER_VIEW.display_player_menu()
             result = PLAYER_MODEL.search_player(player_to_display)
             if result == "no_result" and not player_to_display == "display_all":
-                choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
-                if choix == "N":
-                    break
+                PLAYER_VIEW.choice_menu("Liste vide. Veuillez en créer. Appuyez sur [ENTRER] pour revenir au menu.")
+                break
             elif result == "no_result" and player_to_display == "display_all":
                 result = PLAYER_MODEL.search_all_players()
                 if result == "no_result":

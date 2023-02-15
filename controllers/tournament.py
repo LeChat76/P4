@@ -52,8 +52,7 @@ class TournamentController:
             if tournament_to_display == "display_all_tournaments":
                 result = TOURNAMENT_MODEL.search_all_tournaments()
                 if result == "no_result":
-                    TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Appuyez sur [ENTRER] pour revenir"
-                                                        " au menu.")
+                    TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher. Appuyez sur [ENTRER] pour revenir au menu.")
                     break
                 else:
                     if (len(result)) == 1:
