@@ -58,7 +58,7 @@ class TournamentModel:
             print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
         if len(result) == 0:
-            return "no result"
+            return "no_result"
         return result
 
     @staticmethod
