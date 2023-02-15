@@ -38,20 +38,15 @@ class PlayerController:
     def delete_player():
         """ method to delete players """
         while True:
-            player_to_delete = PLAYER_VIEW.delete_player_menu()
-            result = PLAYER_MODEL.delete_player(player_to_delete)
-            if result == "no_result":
-                choix = PLAYER_VIEW.choice_menu("Aucun résultat. Recommencer (O/n)? ")
-                if choix == "N":
-                    break
-            else:
-                for i in range(len(result)):
-                    item = result[i]
-                    print("Utilisateur " + item['name'].capitalize() + " supprimé.")
-                print(str(len(result)) + ' Personne(s) commençant par "' + player_to_delete + '" supprimé(s).')
-                choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
-                if choix == "N":
-                    break
+            all_player_list = PLAYER_MODEL.search_all_players()
+            index_player_to_delete = PLAYER_VIEW.delete_player_menu(all_player_list)
+            player_to_delete = all_player_list[index_player_to_delete]
+            print("Utilisateur " + player_to_delete['fname'] + " " + player_to_delete['name'].capitalize() +
+                  " supprimé.")
+            PLAYER_MODEL.delete_player(player_to_delete['player_uuid'])
+            choix = PLAYER_VIEW.choice_menu("Supprimer un autre joueur (O/n)? ")
+            if choix == "N":
+                break
 
     @staticmethod
     def display_player():

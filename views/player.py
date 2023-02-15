@@ -10,6 +10,7 @@ MENU_PLAYERS_EXIT = 4
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.all_player_list = None
         self.player_one = None
         self.player_two = None
         self.nb_players = None
@@ -106,19 +107,20 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    @staticmethod
-    def delete_player_menu():
-        """ Request for delete player """
-        del_player_name = None
-        while not del_player_name:
+    def delete_player_menu(self, all_player_list):
+        """ Request for select player to delete """
+        self.all_player_list = all_player_list
+        player_to_delete = None
+        for i in range(len(all_player_list)):
+            item = all_player_list[i]
+            print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
+        while not player_to_delete:
             while True:
-                del_player_name = input("Merci de préciser le nom de la personne contenant : ")
-                if del_player_name == "":                      # juste pour debugging, à supprimer
-                    del_player_name = "delauney"               # juste pour debugging, à supprimer
-                if not del_player_name.isalpha():
-                    print("Nom incorrect. Merci de ressaisir.")
+                player_to_delete = input("Saisir le numéro du joueur à supprimer : ")
+                if not player_to_delete.isnumeric():
+                    print("La saisie doit être uniquement un chiffre. Merci de ressaisir.")
                 else:
-                    return del_player_name
+                    return int(player_to_delete) - 1
 
     @staticmethod
     def display_player_menu():
@@ -169,6 +171,7 @@ class PlayerView:
                 return choice
 
     def record_score(self, player_one, player_two):
+        """ method to request score for player's match """
         result1 = None
         result2 = None
         self.player_one = player_one

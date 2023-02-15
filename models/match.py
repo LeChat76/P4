@@ -4,6 +4,7 @@ DB = TinyDB('data/tournaments/matchs.json')
 MATCHS = DB.table('matchs')
 MATCH = Query()
 MATCHS_LIST = []
+MATCH_ID_LIST = []
 
 
 class MatchModel:
@@ -49,4 +50,5 @@ class MatchModel:
             MATCHS.insert({'match_uuid': str(uuid.uuid1()), 'match_id': match_id, 'player_one_uuid': p1_uuid,
                            'player_two_uuid': p2_uuid, 'player_one_score': p1_score,
                            'player_two_score': p2_score})
-        # del MATCHS_LIST
+            MATCH_ID_LIST.append(match_id)
+        return MATCH_ID_LIST

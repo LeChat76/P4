@@ -14,46 +14,35 @@ class PlayerModel:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 
-    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", player_tournament_uuid="",
-                 score=0):
+    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", score=0):
         """ Init player """
         self.player = None
         self.players_list = None
         self.score = score
-        self.tournament_uuid = None
         self.player_uuid = None
         self.player_to_search = None
-        self.player_to_delete = None
+        self.player_uuid_to_delete = None
         self.player_fname = player_fname
         self.player_name = player_name
         self.player_birthd = player_birthd
         self.player_clubid = player_clubid
-        self.player_tournament_uuid = player_tournament_uuid
 
     def __str__(self):
         return f"{self.player_fname} {self.player_name} né le {self.player_birthd}, " \
-               f"affilié au club {self.player_clubid}"
+               f"affilié au club {self.player_clubid}."
 
     def add_player(self):
         """ method for add a player in the json file """
         PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name,
-                        'birthd': self.player_birthd, 'clubid': self.player_clubid,
-                        'tournament_uuid': self.player_tournament_uuid, 'score': self.score})
+                        'birthd': self.player_birthd, 'clubid': self.player_clubid, 'score': self.score})
 
-    def delete_player(self, player_to_delete):
+    def delete_player(self, player_uuid_to_delete):
         """ method to delete a player """
-        self.player_to_delete = player_to_delete
-        result = PLAYERS.search(PLAYER.name.matches(self.player_to_delete, flags=re.IGNORECASE))
-        if len(result) == 0:
-            return "no_result"
-        else:
-            for i in range(len(result)):
-                item = result[i]
-                PLAYERS.remove(PLAYER.name == item["name"])
-            return result
+        self.player_uuid_to_delete = player_uuid_to_delete
+        PLAYERS.remove(PLAYER.player_uuid == self.player_uuid_to_delete)
 
     def search_player(self, player_to_search):
-        """ method to display player """
+        """ method to display player (search by name) """
         self.player_to_search = player_to_search
         try:
             result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
@@ -78,37 +67,9 @@ class PlayerModel:
         else:
             return result
 
-    @staticmethod
-    def search_available_player():
-        """ method to display player without tournament uuid """
-        list_players_available = []
-        try:
-            result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
-        except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
-            exit()
-        if len(result) == 0:
-            return "no_result"
-        for i in range(len(result)):
-            item = result[i]
-            if not item['tournament_uuid']:
-                list_players_available.append(item)
-        return list_players_available
-
-    def add_player_tournament_uuid(self, player_uuid, tournament_uuid):
-        """ method to add tournament uuid to a player """
-        self.player_uuid = player_uuid
-        self.tournament_uuid = tournament_uuid
-        PLAYERS.update({'tournament_uuid': self.tournament_uuid}, PLAYER.player_uuid == self.player_uuid)
-
-    def create_player_list_with_same_t_uuid(self, tournament_uuid):
-        """ method to create player list with the same tournament uuid """
-        self.tournament_uuid = tournament_uuid
-        players_same_t_uuid = PLAYERS.search(PLAYER.tournament_uuid.matches(self.tournament_uuid))
-        return players_same_t_uuid
-
     def create_player_list(self, players_list):
         """
+        players_list = players_uuid
         method to create player's list sorted by score
         if all score egal 0, randomized players list
         """
@@ -118,8 +79,7 @@ class PlayerModel:
         score0 = True
         nb_players = len(players_list)
         for i in range(nb_players):
-            player = self.players_list[i]
-            player_uuid = self.search_player_uuid(player)
+            player_uuid = players_list[i]
             player_score = self.search_player_score(player_uuid)
             if player_score > 0:
                 score0 = False
