@@ -131,12 +131,25 @@ class TournamentModel:
         TOURNAMENTS.update({'list_players': self.tournament_list_players}, TOURNAMENT.tournament_uuid ==
                            self.tournament_uuid)
 
-    def extract_players_uuid_of_tournament(self, tournament_uuid):
+    def extract_players_uuid_of_tournament(self):
         """ method to extract all player's uuid of a tournament """
+        tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        players_uuid_list = tournament[0]['list_players']
+        return players_uuid_list
+
+    def extract_matchs_uuid_list_of_tournament(self, tournament_uuid):
+        """ method to extract all match's id of a tournament """
         self.tournament_uuid = tournament_uuid
         tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        players_uuid_list = (tournament[0]['list_players']).split(",")
-        return players_uuid_list
+        matchs_id_list = tournament[0]['list_matchs']
+        return matchs_id_list
+
+    def extract_tournament_name(self, tournament_uuid):
+        """ method to extract tournament's name of a tournament with tournament uuid """
+        self.tournament_uuid = tournament_uuid
+        tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        tournament_name = tournament[0]['name']
+        return tournament_name
 
     def store_tournament_start_date(self, tournament_uuid, tournament_start_date):
         """ method to store start date in tournament """
@@ -160,6 +173,6 @@ class TournamentModel:
 
     def store_current_round(self, tournament_uuid, tournament_current_round):
         self.tournament_uuid = tournament_uuid
-        self.tournament_current_round = tournament_current_round
+        self.tournament_current_round = str(tournament_current_round)
         TOURNAMENTS.update({'current_round': self.tournament_current_round}, TOURNAMENT.tournament_uuid ==
                            self.tournament_uuid)

@@ -17,7 +17,7 @@ class MainMenu:
             print("+-------------------------------+")
             print("| 1 - joueurs                   |")
             print("| 2 - tournois                  |")
-            print("| 3 - résultats                 |")
+            print("| 3 - rapports                  |")
             print("| 4 - quitter                   |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")

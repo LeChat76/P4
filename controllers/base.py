@@ -9,11 +9,11 @@ if not os.path.exists(DATA_FOLDER):
 from views.start_menu import MainMenu
 from controllers.player import PlayerController
 from controllers.tournament import TournamentController
-from controllers.result import ResultController
+from controllers.report import ResultController
 MAIN_MENU = MainMenu()
 PLAYER_CONTROLLER = PlayerController()
 TOURNAMENT_CONTROLLER = TournamentController()
-RESULT_CONTROLLER = ResultController
+RESULT_CONTROLLER = ResultController()
 MENU_PLAYERS = 1
 MENU_TOURNAMENTS = 2
 MENU_RESULTS = 3

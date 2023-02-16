@@ -1,3 +1,4 @@
+from models.player import PlayerModel
 from tinydb import TinyDB, Query
 import uuid
 DB = TinyDB('data/tournaments/matchs.json')
@@ -22,6 +23,7 @@ class MatchModel:
 
     def __init__(self, tournament_uuid="", round_nb="", match_nb="", player_one_uuid="", player_two_uuid="",
                  player_one_score="", player_two_score=""):
+        self.matchs_ids_list = []
         self.tournament_uuid = tournament_uuid
         self.round_nb = round_nb
         self.match_nb = match_nb
@@ -52,3 +54,28 @@ class MatchModel:
                            'player_two_score': p2_score})
             MATCH_ID_LIST.append(match_id)
         return MATCH_ID_LIST
+
+    def extract_scores(self, matchs_ids_list):
+        """ method to extract score from a match id """
+        rounds = []
+        matchs = []
+        p1_name = []
+        p2_name = []
+        p1_scores = []
+        p2_scores = []
+        self.matchs_ids_list = matchs_ids_list
+        for i in range(len(self.matchs_ids_list)):
+            match_id = matchs_ids_list[i]
+            result = MATCHS.search(MATCH.match_id.matches(match_id))
+            rounds.append((match_id.split("_")[2])[1:])
+            round_max = max (rounds)
+            matchs.append((match_id.split("_")[3])[1:])
+            match_max = max (matchs)
+            p1_uuid = result[0]['player_one_uuid']
+            p1_name.append(PlayerModel().extract_player_fname_and_name(p1_uuid))
+            p2_uuid = result[0]['player_two_uuid']
+            p2_name.append(PlayerModel().extract_player_fname_and_name(p2_uuid))
+            p1_scores.append(result[0]['player_one_score'])
+            p2_scores.append(result[0]['player_two_score'])
+            tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores, p2_scores, round_max, match_max]
+        return tournament_scores

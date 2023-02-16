@@ -212,7 +212,6 @@ class TournamentController:
             """ beginning of the tournament """
             date = str(datetime.now())
             TOURNAMENT_MODEL.store_tournament_start_date(selected_tournament_uuid, date)
-            # players_uuid_list = TOURNAMENT_MODEL.extract_players_uuid_of_tournament(selected_tournament_uuid)
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
             current_round = 1
             nb_match = int(len(players_uuid_list) / 2)
@@ -227,7 +226,7 @@ class TournamentController:
                     player_two_uuid = players_list_by_score[i + 1]
                     player_one = PLAYER_MODEL.extract_player_fname_and_name(player_one_uuid)
                     player_two = PLAYER_MODEL.extract_player_fname_and_name(player_two_uuid)
-                    print("Tour : " + str(current_round) + "/" + nb_round + ", match " + str(current_match)
+                    print("Tour : " + str(current_round) + "/" + str(nb_round) + ", match " + str(current_match)
                           + "/" + str(nb_match) + " opposant " + player_one + " à " + player_two + ".")
                     scores = PLAYER_VIEW.record_score(player_one, player_two)
                     match = MatchModel(selected_tournament_uuid, current_round, current_match, player_one_uuid,
