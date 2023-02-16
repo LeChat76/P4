@@ -184,10 +184,10 @@ class PlayerView:
                     print("Le score ne peut être que : 0 pour le perdant\n"
                           "                            1 pour le gagnant\n"
                           "                            0.5 pour une égalité")
+            elif self.isfloat(result1):
+                result1 = float(result1)
             elif not result1.isnumeric():
                 print("Merci de saisir uniquement une valeur numérique.")
-            elif float(result1):
-                result1 = float(result1)
         if result1 == 0:
             print("Le score de " + player_two + " est donc 1.")
             result2 = 1
@@ -198,6 +198,13 @@ class PlayerView:
             print("Le score de " + player_two + " est donc 0.")
             result2 = 0
         return result1, result2
+
+    def isfloat(self, num):
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
 
     @staticmethod
     def clear_screen():

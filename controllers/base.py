@@ -9,14 +9,14 @@ if not os.path.exists(DATA_FOLDER):
 from views.start_menu import MainMenu
 from controllers.player import PlayerController
 from controllers.tournament import TournamentController
-from controllers.report import ResultController
+from controllers.report import ReportController
 MAIN_MENU = MainMenu()
 PLAYER_CONTROLLER = PlayerController()
 TOURNAMENT_CONTROLLER = TournamentController()
-RESULT_CONTROLLER = ResultController()
+REPORT_CONTROLLER = ReportController()
 MENU_PLAYERS = 1
 MENU_TOURNAMENTS = 2
-MENU_RESULTS = 3
+MENU_REPORTS = 3
 MENU_EXIT = 4
 
 
@@ -39,7 +39,7 @@ class ChessTournament:
                 PLAYER_CONTROLLER.menu_1()
             elif choix == MENU_TOURNAMENTS:
                 TOURNAMENT_CONTROLLER.menu_2()
-            elif choix == MENU_RESULTS:
-                RESULT_CONTROLLER.menu_3()
+            elif choix == MENU_REPORTS:
+                REPORT_CONTROLLER.menu_3()
             elif choix == MENU_EXIT:
                 exit()

@@ -63,7 +63,7 @@ class ReportView:
         """ print report's table (title) """
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 2) / 2
-        print("+" + " " * ceil(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
+        print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * floor(blank_width) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
             """ print title round number """
@@ -92,6 +92,7 @@ class ReportView:
                     print("+" + " " * floor(blank_width) + "Vainqueur : " + winner + " " * ceil(blank_width) +
                           "+")
                     index += 1
+                    print("+                         ---- * ----                        +")
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 

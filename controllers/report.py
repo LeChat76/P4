@@ -7,7 +7,7 @@ MENU_REPORT_PLAYER = 2
 MENU_REPORT_EXIT = 3
 
 
-class ResultController:
+class ReportController:
     """ reports class """
     def menu_3(self):
         """ Reports menu """
