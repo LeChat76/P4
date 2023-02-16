@@ -81,10 +81,8 @@ class PlayerController:
                     print(str(len(result)) + " résultats:")
                 for i in range(len(result)):
                     item = result[i]
-                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'], item['clubid']))
+                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'],
+                                      item['clubid']))
                 choix = PLAYER_VIEW.choice_menu("Faire une autre recherche (O/n)? ")
                 if choix.upper() == "N":
                     break
-
-    def create_ran_player_list(self):
-        pass

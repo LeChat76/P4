@@ -33,8 +33,8 @@ class TournamentModel:
         self.tournament_start_date = None
         self.tournament_end_date = None
         self.tournament_current_round = None
-        self.tournament_list_matchs = []
-        self.tournament_list_players = []
+        self.tournament_list_matchs = None
+        self.tournament_list_players = None
         self.tournament_description = tournament_description
 
     def __str__(self):
@@ -124,21 +124,11 @@ class TournamentModel:
         result = result[0]['nb_round']
         return result
 
-    def add_player_uuid_to_tournament(self, tournament_uuid, player_uuid):
-        """ method to add player's uuid to tournament """
+    def store_players_uuids(self, tournament_uuid, tournament_list_players):
+        """ method to add player's uuids to tournament """
         self.tournament_uuid = tournament_uuid
-        self.player_uuid = player_uuid
-        try:
-            tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-            tournament_players_list = tournament[0]['list_players']
-            if not tournament_players_list:
-                tournament_players_list = player_uuid
-            else:
-                tournament_players_list = tournament_players_list + "," + player_uuid
-        except ValueError:
-            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
-            exit()
-        TOURNAMENTS.update({'list_players': tournament_players_list}, TOURNAMENT.tournament_uuid ==
+        self.tournament_list_players = tournament_list_players
+        TOURNAMENTS.update({'list_players': self.tournament_list_players}, TOURNAMENT.tournament_uuid ==
                            self.tournament_uuid)
 
     def extract_players_uuid_of_tournament(self, tournament_uuid):
@@ -166,6 +156,10 @@ class TournamentModel:
         """ method to store matchs id in tournament """
         self.tournament_uuid = tournament_uuid
         self.match_id_list = match_id_list
-        for i in range(len(match_id_list)):
-            TOURNAMENTS.update({'list_matchs': self.match_id_list}, TOURNAMENT.tournament_uuid ==
-                               self.tournament_uuid)
+        TOURNAMENTS.update({'list_matchs': self.match_id_list}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
+
+    def store_current_round(self, tournament_uuid, tournament_current_round):
+        self.tournament_uuid = tournament_uuid
+        self.tournament_current_round = tournament_current_round
+        TOURNAMENTS.update({'current_round': self.tournament_current_round}, TOURNAMENT.tournament_uuid ==
+                           self.tournament_uuid)

@@ -124,6 +124,7 @@ class TournamentController:
     def begin_new_tournament():
         """ request for needed information (which tournament and players to associate) to begin new tournament """
         players_available_list = []
+        players_uuid_list = []
         match = None
         while True:
             players_available = PLAYER_MODEL.search_all_players()
@@ -185,7 +186,7 @@ class TournamentController:
                 if result == "end_players_selection":
                     break
                 selected_player_uuid = (players_available_list[int(result) - 1])
-                TOURNAMENT_MODEL.add_player_uuid_to_tournament(selected_tournament_uuid, selected_player_uuid)
+                players_uuid_list.append(selected_player_uuid)
                 nb_players_available -= 1
                 nb_players += 1
                 players_available_list.remove(selected_player_uuid)
@@ -197,6 +198,7 @@ class TournamentController:
                     print("Plus de personne à ajouter.")
                     break
 
+            TOURNAMENT_MODEL.store_players_uuids(selected_tournament_uuid, players_uuid_list)
             print('Tournoi "' + selected_tournament['name'] + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
                 print("Pour information : vu le faible nombre de joueurs sélectionnés et le grand nombre de rounds,"
@@ -210,7 +212,7 @@ class TournamentController:
             """ beginning of the tournament """
             date = str(datetime.now())
             TOURNAMENT_MODEL.store_tournament_start_date(selected_tournament_uuid, date)
-            players_uuid_list = TOURNAMENT_MODEL.extract_players_uuid_of_tournament(selected_tournament_uuid)
+            # players_uuid_list = TOURNAMENT_MODEL.extract_players_uuid_of_tournament(selected_tournament_uuid)
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
             current_round = 1
             nb_match = int(len(players_uuid_list) / 2)
@@ -232,10 +234,17 @@ class TournamentController:
                                        player_two_uuid, scores[0], scores[1])
                     match.create_tuple_for_match()
                     current_match += 1
+
+                TOURNAMENT_MODEL.store_current_round(selected_tournament_uuid, current_round)
                 current_round += 1
+                if int(nb_round) >= current_round:
+                    choix = TOURNAMENT_VIEW.choice_menu("Continuer l'enregistrement des scores (O/n) ?")
+                    if choix == "N":
+                        break
+                else:
+                    date = str(datetime.now())
+                    TOURNAMENT_MODEL.store_tournament_end_date(selected_tournament_uuid, date)
             match_id_list = match.store_match()
             TOURNAMENT_MODEL.store_match_id(selected_tournament_uuid, match_id_list)
-            date = str(datetime.now())
-            TOURNAMENT_MODEL.store_tournament_end_date(selected_tournament_uuid, date)
-            TOURNAMENT_VIEW.choice_menu("Fin du tournoi. Appuyez sur [ENTRER] pour revenir au menu.")
+            TOURNAMENT_VIEW.choice_menu("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
             break
