@@ -67,7 +67,7 @@ class PlayerModel:
         else:
             return result
 
-    def create_player_list(self, players_list):
+    def create_player_list(self, players_list, ):
         """
         players_list = players_uuid
         method to create player's list sorted by score
@@ -112,3 +112,16 @@ class PlayerModel:
         player_name = result[0]['name']
         player = player_first_name.capitalize() + " " + player_name.capitalize()
         return player
+
+    def store_score(self, player_uuid, score):
+        """ method to store score  (add score to current score) in the json player's file """
+        self.player_uuid = player_uuid
+        self.score = score
+        player = PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid))
+        current_score = player[0]['score']
+        new_score = float(current_score) + float(score)
+        PLAYERS.update({'score': new_score}, PLAYER.player_uuid == self.player_uuid)
+
+
+
+

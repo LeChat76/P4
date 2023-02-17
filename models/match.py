@@ -37,6 +37,8 @@ class MatchModel:
         p1 = (self.player_one_uuid, self.player_one_score)
         p2 = (self.player_two_uuid, self.player_two_score)
         match_id = "T_" + str(self.tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
+        PlayerModel().store_score(self.player_one_uuid, self.player_one_score)
+        PlayerModel().store_score(self.player_two_uuid, self.player_two_score)
         match = (match_id, p1, p2)
         MATCHS_LIST.append(match)
 
@@ -57,6 +59,7 @@ class MatchModel:
 
     def extract_scores(self, matchs_ids_list):
         """ method to extract score from a match id """
+        tournament_scores = None
         rounds = []
         matchs = []
         p1_name = []
@@ -68,9 +71,9 @@ class MatchModel:
             match_id = matchs_ids_list[i]
             result = MATCHS.search(MATCH.match_id.matches(match_id))
             rounds.append((match_id.split("_")[2])[1:])
-            round_max = max (rounds)
+            round_max = max(rounds)
             matchs.append((match_id.split("_")[3])[1:])
-            match_max = max (matchs)
+            match_max = max(matchs)
             p1_uuid = result[0]['player_one_uuid']
             p1_name.append(PlayerModel().extract_player_fname_and_name(p1_uuid))
             p2_uuid = result[0]['player_two_uuid']
