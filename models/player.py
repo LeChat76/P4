@@ -8,6 +8,9 @@ PLAYERS = DB.table('players')
 PLAYER = Query()
 POS_PLAYER_SCORE = 7
 POS_PLAYER_UUID = 1
+MATCHS_LIST_TOURNAMENT = []
+""" shuffle to randomize player's list of round in case of some players already played together """
+MAX_SHUFFLE = 20
 
 
 class PlayerModel:
@@ -89,7 +92,45 @@ class PlayerModel:
             random.shuffle(sorted_players_list)
         else:
             sorted_players_list, players_scores = zip(*sorted(zip(sorted_players_list, players_scores)))
+
+        """ check if two players already played together """
+        result = self.check_players_list(sorted_players_list)
+        if result == "already_played":
+            for k in range(MAX_SHUFFLE):
+                random.shuffle(list(sorted_players_list))
+                result = self.check_players_list(sorted_players_list)
+                if result == "already_played":
+                    continue
+                elif result == "never_played":
+                    break
+            print("Malgré " + str(MAX_SHUFFLE) + " shuffles, certains joueurs de ce round ce sont déjà rencontrés.")
         return sorted_players_list
+
+    def check_players_list(self, players_list):
+        """ method to check if two players have already played together """
+        already_played = False
+        self.players_list = players_list
+        if MATCHS_LIST_TOURNAMENT:
+            for i in range(len(MATCHS_LIST_TOURNAMENT)):
+                previous_match = MATCHS_LIST_TOURNAMENT[i]
+                previous_match_r = previous_match[::-1]
+                for player in range(0, len(players_list), 2):
+                    p1_uuid = players_list[player]
+                    p2_uuid = players_list[player + 1]
+                    next_match = [p1_uuid, p2_uuid]
+                    if next_match == previous_match_r:
+                        already_played = True
+                    elif next_match == previous_match:
+                        already_played = True
+        if not already_played:
+            for player in range(0, len(players_list), 2):
+                p1_uuid = players_list[player]
+                p2_uuid = players_list[player + 1]
+                match = [p1_uuid, p2_uuid]
+                MATCHS_LIST_TOURNAMENT.append(match)
+            return "never_played"
+        else:
+            return "already_played"
 
     def search_player_score(self, player_uuid):
         """method to search player's score """
@@ -121,7 +162,3 @@ class PlayerModel:
         current_score = player[0]['score']
         new_score = float(current_score) + float(score)
         PLAYERS.update({'score': new_score}, PLAYER.player_uuid == self.player_uuid)
-
-
-
-
