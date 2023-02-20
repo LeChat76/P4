@@ -173,7 +173,6 @@ class PlayerView:
     def record_score(self, player_one, player_two):
         """ method to request score for player's match """
         result1 = None
-        result2 = None
         self.player_one = player_one
         self.player_two = player_two
         while result1 != 0 and result1 != 0.5 and result1 != 1:
@@ -199,7 +198,8 @@ class PlayerView:
             result2 = 0
         return result1, result2
 
-    def isfloat(self, num):
+    @staticmethod
+    def isfloat(num):
         try:
             float(num)
             return True

@@ -212,7 +212,8 @@ class TournamentController:
 
             """ beginning of the tournament """
             current_round = 1
-            date = str(datetime.now())
+            # now = (datetime.now())
+            date = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
             TOURNAMENT_MODEL.store_tournament_start_date(selected_tournament_uuid, date)
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
             nb_match = int(len(players_uuid_list) / 2)
@@ -237,7 +238,7 @@ class TournamentController:
                     current_match += 1
 
                 TOURNAMENT_MODEL.store_current_round(selected_tournament_uuid, current_round)
-                date = str(datetime.now())
+                date = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
                 RoundModel(selected_tournament_uuid, current_round, "", date).store_round_end_date(round_uuid)
                 current_round += 1
                 if int(nb_round) >= current_round:
@@ -245,7 +246,7 @@ class TournamentController:
                     if choix == "N":
                         break
                 else:
-                    date = str(datetime.now())
+                    date = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
                     TOURNAMENT_MODEL.store_tournament_end_date(selected_tournament_uuid, date)
             match_id_list = match.store_match()
             TOURNAMENT_MODEL.store_match_id(selected_tournament_uuid, match_id_list)

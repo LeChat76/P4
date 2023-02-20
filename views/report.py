@@ -10,6 +10,7 @@ REPORT_MATCH_WIDTH = 18
 REPORT_SCORE_WIDTH = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH
 PLAYER_MAX_LENGTH = 17
 
+
 class ReportView:
     """ Result class """
     """
@@ -36,7 +37,7 @@ class ReportView:
             print("+-------------------------------+")
             print("| 1 - score d'un tournoi/joueurs|")
             print("| 2 - score d'un tournoi/score  |")
-            print("| 3 - score d'un joueur         |")
+            print("| 3 - list des joueurs          |")
             print("| 4 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
@@ -143,7 +144,7 @@ class ReportView:
                     else:
                         winner = "match nul"
                     blank_width = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1name) + " VS " + str(p2name)
-                                                                                     + "+ |+")
+                                                                                + "+ |+")
                     blank_match_width = REPORT_MATCH_WIDTH - len(str(" Match ")) - len(str(match))
                     blank_score_width = (REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1score)) -
                                          len(str(p2score)) - len("|+"))/3
@@ -155,8 +156,8 @@ class ReportView:
                         score_float = "+"
                     else:
                         score_float = " +"
-                    print("+ Scores            | " + " " * floor(blank_score_width) + str(p1score) + " " * floor(blank_score_width) +
-                          str(p2score) + " " * floor(blank_score_width) + str(score_float))
+                    print("+ Scores            | " + " " * floor(blank_score_width) + str(p1score) + " "
+                          * floor(blank_score_width) + str(p2score) + " " * floor(blank_score_width) + str(score_float))
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
