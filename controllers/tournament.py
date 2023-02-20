@@ -5,6 +5,7 @@ from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
 from models.match import MatchModel
+from models.round import RoundModel
 
 MAINMENU = MainMenu()
 TOURNAMENT_VIEW = TournamentView()
@@ -210,14 +211,15 @@ class TournamentController:
             TOURNAMENT_VIEW.choice_menu("Appuyez sur une [ENTRER] pour continuer.")
 
             """ beginning of the tournament """
+            current_round = 1
             date = str(datetime.now())
             TOURNAMENT_MODEL.store_tournament_start_date(selected_tournament_uuid, date)
             nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament(selected_tournament_uuid)
-            current_round = 1
             nb_match = int(len(players_uuid_list) / 2)
 
             for j in range(int(nb_round)):
                 """ loop for all rounds """
+                round_uuid = RoundModel(selected_tournament_uuid, current_round, date, "").store_round_start_date()
                 players_list_by_score = PLAYER_MODEL.create_player_list(players_uuid_list)
                 current_match = 1
                 for i in range(0, nb_match * 2, 2):
@@ -235,6 +237,8 @@ class TournamentController:
                     current_match += 1
 
                 TOURNAMENT_MODEL.store_current_round(selected_tournament_uuid, current_round)
+                date = str(datetime.now())
+                RoundModel(selected_tournament_uuid, current_round, "", date).store_round_end_date(round_uuid)
                 current_round += 1
                 if int(nb_round) >= current_round:
                     choix = TOURNAMENT_VIEW.choice_menu("Continuer l'enregistrement des scores (O/n) ?")
