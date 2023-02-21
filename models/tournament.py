@@ -77,12 +77,12 @@ class TournamentModel:
         except ValueError:
             print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
-        if len(result) == 0:
-            return "no_result"
         for i in range(len(result)):
             item = result[i]
             if item['nb_round'] == item['current_round']:
                 list_completed_tournament.append(item)
+        if not list_completed_tournament:
+            return "no_result"
         return list_completed_tournament
 
     @staticmethod
@@ -94,31 +94,32 @@ class TournamentModel:
         except ValueError:
             print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
-        if len(result) == 0:
-            return "no_result"
         for i in range(len(result)):
             item = result[i]
             if item['nb_round'] != item['current_round'] and item['current_round'] is not None:
                 list_current_tournament.append(item)
-        return list_current_tournament
+        if not list_current_tournament:
+            return "no_result"
+        else:
+            return list_current_tournament
 
     @staticmethod
     def search_not_started_tournaments():
         """ method to select tournaments where nb_round # current round """
-        list_current_tournament = []
+        list_not_started_tournament = []
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
             print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
             exit()
-        if len(result) == 0:
+        for i in range(len(result)):
+            item = result[i]
+            if item['current_round'] is None:
+                list_not_started_tournament.append(item)
+        if not list_not_started_tournament:
             return "no_result"
         else:
-            for i in range(len(result)):
-                item = result[i]
-                if item['current_round'] is None:
-                    list_current_tournament.append(item)
-            return list_current_tournament
+            return list_not_started_tournament
 
     def search_nb_round_for_tournament(self, tournament_uuid):
         """ method to search nb_round for a tournament """
