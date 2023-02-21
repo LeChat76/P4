@@ -1,4 +1,4 @@
-from math import *
+from math import floor, ceil
 import os
 
 MENU_RESULT_TOURNAMENT_PLAYERS = 1
@@ -33,9 +33,12 @@ class ReportView:
     def report_menu(self):
         """ Menu 3 """
         choix = None
-        while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix != MENU_RESULT_PLAYER_NAME and choix !=\
-                MENU_RESULT_EXIT and choix != MENU_RESULT_TOURNAMENT_SCORES and choix != \
-                MENU_RESULT_PLAYER_FNAME and choix != MENU_RESULT_TOURNAMENT_LIST and choix != \
+        while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix !=\
+                MENU_RESULT_PLAYER_NAME and choix !=\
+                MENU_RESULT_EXIT and choix !=\
+                MENU_RESULT_TOURNAMENT_SCORES and choix != \
+                MENU_RESULT_PLAYER_FNAME and choix !=\
+                MENU_RESULT_TOURNAMENT_LIST and choix != \
                 MENU_RESULT_TOURNAMENT_DETAIL:
             self.clear_screen()
             print("+-------------------------------+")
