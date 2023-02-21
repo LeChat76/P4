@@ -80,13 +80,17 @@ class ReportView:
 
         """ print report's table (title) """
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
+        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " +
+                                                self.tournament_name) - 1) / 2
+        print("+" + " " * floor(blank_width) + " Tournoi " +
+              self.tournament_name + " " * ceil(blank_width) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
             """ print title round number """
-            blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
-            print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
+            blank_width = (REPORT_TABLE_WIDTH - len("Round " +
+                                                    str(round_nb)) - 2) / 2
+            print("+" + " " * floor(blank_width) + " Round  " +
+                  str(round_nb) + " " * ceil(blank_width) + "+")
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
             """ print scores table """
             for round in rounds_list:
@@ -102,12 +106,19 @@ class ReportView:
                         winner = p2name
                     else:
                         winner = "match nul"
-                    blank_width = (REPORT_TABLE_WIDTH - len("Match " + str(match) + " opposant " + str(p1name) +
-                                                            " à " + str(p2name))) / 2
-                    print("+" + " " * floor(blank_width) + "Match " + str(match) + " opposant " + str(p1name) +
+                    blank_width = (REPORT_TABLE_WIDTH - len("Match " +
+                                                            str(match) +
+                                                            " opposant " +
+                                                            str(p1name) +
+                                                            " à " +
+                                                            str(p2name))) / 2
+                    print("+" + " " * floor(blank_width) + "Match " +
+                          str(match) + " opposant " + str(p1name) +
                           " à " + str(p2name) + " " * ceil(blank_width) + "+")
-                    blank_width = (REPORT_TABLE_WIDTH - len("Vainqueur : " + str(winner))) / 2
-                    print("+" + " " * floor(blank_width) + "Vainqueur : " + winner + " " * ceil(blank_width) +
+                    blank_width = (REPORT_TABLE_WIDTH - len("Vainqueur : " +
+                                                            str(winner))) / 2
+                    print("+" + " " * floor(blank_width) + "Vainqueur : " +
+                          winner + " " * ceil(blank_width) +
                           "+")
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
@@ -133,13 +144,17 @@ class ReportView:
 
         """ print report's table (title) """
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
+        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " +
+                                                self.tournament_name) - 1) / 2
+        print("+" + " " * floor(blank_width) + " Tournoi " +
+              self.tournament_name + " " * ceil(blank_width) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
             """ print title round number """
-            blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
-            print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
+            blank_width = (REPORT_TABLE_WIDTH - len("Round " +
+                                                    str(round_nb)) - 2) / 2
+            print("+" + " " * floor(blank_width) + " Round  " +
+                  str(round_nb) + " " * ceil(blank_width) + "+")
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
             """ print scores table """
             for round in rounds_list:
@@ -149,19 +164,27 @@ class ReportView:
                     p2name = (p2names_list[index])[:PLAYER_MAX_LENGTH]
                     p1score = p1scores_list[index]
                     p2score = p2scores_list[index]
-                    blank_match_width = REPORT_MATCH_WIDTH - len(str(" Match ")) - len(str(match))
-                    blank_score_width = (REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1score)) -
+                    blank_match_width = REPORT_MATCH_WIDTH -\
+                                        len(str(" Match ")) - len(str(match))
+                    blank_score_width = (REPORT_TABLE_WIDTH -
+                                         REPORT_MATCH_WIDTH -
+                                         len(str(p1score)) -
                                          len(str(p2score)) - len("|+"))/3
                     p1_blank = (PLAYER_MAX_LENGTH - len(p1name))
                     p2_blank = (PLAYER_MAX_LENGTH - len(p2name))
-                    print("+" + " Match " + str(match) + " " * int(blank_match_width) + " | " + " " * floor(p1_blank) +
-                          str(p1name) + " VS " + str(p2name) + " " * ceil(p2_blank) + " +")
+                    print("+" + " Match " + str(match) + " " *
+                          int(blank_match_width) + " | " +
+                          " " * floor(p1_blank) +
+                          str(p1name) + " VS " + str(p2name) +
+                          " " * ceil(p2_blank) + " +")
                     if isinstance(p1score, float):
                         score_float = "+"
                     else:
                         score_float = " +"
-                    print("+ Scores            | " + " " * floor(blank_score_width) + str(p1score) + " "
-                          * floor(blank_score_width) + str(p2score) + " " * floor(blank_score_width) + str(score_float))
+                    print("+ Scores            | " + " " *
+                          floor(blank_score_width) + str(p1score) + " "
+                          * floor(blank_score_width) + str(p2score) + " " *
+                          floor(blank_score_width) + str(score_float))
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
