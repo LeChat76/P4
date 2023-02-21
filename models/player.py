@@ -19,8 +19,9 @@ class PlayerModel:
 
     def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", score=0):
         """ Init player """
+        self.players_uuid = None
         self.player = None
-        self.players_list = None
+        self.players_list = []
         self.score = score
         self.player_uuid = None
         self.player_to_search = None
@@ -58,8 +59,11 @@ class PlayerModel:
             return result
 
     @staticmethod
-    def search_all_players():
-        """ method to count players in player.json DB"""
+    def search_all_players(by_name=False, by_fname=False):
+        """ method to count players in players.json DB"""
+        players_uuid_list = []
+        players_fname_list = []
+        players_name_list = []
         try:
             result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         except ValueError:
@@ -67,6 +71,18 @@ class PlayerModel:
             exit()
         if len(result) == 0:
             return "no_result"
+        elif by_name:
+            for player in result:
+                players_name_list.append((player['name']).capitalize())
+                players_uuid_list.append(player['player_uuid'])
+            players_name_list, players_uuid_list = zip(*sorted(zip(players_name_list, players_uuid_list)))
+            return players_uuid_list
+        elif by_fname:
+            for player in result:
+                players_fname_list.append(player['fname'].capitalize())
+                players_uuid_list.append(player['player_uuid'])
+            players_fname_list, players_uuid_list = zip(*sorted(zip(players_fname_list, players_uuid_list)))
+            return players_uuid_list
         else:
             return result
 
@@ -146,13 +162,26 @@ class PlayerModel:
         return player_uuid
 
     def extract_player_fname_and_name(self, player_uuid):
-        """ method to extract players' name """
+        """ method to extract players' fname and name with player's uuid """
         self.player_uuid = player_uuid
         result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
         player = player_first_name.capitalize() + " " + player_name.capitalize()
         return player
+
+    def extract_data_player(self, players_uuid):
+        """ method to extract players' fname, name, birthd and clubid with player's uuid """
+        self.players_uuid = players_uuid
+        for player_uuid in self.players_uuid:
+            result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
+            player_first_name = result[0]['fname']
+            player_name = result[0]['name']
+            player_birthd = result[0]['birthd']
+            player_clubid = result[0]['clubid']
+            player = [player_first_name.capitalize(), player_name.capitalize(), player_birthd, player_clubid]
+            self.players_list.append(player)
+        return self.players_list
 
     def store_score(self, player_uuid, score):
         """ method to store score  (add score to current score) in the json player's file """

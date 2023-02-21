@@ -2,15 +2,22 @@ from views.report import ReportView
 from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
+from models.player import PlayerModel
 MENU_REPORT_TOURNAMENT_PLAYERS = 1
 MENU_REPORT_TOURNAMENT_SCORES = 2
-MENU_REPORT_PLAYER = 3
-MENU_REPORT_EXIT = 4
+MENU_REPORT_PLAYER_NAME = 3
+MENU_REPORT_PLAYER_FNAME = 4
+MENU_REPORT_EXIT = 5
 RESULT_DISPLAY = None
 
 
 class ReportController:
     """ reports class """
+
+    def __init__(self):
+        self.by_fname = None
+        self.by_name = None
+
     def menu_3(self):
         """ Reports menu """
         while True:
@@ -19,10 +26,22 @@ class ReportController:
                 self.report_tournament("players")
             elif choix == MENU_REPORT_TOURNAMENT_SCORES:
                 self.report_tournament("scores")
-            elif choix == MENU_REPORT_PLAYER:
-                pass
+            elif choix == MENU_REPORT_PLAYER_NAME:
+                self.report_players_name(by_name=True, by_fname=False)
+            elif choix == MENU_REPORT_PLAYER_FNAME:
+                self.report_players_name(by_name=False, by_fname=True)
             elif choix == MENU_REPORT_EXIT:
                 break
+
+    def report_players_name(self, by_name, by_fname):
+        """ method to display all players in alphabetic order """
+        self.by_name = by_name
+        self.by_fname = by_fname
+        players_uuid_list = PlayerModel().search_all_players(self.by_name, self.by_fname)
+        players_list = PlayerModel().extract_data_player(players_uuid_list)
+        for player in players_list:
+            print(PlayerModel(player[0], player[1], player[2], player[3]))
+        ReportView().choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
 
     @staticmethod
     def report_tournament(display_type=None):

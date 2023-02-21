@@ -3,8 +3,9 @@ import os
 
 MENU_RESULT_TOURNAMENT_PLAYERS = 1
 MENU_RESULT_TOURNAMENT_SCORES = 2
-MENU_RESULT_PLAYER = 3
-MENU_RESULT_EXIT = 4
+MENU_RESULT_PLAYER_NAME = 3
+MENU_RESULT_PLAYER_FNAME = 4
+MENU_RESULT_EXIT = 5
 REPORT_TABLE_WIDTH = 60
 REPORT_MATCH_WIDTH = 18
 REPORT_SCORE_WIDTH = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH
@@ -23,22 +24,24 @@ class ReportView:
     """
 
     def __init__(self):
+        self.question = None
         self.tournament_name = None
         self.tournaments_scores = None
 
     def report_menu(self):
         """ Menu 3 """
         choix = None
-        while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix != MENU_RESULT_PLAYER and choix != MENU_RESULT_EXIT\
-                and choix != MENU_RESULT_TOURNAMENT_SCORES:
+        while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix != MENU_RESULT_PLAYER_NAME and choix !=\
+                MENU_RESULT_EXIT and choix != MENU_RESULT_TOURNAMENT_SCORES and choix != MENU_RESULT_PLAYER_FNAME:
             self.clear_screen()
             print("+-------------------------------+")
             print("|       MENU RAPPORTS           |")
             print("+-------------------------------+")
             print("| 1 - score d'un tournoi/joueurs|")
             print("| 2 - score d'un tournoi/score  |")
-            print("| 3 - list des joueurs          |")
-            print("| 4 - revenir au menu principal |")
+            print("| 3 - liste des joueurs/nom     |")
+            print("| 4 - list des joueurs/prénom   |")
+            print("| 5 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():
@@ -161,6 +164,17 @@ class ReportView:
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
+
+    def choice_menu(self, question):
+        """ method for asking to restart request """
+        self.question = question
+        choix = ""
+        while choix.upper() != "O" or choix.upper() != "N":
+            choix = input(self.question)
+            if choix.upper() == "O" or choix == "":
+                return "O"
+            elif choix.upper() == "N":
+                return "N"
 
     @staticmethod
     def clear_screen():
