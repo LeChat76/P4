@@ -9,7 +9,6 @@ PLAYER = Query()
 POS_PLAYER_SCORE = 7
 POS_PLAYER_UUID = 1
 MATCHS_LIST_TOURNAMENT = []
-""" shuffle to randomize player's list of round in case of some players already played together """
 MAX_SHUFFLE = 20
 
 
@@ -17,7 +16,8 @@ class PlayerModel:
     """" Player class """
     """ Has a first name, name, birthday and club ID """
 
-    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", score=0):
+    def __init__(self, player_fname="", player_name="", player_birthd="",
+                 player_clubid="", score=0):
         """ Init player """
         self.players_uuid = None
         self.player = None
@@ -32,13 +32,15 @@ class PlayerModel:
         self.player_clubid = player_clubid
 
     def __str__(self):
-        return f"{self.player_fname} {self.player_name} né le {self.player_birthd}, " \
-               f"affilié au club {self.player_clubid}."
+        return f"{self.player_fname} {self.player_name} né le" \
+               f" {self.player_birthd}, affilié au club {self.player_clubid}."
 
     def add_player(self):
         """ method for add a player in the json file """
-        PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name,
-                        'birthd': self.player_birthd, 'clubid': self.player_clubid, 'score': self.score})
+        PLAYERS.insert({'player_uuid': str(uuid.uuid1()),
+                        'fname': self.player_fname, 'name': self.player_name,
+                        'birthd': self.player_birthd,
+                        'clubid': self.player_clubid, 'score': self.score})
 
     def delete_player(self, player_uuid_to_delete):
         """ method to delete a player """
@@ -49,9 +51,11 @@ class PlayerModel:
         """ method to display player (search by name) """
         self.player_to_search = player_to_search
         try:
-            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE))
+            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search,
+                                                        flags=re.IGNORECASE))
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            print("Problème de structure sur fichier players.json.\nVérifiez"
+                  " le et recommencez.")
             exit()
         if len(result) == 0:
             return "no_result"
@@ -67,7 +71,8 @@ class PlayerModel:
         try:
             result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            print("Problème de structure sur fichier players.json.\nVérifiez"
+                  " le et recommencez.")
             exit()
         if len(result) == 0:
             return "no_result"
@@ -75,13 +80,15 @@ class PlayerModel:
             for player in result:
                 players_name_list.append((player['name']).capitalize())
                 players_uuid_list.append(player['player_uuid'])
-            players_name_list, players_uuid_list = zip(*sorted(zip(players_name_list, players_uuid_list)))
+            players_name_list, players_uuid_list = \
+                zip(*sorted(zip(players_name_list, players_uuid_list)))
             return players_uuid_list
         elif by_fname:
             for player in result:
                 players_fname_list.append(player['fname'].capitalize())
                 players_uuid_list.append(player['player_uuid'])
-            players_fname_list, players_uuid_list = zip(*sorted(zip(players_fname_list, players_uuid_list)))
+            players_fname_list, players_uuid_list =\
+                zip(*sorted(zip(players_fname_list, players_uuid_list)))
             return players_uuid_list
         else:
             return result
@@ -107,7 +114,8 @@ class PlayerModel:
         if score0:
             random.shuffle(sorted_players_list)
         else:
-            sorted_players_list, players_scores = zip(*sorted(zip(sorted_players_list, players_scores)))
+            sorted_players_list, players_scores =\
+                zip(*sorted(zip(sorted_players_list, players_scores)))
 
         """ check if two players already played together """
         result = self.check_players_list(sorted_players_list)
@@ -119,7 +127,8 @@ class PlayerModel:
                     continue
                 elif result == "never_played":
                     break
-            print("Malgré " + str(MAX_SHUFFLE) + " shuffles, certains joueurs de ce round ce sont déjà rencontrés.")
+            print("Malgré " + str(MAX_SHUFFLE) + " shuffles, certains joueurs"
+                  " de ce round ce sont déjà rencontrés.")
         return sorted_players_list
 
     def check_players_list(self, players_list):
@@ -151,7 +160,8 @@ class PlayerModel:
     def search_player_score(self, player_uuid):
         """method to search player's score """
         self.player_uuid = player_uuid
-        player = (PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid)))[0]
+        player = \
+            (PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid)))[0]
         player_score = player['score']
         return player_score
 
@@ -167,11 +177,13 @@ class PlayerModel:
         result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
-        player = player_first_name.capitalize() + " " + player_name.capitalize()
+        player = player_first_name.capitalize() + " " +\
+                 player_name.capitalize()
         return player
 
     def extract_data_player(self, players_uuid):
-        """ method to extract players' fname, name, birthd and clubid with player's uuid """
+        """ method to extract players' fname, name, birthd and clubid with
+         player's uuid """
         self.players_uuid = players_uuid
         for player_uuid in self.players_uuid:
             result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
@@ -179,7 +191,8 @@ class PlayerModel:
             player_name = result[0]['name']
             player_birthd = result[0]['birthd']
             player_clubid = result[0]['clubid']
-            player = [player_first_name.capitalize(), player_name.capitalize(), player_birthd, player_clubid]
+            player = [player_first_name.capitalize(), player_name.capitalize(),
+                      player_birthd, player_clubid]
             self.players_list.append(player)
         return self.players_list
 
