@@ -14,7 +14,6 @@ MAX_SHUFFLE = 20
 
 class PlayerModel:
     """" Player class """
-    """ Has a first name, name, birthday and club ID """
 
     def __init__(self, player_fname="", player_name="", player_birthd="",
                  player_clubid="", score=0):
