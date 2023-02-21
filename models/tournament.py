@@ -1,4 +1,5 @@
 from tinydb import TinyDB, Query
+from tinydb.operations import add
 import uuid
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')
@@ -24,6 +25,10 @@ class TournamentModel:
     """
     def __init__(self, tournament_name="", tournament_town="", tournament_nb_round="", tournament_description=""):
         """ Init tournament """
+        self.current_round = None
+        self.round_end_date = None
+        self.round_start_date = None
+        self.start_date = None
         self.match_id_list = None
         self.player_uuid = None
         self.tournament_uuid = None
@@ -36,6 +41,7 @@ class TournamentModel:
         self.tournament_list_matchs = None
         self.tournament_list_players = None
         self.tournament_description = tournament_description
+        self.list_rounds = None
 
     def __str__(self):
         return f"Tournoi {self.tournament_name} se déroulant à {self.tournament_town} et comportant" \
@@ -46,8 +52,9 @@ class TournamentModel:
         TOURNAMENTS.insert({'tournament_uuid': str(uuid.uuid1()), 'name': self.tournament_name,
                             'town': self.tournament_town, 'start_date': self.tournament_start_date,
                             'end_date': self.tournament_end_date, 'nb_round': self.tournament_nb_round,
-                            'current_round': self.tournament_current_round, 'list_round': self.tournament_list_matchs,
-                            'list_players': self.tournament_list_players, 'description': self.tournament_description})
+                            'current_round': self.tournament_current_round, 'list_rounds': self.list_rounds,
+                            'list_players': self.tournament_list_players, 'list_matchs': self.tournament_list_matchs,
+                            'description': self.tournament_description})
 
     @staticmethod
     def search_all_tournaments():
@@ -187,7 +194,23 @@ class TournamentModel:
         TOURNAMENTS.update({'list_matchs': self.match_id_list}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
     def store_current_round(self, tournament_uuid, tournament_current_round):
+        """ method to store current_round number in tournaments.json"""
         self.tournament_uuid = tournament_uuid
         self.tournament_current_round = str(tournament_current_round)
         TOURNAMENTS.update({'current_round': self.tournament_current_round}, TOURNAMENT.tournament_uuid ==
                            self.tournament_uuid)
+
+    def store_round_date(self, tournament_uuid, current_round, round_start_date, round_end_date):
+        """ method to store start and end dates for a round """
+        self.round_start_date = round_start_date
+        self.round_end_date = round_end_date
+        self.tournament_uuid = tournament_uuid
+        self.current_round = current_round
+        all_rounds = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_rounds']
+        round = ["Round" + str(self.current_round), str(self.round_start_date), str(self.round_end_date)]
+        if all_rounds is None:
+            all_rounds = [round]
+        else:
+            all_rounds.append(round)
+
+        TOURNAMENTS.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
