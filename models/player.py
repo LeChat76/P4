@@ -177,7 +177,7 @@ class PlayerModel:
         result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
-        player = player_first_name.capitalize() + " " +
+        player = player_first_name.capitalize() + " " + \
                  player_name.capitalize()
         return player
 
