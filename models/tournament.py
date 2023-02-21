@@ -151,6 +151,21 @@ class TournamentModel:
         tournament_name = tournament[0]['name']
         return tournament_name
 
+    def extract_all_infos_tournaments(self, tournament_uuid):
+        """ method to extract all infos of a tournament with the uuid's tournament """
+        self.tournament_uuid = tournament_uuid
+        tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+        name = tournament[0]['name']
+        town = tournament[0]['town']
+        start_date = tournament[0]['start_date']
+        end_date = tournament[0]['end_date']
+        nb_round = tournament[0]['nb_round']
+        current_round = tournament[0]['current_round']
+        list_matchs = tournament[0]['list_matchs']
+        list_players = tournament[0]['list_players']
+        description = tournament[0]['description']
+        return name, town, start_date, end_date, nb_round, current_round, list_matchs, list_players, description
+
     def store_tournament_start_date(self, tournament_uuid, tournament_start_date):
         """ method to store start date in tournament """
         self.tournament_start_date = tournament_start_date

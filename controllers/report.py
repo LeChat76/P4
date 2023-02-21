@@ -1,3 +1,4 @@
+from controllers.tournament import TournamentController
 from views.report import ReportView
 from views.tournament import TournamentView
 from models.tournament import TournamentModel
@@ -7,7 +8,9 @@ MENU_REPORT_TOURNAMENT_PLAYERS = 1
 MENU_REPORT_TOURNAMENT_SCORES = 2
 MENU_REPORT_PLAYER_NAME = 3
 MENU_REPORT_PLAYER_FNAME = 4
-MENU_REPORT_EXIT = 5
+MENU_RESULT_TOURNAMENT_LIST = 5
+MENU_RESULT_TOURNAMENT_DETAIL = 6
+MENU_REPORT_EXIT = 7
 RESULT_DISPLAY = None
 
 
@@ -30,8 +33,34 @@ class ReportController:
                 self.report_players_name(by_name=True, by_fname=False)
             elif choix == MENU_REPORT_PLAYER_FNAME:
                 self.report_players_name(by_name=False, by_fname=True)
+            elif choix == MENU_RESULT_TOURNAMENT_LIST:
+                self.report_tournament_list()
+            elif choix == MENU_RESULT_TOURNAMENT_DETAIL:
+                self.report_tournament_details()
             elif choix == MENU_REPORT_EXIT:
                 break
+
+    @staticmethod
+    def report_tournament_details():
+        """ method to display detail of a tournament """
+        tournaments = TournamentModel.search_all_tournaments()
+        for i in range(len(tournaments)):
+            item = tournaments[i]
+            print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
+
+        """ select a tournament """
+        choix = TournamentView().select_menu(tournaments)
+        selected_tournament = tournaments[int(choix) - 1]
+        tournament_uuid = selected_tournament['tournament_uuid']
+        result = TournamentModel().extract_all_infos_tournaments(tournament_uuid)
+        # name, town, start_date, end_date, nb_round, current_round, list_matchs, list_players, description
+        print(result)
+        input()
+
+    @staticmethod
+    def report_tournament_list():
+        """ method to display list of tournaments """
+        TournamentController().display_tournament()
 
     def report_players_name(self, by_name, by_fname):
         """ method to display all players in alphabetic order """

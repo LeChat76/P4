@@ -131,6 +131,11 @@ class TournamentView:
                 return choice
 
     @staticmethod
+    def display_all_tournaments():
+        """ method to display all tournaments and select one """
+        pass
+
+    @staticmethod
     def clear_screen():
         if os.name == "posix":
             os.system("clear")

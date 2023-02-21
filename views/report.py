@@ -5,7 +5,9 @@ MENU_RESULT_TOURNAMENT_PLAYERS = 1
 MENU_RESULT_TOURNAMENT_SCORES = 2
 MENU_RESULT_PLAYER_NAME = 3
 MENU_RESULT_PLAYER_FNAME = 4
-MENU_RESULT_EXIT = 5
+MENU_RESULT_TOURNAMENT_LIST = 5
+MENU_RESULT_TOURNAMENT_DETAIL = 6
+MENU_RESULT_EXIT = 7
 REPORT_TABLE_WIDTH = 60
 REPORT_MATCH_WIDTH = 18
 REPORT_SCORE_WIDTH = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH
@@ -32,7 +34,9 @@ class ReportView:
         """ Menu 3 """
         choix = None
         while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix != MENU_RESULT_PLAYER_NAME and choix !=\
-                MENU_RESULT_EXIT and choix != MENU_RESULT_TOURNAMENT_SCORES and choix != MENU_RESULT_PLAYER_FNAME:
+                MENU_RESULT_EXIT and choix != MENU_RESULT_TOURNAMENT_SCORES and choix != \
+                MENU_RESULT_PLAYER_FNAME and choix != MENU_RESULT_TOURNAMENT_LIST and choix != \
+                MENU_RESULT_TOURNAMENT_DETAIL:
             self.clear_screen()
             print("+-------------------------------+")
             print("|       MENU RAPPORTS           |")
@@ -41,7 +45,9 @@ class ReportView:
             print("| 2 - score d'un tournoi/score  |")
             print("| 3 - liste des joueurs/nom     |")
             print("| 4 - list des joueurs/prénom   |")
-            print("| 5 - revenir au menu principal |")
+            print("| 5 - liste des tournois        |")
+            print("| 6 - détail d'un tournoi       |")
+            print("| 7 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():
