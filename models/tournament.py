@@ -1,5 +1,4 @@
 from tinydb import TinyDB, Query
-from tinydb.operations import add
 import uuid
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')

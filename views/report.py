@@ -146,14 +146,6 @@ class ReportView:
                     p2name = (p2names_list[index])[:PLAYER_MAX_LENGTH]
                     p1score = p1scores_list[index]
                     p2score = p2scores_list[index]
-                    if p1score > p2score:
-                        winner = p1name
-                    elif p1score < p2score:
-                        winner = p2name
-                    else:
-                        winner = "match nul"
-                    blank_width = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1name) + " VS " + str(p2name)
-                                                                                + "+ |+")
                     blank_match_width = REPORT_MATCH_WIDTH - len(str(" Match ")) - len(str(match))
                     blank_score_width = (REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1score)) -
                                          len(str(p2score)) - len("|+"))/3

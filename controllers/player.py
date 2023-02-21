@@ -40,7 +40,7 @@ class PlayerController:
         while True:
             all_player_list = PLAYER_MODEL.search_all_players()
             if all_player_list == "no_result":
-                choix = PLAYER_VIEW.choice_menu("Aucun joueur, merci d'en créer. Appuyez sur [ENTRER] pour revenir"
+                PLAYER_VIEW.choice_menu("Aucun joueur, merci d'en créer. Appuyez sur [ENTRER] pour revenir"
                                                 " au menu.")
                 break
             index_player_to_delete = PLAYER_VIEW.delete_player_menu(all_player_list)

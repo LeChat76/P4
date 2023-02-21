@@ -48,15 +48,11 @@ class TournamentView:
             tournament_name = None
             while not tournament_name:
                 tournament_name = input("Nom du tournoi : ")
-                if not tournament_name:                                # juste pour debugging, à supprimer
-                    tournament_name = "Chess master Rouen"             # juste pour debugging, à supprimer
 
             """ Requests for tournament name """
             tournament_town = None
             while not tournament_town:
                 tournament_town = input("Lieu du tournoi : ")
-                if not tournament_town:                                # juste pour debugging, à supprimer
-                    tournament_town = "Rouen"                          # juste pour debugging, à supprimer
                 if any(chr.isdigit() for chr in tournament_town) is True:
                     print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
                     tournament_town = ""
@@ -66,8 +62,6 @@ class TournamentView:
             while not tournament_nb_round:
                 while True:
                     tournament_nb_round = input("Nombre de tour : ")
-                    if tournament_nb_round == "":                             # juste pour debugging, à supprimer
-                        tournament_nb_round = 4                               # juste pour debugging, à supprimer
                     if str(tournament_nb_round).isalpha():
                         print("Valeur uniquement numérique. Ressaisir le nombre de tour.")
                     else:

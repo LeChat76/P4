@@ -55,6 +55,20 @@ class ReportController:
         result = TournamentModel().extract_all_infos_tournaments(tournament_uuid)
         # name, town, start_date, end_date, nb_round, current_round, list_matchs, list_players, description
         print(f"Tournoi {result[0]} se déroulant à {result[1]} et comportant {result[4]} round(s).")
+        print(f"Description : {result[8]}.")
+        if result[2] and result[3]:
+            print(f"Ce tournoi a démarré le {result[2]} et s'est terminé le {result[3]}.")
+        elif result[2] and not result[3]:
+            print(f"Ce tournoi a démarré le {result[2]} mais n'est pas terminé, {result[5]} round(s) sur {result[4]} ont étés"
+                  f" exécutés.")
+        elif not result[2]:
+            print(f"Ce tournoi n'a pas encore démarré.")
+        if result[2]:
+            print(f"Il y'a eu " + str(len(result[6])) + " matchs joué(s).")
+        if result[7]:
+            print("La liste des joueurs est la suivante :")
+            for player_uuid in result[7]:
+                print("- " + PlayerModel().extract_player_fname_and_name(player_uuid))
         input()
 
     @staticmethod
