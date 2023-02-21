@@ -178,7 +178,7 @@ class PlayerModel:
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
         player = player_first_name.capitalize() + " " + \
-                 player_name.capitalize()
+                                                  player_name.capitalize()
         return player
 
     def extract_data_player(self, players_uuid):
