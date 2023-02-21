@@ -165,7 +165,8 @@ class ReportView:
                     p1score = p1scores_list[index]
                     p2score = p2scores_list[index]
                     blank_match_width = REPORT_MATCH_WIDTH -\
-                                        len(str(" Match ")) - len(str(match))
+                    len(str(" Match ")) -\
+                    len(str(match))
                     blank_score_width = (REPORT_TABLE_WIDTH -
                                          REPORT_MATCH_WIDTH -
                                          len(str(p1score)) -
