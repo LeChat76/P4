@@ -116,7 +116,8 @@ class TournamentController:
                 if result == "no_result":
                     choix = TournamentView().choice_menu("Aucun tournoi à"
                                                          " afficher."
-                                                         " Recommencer (O/n)? ")
+                                                         " Recommencer"
+                                                         " (O/n)? ")
                     if choix == "N":
                         break
                 else:
@@ -209,12 +210,12 @@ class TournamentController:
                 for i in range(len(players_available_list)):
                     player_uuid = players_available_list[i]
                     player =\
-                        PlayerModel()\
-                            .extract_player_fname_and_name(player_uuid)
+                        PlayerModel().extract_player_fname_and_name(
+                            player_uuid)
                     print(str(i + 1) + " - " + player + ".")
                 print(str(nb_players) + " sélectionné(s).")
-                result = PlayerView().select_available_players_menu\
-                    (len(players_available_list), nb_players)
+                result = PlayerView().select_available_players_menu(
+                    len(players_available_list), nb_players)
                 if result == "end_players_selection":
                     break
                 selected_player_uuid = (players_available_list[int(result)
@@ -255,8 +256,8 @@ class TournamentController:
             date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
             TournamentModel().\
                 store_tournament_start_date(selected_tournament_uuid, date)
-            nb_round = TournamentModel().search_nb_round_for_tournament\
-                (selected_tournament_uuid)
+            nb_round = TournamentModel().search_nb_round_for_tournament(
+                selected_tournament_uuid)
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
 
             for j in range(int(nb_round)):
@@ -266,16 +267,16 @@ class TournamentController:
                 players_list =\
                     PlayerModel().create_player_list(players_uuid_list)
                 matchs_list = TournamentModel()\
-                    .extract_matchs_uuid_list_of_tournament\
-                    (selected_tournament_uuid)
+                    .extract_matchs_uuid_list_of_tournament(
+                    selected_tournament_uuid)
                 previous_matchs_players_list = MatchModel()\
                     .create_matchs_players_list(matchs_list)
                 players_list = PlayerModel()\
                     .check_players_list(players_list,
                                         previous_matchs_players_list)
                 if players_list[1]:
-                    print("/!\ Certains joueurs de ce round ont déjà joués"
-                          " ensemble /!\\")
+                    print("/!\ Certains joueurs de ce round ont déjà joués "
+                          "ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -314,8 +315,8 @@ class TournamentController:
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                    TournamentModel().store_tournament_end_date\
-                        (selected_tournament_uuid, date)
+                    TournamentModel().store_tournament_end_date(
+                        selected_tournament_uuid, date)
                 match_id_list = match.store_match()
                 TournamentModel().store_match_id(selected_tournament_uuid,
                                                  match_id_list)
