@@ -1,17 +1,10 @@
 from datetime import datetime
-from views.start_menu import MainMenu
 from views.tournament import TournamentView
 from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
 from models.match import MatchModel
 
-MAINMENU = MainMenu()
-TOURNAMENT_VIEW = TournamentView()
-TOURNAMENT_MODEL = TournamentModel()
-PLAYER_VIEW = PlayerView()
-PLAYER_MODEL = PlayerModel()
-MATCH_MODEL = MatchModel()
 MENU_TOURNAMENT_CREATION = 1
 MENU_TOURNAMENT_DISPLAY = 2
 MENU_TOURNAMENT_START = 3
@@ -25,7 +18,7 @@ class TournamentController:
     def menu_2(self):
         """ Tournament Menu """
         while True:
-            choix = TOURNAMENT_VIEW.tournament_menu()
+            choix = TournamentView().tournament_menu()
             if choix == MENU_TOURNAMENT_CREATION:
                 self.add_tournament()
             elif choix == MENU_TOURNAMENT_DISPLAY:
@@ -40,7 +33,7 @@ class TournamentController:
     @staticmethod
     def add_tournament():
         """ method to record new tournaments """
-        new_tournament = TOURNAMENT_VIEW.add_tournament_menu()
+        new_tournament = TournamentView().add_tournament_menu()
         for tournament in new_tournament:
             tournament_to_add = TournamentModel(tournament[0], tournament[1],
                                                 tournament[2], tournament[3])
@@ -50,11 +43,11 @@ class TournamentController:
     def display_tournament():
         """ method to display tournaments completed, current or all """
         while True:
-            tournament_to_display = TOURNAMENT_VIEW.display_tournament()
+            tournament_to_display = TournamentView().display_tournament()
             if tournament_to_display == "display_all_tournaments":
-                result = TOURNAMENT_MODEL.search_all_tournaments()
+                result = TournamentModel().search_all_tournaments()
                 if result == "no_result":
-                    TOURNAMENT_VIEW.choice_menu("Aucun tournoi à afficher."
+                    TournamentView().choice_menu("Aucun tournoi à afficher."
                                                 " Appuyez sur [ENTRER] pour"
                                                 " revenir au menu.")
                     break
@@ -67,15 +60,15 @@ class TournamentController:
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'],
                                               item['nb_round']))
-                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre"
+                    choix = TournamentView().choice_menu("Faire une autre"
                                                         " recherche (O/n)? ")
                     if choix == "N":
                         break
 
             elif tournament_to_display == "display_completed_tournaments":
-                result = TOURNAMENT_MODEL.search_completed_tournaments()
+                result = TournamentModel().search_completed_tournaments()
                 if result == "no_result":
-                    choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à"
+                    choix = TournamentView().choice_menu("Aucun tournoi à"
                                                         " afficher."
                                                         " Recommencer (O/n)? ")
                     if choix == "N":
@@ -89,15 +82,15 @@ class TournamentController:
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'],
                                               item['nb_round']))
-                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre"
+                    choix = TournamentView().choice_menu("Faire une autre"
                                                         " recherche (O/n)? ")
                     if choix == "N":
                         break
 
             elif tournament_to_display == "display_current_tournaments":
-                result = TOURNAMENT_MODEL.search_current_tournaments()
+                result = TournamentModel().search_current_tournaments()
                 if result == "no_result":
-                    choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à"
+                    choix = TournamentView().choice_menu("Aucun tournoi à"
                                                         " afficher."
                                                         " Recommencer (O/n)? ")
                     if choix == "N":
@@ -111,15 +104,15 @@ class TournamentController:
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'],
                                               item['nb_round']))
-                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre"
+                    choix = TournamentView().choice_menu("Faire une autre"
                                                         " recherche (O/n)? ")
                     if choix == "N":
                         break
 
             elif tournament_to_display == "display_not_started_tournaments":
-                result = TOURNAMENT_MODEL.search_not_started_tournaments()
+                result = TournamentModel().search_not_started_tournaments()
                 if result == "no_result":
-                    choix = TOURNAMENT_VIEW.choice_menu("Aucun tournoi à"
+                    choix = TournamentView().choice_menu("Aucun tournoi à"
                                                         " afficher."
                                                         " Recommencer (O/n)? ")
                     if choix == "N":
@@ -133,7 +126,7 @@ class TournamentController:
                         item = result[i]
                         print(TournamentModel(item['name'], item['town'],
                                               item['nb_round']))
-                    choix = TOURNAMENT_VIEW.choice_menu("Faire une autre"
+                    choix = TournamentView().choice_menu("Faire une autre"
                                                         " recherche (O/n)? ")
                     if choix == "N":
                         break
@@ -146,9 +139,9 @@ class TournamentController:
         players_uuid_list = []
         match = None
         while True:
-            players_available = PLAYER_MODEL.search_all_players()
+            players_available = PlayerModel().search_all_players()
             if players_available == "no_result" or len(players_available) <= 1:
-                TOURNAMENT_VIEW.choice_menu("Liste des joueurs vide. Merci"
+                TournamentView().choice_menu("Liste des joueurs vide. Merci"
                                             " d'en créer au moins huit.\n"
                                             "disponibles pour démarrer un"
                                             " tournoi [ENTRER] pour revenir"
@@ -162,9 +155,9 @@ class TournamentController:
             """ create list of available tournaments (tournament not already
              started) """
             not_started_tournament =\
-                TOURNAMENT_MODEL.search_not_started_tournaments()
+                TournamentModel().search_not_started_tournaments()
             if not_started_tournament == "no_result":
-                TOURNAMENT_VIEW.choice_menu("Aucun tournoi disponible."
+                TournamentView().choice_menu("Aucun tournoi disponible."
                                             " Vous devez en créer un nouveau."
                                             " [ENTRER] pour continuer.")
                 break
@@ -179,11 +172,11 @@ class TournamentController:
                                           item['nb_round'])))
 
             """ choose tournament """
-            result = TOURNAMENT_VIEW.select_menu(not_started_tournament)
+            result = TournamentView().select_menu(not_started_tournament)
             selected_tournament = not_started_tournament[int(result) - 1]
             selected_tournament_uuid = selected_tournament['tournament_uuid']
 
-            tournament_nb_round = TOURNAMENT_MODEL.\
+            tournament_nb_round = TournamentModel().\
                 search_nb_round_for_tournament(selected_tournament_uuid)
             """ compare nb rounds and nb players available to check if some
              players will play with the same 
@@ -214,14 +207,16 @@ class TournamentController:
                 for i in range(len(players_available_list)):
                     player_uuid = players_available_list[i]
                     player =\
-                        PLAYER_MODEL.extract_player_fname_and_name(player_uuid)
+                        PlayerModel()\
+                            .extract_player_fname_and_name(player_uuid)
                     print(str(i + 1) + " - " + player + ".")
                 print(str(nb_players) + " sélectionné(s).")
-                result = PLAYER_VIEW.select_available_players_menu\
+                result = PlayerView().select_available_players_menu\
                     (len(players_available_list), nb_players)
                 if result == "end_players_selection":
                     break
-                selected_player_uuid = (players_available_list[int(result) - 1])
+                selected_player_uuid = (players_available_list[int(result)
+                                                               - 1])
                 players_uuid_list.append(selected_player_uuid)
                 nb_players_available -= 1
                 nb_players += 1
@@ -237,7 +232,7 @@ class TournamentController:
                     print("Plus de personne à ajouter.")
                     break
 
-            TOURNAMENT_MODEL.store_players_uuids(selected_tournament_uuid,
+            TournamentModel().store_players_uuids(selected_tournament_uuid,
                                                  players_uuid_list)
             print('Tournoi "' + selected_tournament['name'] + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
@@ -250,15 +245,15 @@ class TournamentController:
                       " sélectionnés, certains joueurs ne se rencontreront"
                       " pas.")
 
-            TOURNAMENT_VIEW.choice_menu("Appuyez sur une [ENTRER] pour"
+            TournamentView().choice_menu("Appuyez sur une [ENTRER] pour"
                                         " continuer.")
 
             """ beginning of the tournament """
             current_round = 1
             date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-            TOURNAMENT_MODEL.\
+            TournamentModel().\
                 store_tournament_start_date(selected_tournament_uuid, date)
-            nb_round = TOURNAMENT_MODEL.search_nb_round_for_tournament\
+            nb_round = TournamentModel().search_nb_round_for_tournament\
                 (selected_tournament_uuid)
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
 
@@ -278,7 +273,7 @@ class TournamentController:
                                         previous_matchs_players_list)
                 if players_list[1] == True:
                     print("/!\ Certains joueurs de ce round ont déjà joués"
-                          " ensemble >!\\")
+                          " ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -286,15 +281,15 @@ class TournamentController:
                     """ loop for all matches for one round"""
                     player_one_uuid = players_list[i]
                     player_two_uuid = players_list[i + 1]
-                    player_one = PLAYER_MODEL.extract_player_fname_and_name\
+                    player_one = PlayerModel().extract_player_fname_and_name\
                         (player_one_uuid)
-                    player_two = PLAYER_MODEL.extract_player_fname_and_name\
+                    player_two = PlayerModel().extract_player_fname_and_name\
                         (player_two_uuid)
                     print("Tour : " + str(current_round) + "/" + str(nb_round)
                           + ", match " + str(current_match)
                           + "/" + str(nb_match) + " opposant " + player_one
                           + " à " + player_two + ".")
-                    scores = PLAYER_VIEW.record_score(player_one, player_two)
+                    scores = PlayerView().record_score(player_one, player_two)
                     match = MatchModel(selected_tournament_uuid, current_round,
                                        current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
@@ -310,18 +305,18 @@ class TournamentController:
                                                    round_end_date)
                 current_round += 1
                 if int(nb_round) >= current_round:
-                    choix = TOURNAMENT_VIEW.choice_menu("Continuer"
+                    choix = TournamentView().choice_menu("Continuer"
                                                         " l'enregistrement"
                                                         " des scores (O/n) ?")
                     if choix == "N":
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                    TOURNAMENT_MODEL.store_tournament_end_date\
+                    TournamentModel().store_tournament_end_date\
                         (selected_tournament_uuid, date)
                 match_id_list = match.store_match()
                 TournamentModel().store_match_id(selected_tournament_uuid,
                                                  match_id_list)
-            TOURNAMENT_VIEW.choice_menu("Fin du tour. Appuyez sur [ENTRER]"
+            TournamentView().choice_menu("Fin du tour. Appuyez sur [ENTRER]"
                                         " pour revenir au menu.")
             break
