@@ -182,11 +182,10 @@ class TournamentController:
             tournament_nb_round = TournamentModel().\
                 search_nb_round_for_tournament(selected_tournament_uuid)
             """ compare nb rounds and nb players available to check if some
-             players will play with the same 
-            players twice - formula is nb round should not be superior of nb
-             players available - 1
+            players will play with the same players twice - formula is nb
+            round should not be superior of nb players available - 1
             example : if there is 8 players, nb match = 7 so nb round max
-             should be equal or inferior to 7 """
+            should be equal or inferior to 7 """
             if int(tournament_nb_round) > (int(len(players_available)) - 1):
                 print("Ce tournoi comporte "
                       + str(tournament_nb_round)
@@ -199,7 +198,7 @@ class TournamentController:
             nb_players_available = len(players_available_list)
 
             """ check if nb players available is pair because in case of
-             nb players selected is odd, sometime a player will not play 
+             nb players selected is odd, sometime a player will not play
              so it's mandatory to select only pair numbers of players """
             if nb_players_available % 2 != 0:
                 nb_players_available_pair = False
@@ -275,7 +274,7 @@ class TournamentController:
                     .check_players_list(players_list,
                                         previous_matchs_players_list)
                 if players_list[1]:
-                    print("/!\ Certains joueurs de ce round ont déjà joués "
+                    print("/!\\ Certains joueurs de ce round ont déjà joués "
                           "ensemble /!\\")
                 players_list = players_list[0]
 
@@ -284,10 +283,10 @@ class TournamentController:
                     """ loop for all matches for one round"""
                     player_one_uuid = players_list[i]
                     player_two_uuid = players_list[i + 1]
-                    player_one = PlayerModel().extract_player_fname_and_name\
-                        (player_one_uuid)
-                    player_two = PlayerModel().extract_player_fname_and_name\
-                        (player_two_uuid)
+                    player_one = PlayerModel().extract_player_fname_and_name(
+                        player_one_uuid)
+                    player_two = PlayerModel().extract_player_fname_and_name(
+                        player_two_uuid)
                     print("Tour : " + str(current_round) + "/" + str(nb_round)
                           + ", match " + str(current_match)
                           + "/" + str(nb_match) + " opposant " + player_one
