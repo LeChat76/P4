@@ -148,9 +148,8 @@ class TournamentModel:
 
     def extract_matchs_uuid_list_of_tournament(self, tournament_uuid):
         """ method to extract all match's id of a tournament """
-        self.tournament_uuid = tournament_uuid
         tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.
-                                        matches(self.tournament_uuid))
+                                        matches(tournament_uuid))
         matchs_id_list = tournament[0]['list_matchs']
         return matchs_id_list
 

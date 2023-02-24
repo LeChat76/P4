@@ -92,13 +92,12 @@ class PlayerModel:
         else:
             return result
 
-    def create_player_list(self, players_list, ):
+    def create_player_list(self, players_list):
         """
         players_list = players_uuid
         method to create player's list sorted by score
         if all score egal 0, randomized players list
         """
-        self.players_list = players_list
         players_scores = []
         sorted_players_list = []
         score0 = True
@@ -113,48 +112,33 @@ class PlayerModel:
         if score0:
             random.shuffle(sorted_players_list)
         else:
-            sorted_players_list, players_scores =\
-                zip(*sorted(zip(sorted_players_list, players_scores)))
+            players_scores, sorted_players_list =\
+                zip(*sorted(zip(players_scores, sorted_players_list)))
+        return list(sorted_players_list)
 
-        """ check if two players already played together """
-        result = self.check_players_list(sorted_players_list)
-        if result == "already_played":
-            for k in range(MAX_SHUFFLE):
-                random.shuffle(list(sorted_players_list))
-                result = self.check_players_list(sorted_players_list)
-                if result == "already_played":
-                    continue
-                elif result == "never_played":
-                    break
-            print("Malgré " + str(MAX_SHUFFLE) + " shuffles, certains joueurs"
-                  " de ce round ce sont déjà rencontrés.")
-        return sorted_players_list
-
-    def check_players_list(self, players_list):
-        """ method to check if two players have already played together """
+    @staticmethod
+    def check_players_list(players_list, previous_matchs_list):
+        """ method to compare matchs players VS previous matchs players """
+        checked_players_list = []
         already_played = False
-        self.players_list = players_list
-        if MATCHS_LIST_TOURNAMENT:
-            for i in range(len(MATCHS_LIST_TOURNAMENT)):
-                previous_match = MATCHS_LIST_TOURNAMENT[i]
-                previous_match_r = previous_match[::-1]
-                for player in range(0, len(players_list), 2):
-                    p1_uuid = players_list[player]
-                    p2_uuid = players_list[player + 1]
-                    next_match = [p1_uuid, p2_uuid]
-                    if next_match == previous_match_r:
+        if previous_matchs_list:
+            while players_list:
+                p1_uuid = players_list.pop(0)
+                for p2_uuid in players_list:
+                    match = [p1_uuid, p2_uuid]
+                    if match in previous_matchs_list or match[::-1] in previous_matchs_list:
                         already_played = True
-                    elif next_match == previous_match:
-                        already_played = True
-        if not already_played:
-            for player in range(0, len(players_list), 2):
-                p1_uuid = players_list[player]
-                p2_uuid = players_list[player + 1]
-                match = [p1_uuid, p2_uuid]
-                MATCHS_LIST_TOURNAMENT.append(match)
-            return "never_played"
+                        continue
+                    elif match not in previous_matchs_list or match[::-1] not in previous_matchs_list:
+                        already_played = False
+                        break
+                checked_players_list.append(match)
+                players_list.remove(p2_uuid)
+            for player_uuid in checked_players_list:
+                players_list += player_uuid
+            return players_list, already_played
         else:
-            return "already_played"
+            return players_list, already_played
 
     def search_player_score(self, player_uuid):
         """method to search player's score """
@@ -203,5 +187,5 @@ class PlayerModel:
         player = PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid))
         current_score = player[0]['score']
         new_score = float(current_score) + float(score)
-        PLAYERS.update({'score': new_score}, PLAYER.player_uuid ==
-                       self.player_uuid)
+        PLAYERS.update({'score': new_score}, PLAYER.player_uuid
+                       == self.player_uuid)

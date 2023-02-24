@@ -50,6 +50,7 @@ class MatchModel:
                            'player_one_score': p1_score,
                            'player_two_score': p2_score})
             MATCH_ID_LIST.append(match_id)
+        MATCHS_LIST.clear()
         return MATCH_ID_LIST
 
     def extract_scores(self, matchs_ids_list):
@@ -80,3 +81,15 @@ class MatchModel:
             tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores,
                                  p2_scores, round_max, match_max]
         return tournament_scores
+
+    @staticmethod
+    def create_matchs_players_list(matchs_list):
+        """ method to create list of matchs already played for a tournament """
+        previous_matchs_players_list = []
+        if matchs_list:
+            for match in matchs_list:
+                result = MATCHS.search(MATCH.match_id.matches(match))
+                p1_uuid = result[0]['player_one_uuid']
+                p2_uuid = result[0]['player_two_uuid']
+                previous_matchs_players_list.append([p1_uuid, p2_uuid])
+        return previous_matchs_players_list
