@@ -365,7 +365,7 @@ class TournamentController:
             """ resume the tournament """
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
 
-            for j in range(current_round, nb_round):
+            for j in range(current_round - 1, nb_round):
                 """ loop for all rounds """
                 round_start_date = \
                     (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
@@ -425,7 +425,7 @@ class TournamentController:
                                                    round_start_date,
                                                    round_end_date)
                 current_round += 1
-                if int(nb_round) > current_round:
+                if int(nb_round) >= current_round:
                     choix = TournamentView().choice_menu("Continuer"
                                                          " l'enregistrement"
                                                          " des scores (O/n) ?")
