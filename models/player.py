@@ -18,6 +18,7 @@ class PlayerModel:
     def __init__(self, player_fname="", player_name="", player_birthd="",
                  player_clubid="", score=0):
         """ Init player """
+        self.players_scores = None
         self.players_uuid = None
         self.player = None
         self.players_list = []
@@ -126,10 +127,12 @@ class PlayerModel:
                 p1_uuid = players_list.pop(0)
                 for p2_uuid in players_list:
                     match = [p1_uuid, p2_uuid]
-                    if match in previous_matchs_list or match[::-1] in previous_matchs_list:
+                    if match in previous_matchs_list or match[::-1] in\
+                            previous_matchs_list:
                         already_played = True
                         continue
-                    elif match not in previous_matchs_list or match[::-1] not in previous_matchs_list:
+                    elif match not in previous_matchs_list or match[::-1]\
+                            not in previous_matchs_list:
                         already_played = False
                         break
                 checked_players_list.append(match)
@@ -181,7 +184,7 @@ class PlayerModel:
 
     def store_score(self, player_uuid, score):
         """ method to store score  (add score to current score) in the json
-         player's file """
+         player's file, to use with only one player """
         self.player_uuid = player_uuid
         self.score = score
         player = PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid))
@@ -189,3 +192,14 @@ class PlayerModel:
         new_score = float(current_score) + float(score)
         PLAYERS.update({'score': new_score}, PLAYER.player_uuid
                        == self.player_uuid)
+
+    def store_score_from_previous_match(self, players_list, players_scores):
+        """
+        method to store previous scores in players when resume previous
+        tournament (replace score from previous, used for a list of players)
+        """
+        self.players_list = players_list
+        self.players_scores = players_scores
+        for i in range(len(players_list)):
+            PLAYERS.update({'score': players_scores[i]}, PLAYER.player_uuid
+                           == self.players_list[i])

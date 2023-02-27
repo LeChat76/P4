@@ -25,8 +25,8 @@ class TournamentController:
                 self.display_tournament()
             elif choix == MENU_TOURNAMENT_START:
                 self.begin_new_tournament()
-            # elif choix == MENU_TOURNAMENT_RECOVERY:
-            #     self.recover_tournament()
+            elif choix == MENU_TOURNAMENT_RECOVERY:
+                self.resume_tournament()
             elif choix == MENU_TOURNAMENT_EXIT:
                 break
 
@@ -311,6 +311,10 @@ class TournamentController:
                                                          " l'enregistrement"
                                                          " des scores (O/n) ?")
                     if choix == "N":
+                        match_id_list = match.store_match()
+                        TournamentModel().store_match_id(
+                            selected_tournament_uuid,
+                            match_id_list)
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
@@ -322,3 +326,121 @@ class TournamentController:
             TournamentView().choice_menu("Fin du tour. Appuyez sur [ENTRER]"
                                          " pour revenir au menu.")
             break
+
+    @staticmethod
+    def resume_tournament():
+        """ method to resume a not ended tournament """
+        not_ended_tournament = TournamentModel().\
+            search_current_tournaments()
+        if not_ended_tournament == "no_result":
+            TournamentView().choice_menu("Aucun tournoi(s) non terminé(s)."
+                                         "Appuyez sur [ENTRER]"
+                                         " pour continuer.")
+        else:
+            """ displayer list of not ended tournaments """
+            print("Liste des tournois non démarrés:")
+            for i in range(len(not_ended_tournament)):
+                item = not_ended_tournament[i]
+                print(str(i + 1) + " - " +
+                      str(TournamentModel(item['name'],
+                                          item['town'],
+                                          item['nb_round'])))
+
+            """ choose tournament """
+            result = TournamentView().select_menu(not_ended_tournament)
+            selected_tournament = not_ended_tournament[int(result) - 1]
+            tournament_uuid = selected_tournament['tournament_uuid']
+            tournament_info = TournamentModel().extract_all_infos_tournaments(
+                tournament_uuid)
+            players_uuid_list = tournament_info[7]
+            nb_round = int(tournament_info[4])
+            current_round = int(tournament_info[5]) + 1
+            print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
+            for player_uuid in players_uuid_list:
+                print(" - " + PlayerModel().extract_player_fname_and_name(
+                    player_uuid))
+            print(f"Le prochain round est le"
+                  f" {current_round} ème.")
+
+            """ resume the tournament """
+            nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
+
+            for j in range(current_round, nb_round):
+                """ loop for all rounds """
+                round_start_date = \
+                    (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
+                """ extract matches ids from a tournament """
+                matchs_list = TournamentModel() \
+                    .extract_matchs_uuid_list_of_tournament(tournament_uuid)
+                """ create players list from previous matches """
+                previous_matchs_players_list = MatchModel() \
+                    .create_matchs_players_list(matchs_list)
+                """ extract previous scores from matches """
+                previous_scores = \
+                    MatchModel().extract_previous_scores(players_uuid_list,
+                                                         matchs_list)
+                """ store scores in players.json file """
+                PlayerModel().\
+                    store_score_from_previous_match(players_uuid_list,
+                                                    previous_scores)
+                """ create players list sorted by scores """
+                players_list =\
+                    PlayerModel().create_player_list(players_uuid_list)
+                """ check players list to avoid players
+                 already played together (if possible) """
+                players_list = PlayerModel()\
+                    .check_players_list(players_list,
+                                        previous_matchs_players_list)
+                if players_list[1]:
+                    print("/!\\ Certains joueurs de ce round ont déjà joués "
+                          "ensemble /!\\")
+                players_list = players_list[0]
+
+                current_match = 1
+                for i in range(0, nb_match * 2, 2):
+                    """ loop for all matches for one round"""
+                    player_one_uuid = players_list[i]
+                    player_two_uuid = players_list[i + 1]
+                    player_one = PlayerModel().extract_player_fname_and_name(
+                        player_one_uuid)
+                    player_two = PlayerModel().extract_player_fname_and_name(
+                        player_two_uuid)
+                    print("Tour : " + str(current_round) + "/" + str(nb_round)
+                          + ", match " + str(current_match)
+                          + "/" + str(nb_match) + " opposant " + player_one
+                          + " à " + player_two + ".")
+                    scores = PlayerView().record_score(player_one, player_two)
+                    """ TROUVER LE MOYEN D'AJOUTER ANCIENS MATCHS """
+                    match = MatchModel(tournament_uuid, current_round,
+                                       current_match, player_one_uuid,
+                                       player_two_uuid, scores[0], scores[1])
+                    match.create_tuple_for_match()
+                    current_match += 1
+
+                TournamentModel().store_current_round(tournament_uuid,
+                                                      current_round)
+                round_end_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
+                TournamentModel().store_round_date(tournament_uuid,
+                                                   current_round,
+                                                   round_start_date,
+                                                   round_end_date)
+                current_round += 1
+                if int(nb_round) > current_round:
+                    choix = TournamentView().choice_menu("Continuer"
+                                                         " l'enregistrement"
+                                                         " des scores (O/n) ?")
+                    if choix == "N":
+                        match_id_list = match.store_match()
+                        TournamentModel().store_match_id(
+                            tournament_uuid,
+                            match_id_list)
+                        break
+                else:
+                    date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
+                    TournamentModel().store_tournament_end_date(
+                        tournament_uuid, date)
+                match_id_list = match.store_match()
+                TournamentModel().store_match_id(tournament_uuid,
+                                                 match_id_list)
+            TournamentView().choice_menu("Fin du tour. Appuyez sur [ENTRER]"
+                                         " pour revenir au menu.")

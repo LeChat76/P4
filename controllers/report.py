@@ -56,7 +56,6 @@ class ReportController:
         tournament_uuid = selected_tournament['tournament_uuid']
         result =\
             TournamentModel().extract_all_infos_tournaments(tournament_uuid)
-        # name, town, start_date, end_date, nb_round, current_round, list_matchs, list_players, description
         print(f"Tournoi {result[0]} se déroulant à {result[1]} et comportant"
               f" {result[4]} round(s).")
         print(f"Description : {result[8]}.")

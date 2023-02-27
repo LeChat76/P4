@@ -17,8 +17,11 @@ class TournamentView:
     def tournament_menu(self):
         """ Menu 1 """
         choix = None
-        while choix != MENU_TOURNAMENT_CREATION and choix != MENU_TOURNAMENT_DISPLAY and choix != MENU_TOURNAMENT_START\
-                and choix != MENU_TOURNAMENT_RECOVERY and choix != MENU_TOURNAMENT_EXIT:
+        while choix != MENU_TOURNAMENT_CREATION and\
+                choix != MENU_TOURNAMENT_DISPLAY and\
+                choix != MENU_TOURNAMENT_START and\
+                choix != MENU_TOURNAMENT_RECOVERY and\
+                choix != MENU_TOURNAMENT_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("|         MENU TOURNOI          |")
@@ -54,7 +57,8 @@ class TournamentView:
             while not tournament_town:
                 tournament_town = input("Lieu du tournoi : ")
                 if any(chr.isdigit() for chr in tournament_town) is True:
-                    print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
+                    print("La ville ne peut contenir de chiffre."
+                          " Merci de ressaisir.")
                     tournament_town = ""
 
             """ Requests for number of rounds """
@@ -63,16 +67,18 @@ class TournamentView:
                 while True:
                     tournament_nb_round = input("Nombre de tour : ")
                     if str(tournament_nb_round).isalpha():
-                        print("Valeur uniquement numérique. Ressaisir le nombre de tour.")
+                        print("Valeur uniquement numérique. Ressaisir le"
+                              " nombre de tour.")
                     else:
                         break
 
             """ Requests for description of the tournament """
-            tournament_description = input("Description du tournoi ([ENTRER pour laisser vide) : ")
-            if not tournament_description:
-                tournament_description = "Juste une description de test"     # juste pour debugging, à supprimer
-
-            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_nb_round, tournament_description])
+            tournament_description = input("Description du tournoi"
+                                           " ([ENTRER pour laisser vide) : ")
+            TOURNAMENT_LIST.append([tournament_name,
+                                    tournament_town,
+                                    tournament_nb_round,
+                                    tournament_description])
 
             new_one_tournament = input("Créer un autre tournoi (O/n)?")
 
@@ -82,10 +88,12 @@ class TournamentView:
     def display_tournament():
         """ method to display tournament(s) """
         dis_tournament_menu = ""
-        while dis_tournament_menu.upper() != "T" and dis_tournament_menu.upper() != "C" and\
+        while dis_tournament_menu.upper() != "T" and\
+                dis_tournament_menu.upper() != "C" and\
                 dis_tournament_menu.upper() != "N":
             while True:
-                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours, (n)on commencé ou"
+                dis_tournament_menu = input("Afficher tournois (t)erminés,"
+                                            " en (c)ours, (n)on commencé ou"
                                             " tous[ENTER] ? ")
                 if not dis_tournament_menu:
                     return "display_all_tournaments"
@@ -123,11 +131,6 @@ class TournamentView:
                 choice = ""
             elif choice.isnumeric():
                 return choice
-
-    @staticmethod
-    def display_all_tournaments():
-        """ method to display all tournaments and select one """
-        pass
 
     @staticmethod
     def clear_screen():

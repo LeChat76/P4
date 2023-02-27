@@ -1,4 +1,5 @@
 from tinydb import TinyDB, Query
+from tinydb.operations import add
 import uuid
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')
@@ -146,8 +147,9 @@ class TournamentModel:
         players_uuid_list = tournament[0]['list_players']
         return players_uuid_list
 
-    def extract_matchs_uuid_list_of_tournament(self, tournament_uuid):
-        """ method to extract all match's id of a tournament """
+    @staticmethod
+    def extract_matchs_uuid_list_of_tournament(tournament_uuid):
+        """ method to extract all match's ids of a tournament """
         tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.
                                         matches(tournament_uuid))
         matchs_id_list = tournament[0]['list_matchs']
@@ -190,7 +192,7 @@ class TournamentModel:
                            self.tournament_uuid)
 
     def store_tournament_end_date(self, tournament_uuid, tournament_end_date):
-        """ method to store start date in tournament """
+        """ method to store end date in tournament """
         self.tournament_start_date = tournament_end_date
         self.tournament_uuid = tournament_uuid
         TOURNAMENTS.update({'end_date': self.tournament_start_date},
@@ -201,8 +203,8 @@ class TournamentModel:
         """ method to store matchs id in tournament """
         self.tournament_uuid = tournament_uuid
         self.match_id_list = match_id_list
-        TOURNAMENTS.update({'list_matchs': self.match_id_list},
-                           TOURNAMENT.tournament_uuid == self.tournament_uuid)
+        TOURNAMENTS.update(add('list_matchs', self.match_id_list),
+                           Query().tournament_uuid == self.tournament_uuid)
 
     def store_current_round(self, tournament_uuid, tournament_current_round):
         """ method to store current_round number in tournaments.json"""

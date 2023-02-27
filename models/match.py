@@ -14,6 +14,8 @@ class MatchModel:
     def __init__(self, tournament_uuid="", round_nb="", match_nb="",
                  player_one_uuid="", player_two_uuid="",
                  player_one_score="", player_two_score=""):
+        self.players_list = None
+        self.matchs_list = None
         self.matchs_ids_list = []
         self.tournament_uuid = tournament_uuid
         self.round_nb = round_nb
@@ -93,3 +95,23 @@ class MatchModel:
                 p2_uuid = result[0]['player_two_uuid']
                 previous_matchs_players_list.append([p1_uuid, p2_uuid])
         return previous_matchs_players_list
+
+    def extract_previous_scores(self, players_list, matchs_list):
+        """ method to extract all previous scores from stored matches """
+        self.matchs_list = matchs_list
+        self.players_list = players_list
+        scores = []
+        for i in range(len(players_list)):
+            player_score = 0
+            for match_id in matchs_list:
+                result = MATCHS.search(MATCH.match_id.matches(match_id))
+                p1_uuid = result[0]['player_one_uuid']
+                p2_uuid = result[0]['player_two_uuid']
+                p1_score = result[0]['player_one_score']
+                p2_score = result[0]['player_two_score']
+                if players_list[i] == p1_uuid:
+                    player_score += p1_score
+                elif players_list[i] == p2_uuid:
+                    player_score += p2_score
+            scores.append(player_score)
+        return scores
