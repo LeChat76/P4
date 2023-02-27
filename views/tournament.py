@@ -65,16 +65,20 @@ class TournamentView:
             tournament_nb_round = None
             while not tournament_nb_round:
                 while True:
-                    tournament_nb_round = input("Nombre de tour : ")
+                    tournament_nb_round = input("Nombre de tour ([ENTRER] pour"
+                                                " valeur par défaut = 4) : ")
                     if str(tournament_nb_round).isalpha():
                         print("Valeur uniquement numérique. Ressaisir le"
                               " nombre de tour.")
-                    else:
+                    elif not tournament_nb_round:
+                        tournament_nb_round = 4
                         break
 
             """ Requests for description of the tournament """
             tournament_description = input("Description du tournoi"
                                            " ([ENTRER pour laisser vide) : ")
+            if not tournament_description:
+                tournament_description = ""
             TOURNAMENT_LIST.append([tournament_name,
                                     tournament_town,
                                     tournament_nb_round,

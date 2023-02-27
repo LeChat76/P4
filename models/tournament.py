@@ -25,7 +25,7 @@ class TournamentModel:
         self.tournament_start_date = None
         self.tournament_end_date = None
         self.tournament_current_round = None
-        self.tournament_list_matchs = None
+        self.tournament_list_matchs = ""
         self.tournament_list_players = None
         self.tournament_description = tournament_description
         self.list_rounds = None
@@ -92,8 +92,8 @@ class TournamentModel:
             exit()
         for i in range(len(result)):
             item = result[i]
-            if item['nb_round'] != item['current_round'] and\
-                    item['current_round'] is not None:
+            if item['nb_round'] != item['current_round']\
+                    and item['current_round'] is not None:
                 list_current_tournament.append(item)
         if not list_current_tournament:
             return "no_result"
@@ -203,8 +203,16 @@ class TournamentModel:
         """ method to store matchs id in tournament """
         self.tournament_uuid = tournament_uuid
         self.match_id_list = match_id_list
-        TOURNAMENTS.update(add('list_matchs', self.match_id_list),
-                           Query().tournament_uuid == self.tournament_uuid)
+        is_list_matchs = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.
+                                            matches(self.tournament_uuid)
+                                            )[0]['list_matchs']
+        if is_list_matchs:
+            TOURNAMENTS.update(add('list_matchs', self.match_id_list),
+                               Query().tournament_uuid == self.tournament_uuid)
+        else:
+            TOURNAMENTS.update({'list_matchs': self.match_id_list},
+                               TOURNAMENT.tournament_uuid
+                               == self.tournament_uuid)
 
     def store_current_round(self, tournament_uuid, tournament_current_round):
         """ method to store current_round number in tournaments.json"""

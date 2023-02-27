@@ -40,6 +40,7 @@ class MatchModel:
     @staticmethod
     def store_match():
         """ method to store a round with list of tuple in json file """
+        MATCH_ID_LIST.clear()
         for match in MATCHS_LIST:
             match_id = match[0]
             p1 = match[1]
