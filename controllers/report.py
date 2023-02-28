@@ -87,6 +87,7 @@ class ReportController:
                               .extract_player_fname_and_name(player_uuid))
                 ReportView().choice_menu("Appuyez sur [ENTRER] pour revenir"
                                          " au menu.")
+                break
 
     @staticmethod
     def report_tournament_list():
@@ -160,3 +161,4 @@ class ReportController:
                 elif display_type == "scores":
                     ReportView().display_scores_scores(tournaments_scores,
                                                        tournament_name)
+                break
