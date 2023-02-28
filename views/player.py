@@ -1,15 +1,12 @@
 import datetime
 import os
-PLAYER_LIST = []
-MENU_PLAYER_CREATION = 1
-MENU_PLAYERS_DISPLAY = 2
-MENU_PLAYERS_DELETE = 3
-MENU_PLAYERS_EXIT = 4
+from constantes import *
 
 
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.score_is_float = None
         self.all_player_list = None
         self.player_one = None
         self.player_two = None
@@ -205,10 +202,10 @@ class PlayerView:
             result2 = 0
         return result1, result2
 
-    @staticmethod
-    def isfloat(num):
+    def isfloat(self, score_is_float):
+        self.score_is_float = score_is_float
         try:
-            float(num)
+            float(self.score_is_float)
             return True
         except ValueError:
             return False

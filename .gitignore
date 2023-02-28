@@ -78,4 +78,8 @@ fabric.properties
 
 # Environment
 /.venv/
+/venv/
+/env/
+/.env/
 /data/
+__pycache__/

@@ -1,29 +1,10 @@
 from math import floor, ceil
 import os
-
-MENU_RESULT_TOURNAMENT_PLAYERS = 1
-MENU_RESULT_TOURNAMENT_SCORES = 2
-MENU_RESULT_PLAYER_NAME = 3
-MENU_RESULT_PLAYER_FNAME = 4
-MENU_RESULT_TOURNAMENT_LIST = 5
-MENU_RESULT_TOURNAMENT_DETAIL = 6
-MENU_RESULT_EXIT = 7
-REPORT_TABLE_WIDTH = 60
-REPORT_MATCH_WIDTH = 18
-REPORT_SCORE_WIDTH = REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH
-PLAYER_MAX_LENGTH = 17
+from constantes import *
 
 
 class ReportView:
     """ Result class """
-    """
-    le rapport doit afficher:
-        * liste de tous les joueurs par ordre alphabétique
-        * liste de tous les tournois
-        * nom et dates d’un tournoi donné
-        * liste des joueurs du tournoi par ordre alphabétique
-        * liste de tous les tours du tournoi et de tous les matchs du tour
-    """
 
     def __init__(self):
         self.question = None
@@ -33,11 +14,11 @@ class ReportView:
     def report_menu(self):
         """ Menu 3 """
         choix = None
-        while choix != MENU_RESULT_TOURNAMENT_PLAYERS and choix !=\
-                MENU_RESULT_PLAYER_NAME and choix !=\
-                MENU_RESULT_EXIT and choix !=\
-                MENU_RESULT_TOURNAMENT_SCORES and choix != \
-                MENU_RESULT_PLAYER_FNAME and choix !=\
+        while choix != MENU_REPORT_TOURNAMENT_PLAYERS and choix !=\
+                MENU_REPORT_PLAYER_NAME and choix !=\
+                MENU_REPORT_EXIT and choix !=\
+                MENU_REPORT_TOURNAMENT_SCORES and choix != \
+                MENU_REPORT_PLAYER_FNAME and choix !=\
                 MENU_RESULT_TOURNAMENT_LIST and choix != \
                 MENU_RESULT_TOURNAMENT_DETAIL:
             self.clear_screen()

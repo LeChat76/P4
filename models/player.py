@@ -6,10 +6,6 @@ import random
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')
 PLAYER = Query()
-POS_PLAYER_SCORE = 7
-POS_PLAYER_UUID = 1
-MATCHS_LIST_TOURNAMENT = []
-MAX_SHUFFLE = 20
 
 
 class PlayerModel:

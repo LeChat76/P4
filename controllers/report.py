@@ -4,27 +4,25 @@ from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
 from models.player import PlayerModel
-MENU_REPORT_TOURNAMENT_PLAYERS = 1
-MENU_REPORT_TOURNAMENT_SCORES = 2
-MENU_REPORT_PLAYER_NAME = 3
-MENU_REPORT_PLAYER_FNAME = 4
-MENU_RESULT_TOURNAMENT_LIST = 5
-MENU_RESULT_TOURNAMENT_DETAIL = 6
-MENU_REPORT_EXIT = 7
-RESULT_DISPLAY = None
+from constantes import *
 
 
 class ReportController:
     """ reports class """
-
     def __init__(self):
         self.by_fname = None
         self.by_name = None
+        self.tournament_controller = TournamentController()
+        self.report_view = ReportView()
+        self.tournament_view = TournamentView()
+        self.tournament_model = TournamentModel()
+        self.match_model = MatchModel()
+        self.player_model = PlayerModel()
 
-    def menu_3(self):
+    def menu_report(self):
         """ Reports menu """
         while True:
-            choix = ReportView().report_menu()
+            choix = self.report_view.report_menu()
             if choix == MENU_REPORT_TOURNAMENT_PLAYERS:
                 self.report_tournament("players")
             elif choix == MENU_REPORT_TOURNAMENT_SCORES:
@@ -40,14 +38,14 @@ class ReportController:
             elif choix == MENU_REPORT_EXIT:
                 break
 
-    @staticmethod
-    def report_tournament_details():
+    def report_tournament_details(self):
         """ method to display detail of a tournament """
-        tournaments = TournamentModel.search_all_tournaments()
+        tournaments = self.tournament_model.search_all_tournaments()
         while True:
             if tournaments == "no_result":
-                ReportView().choice_menu("Aucun tournoi. Appuyez sur [ENTRER]"
-                                         " pour revenir au menu et en créer.")
+                self.report_view.choice_menu("Aucun tournoi. Appuyez sur"
+                                             " [ENTRER] pour revenir au menu"
+                                             " et en créer.")
                 break
             else:
                 for i in range(len(tournaments)):
@@ -57,11 +55,11 @@ class ReportController:
                                                 item['nb_round'])))
 
                 """ select a tournament """
-                choix = TournamentView().select_menu(tournaments)
+                choix = self.tournament_view.select_menu(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
                 tournament_uuid = selected_tournament['tournament_uuid']
                 result =\
-                    TournamentModel().extract_all_infos_tournaments(
+                    self.tournament_model.extract_all_infos_tournaments(
                         tournament_uuid)
                 print(f"Tournoi {result[0]} se déroulant à {result[1]} et"
                       f" comportant"
@@ -83,51 +81,51 @@ class ReportController:
                     print("La liste des joueurs est la suivante :")
                     for player_uuid in result[7]:
                         print("- "
-                              + PlayerModel()
+                              + self.player_model
                               .extract_player_fname_and_name(player_uuid))
-                ReportView().choice_menu("Appuyez sur [ENTRER] pour revenir"
-                                         " au menu.")
+                self.report_view.choice_menu("Appuyez sur [ENTRER] pour"
+                                             " revenir au menu.")
                 break
 
-    @staticmethod
-    def report_tournament_list():
+    def report_tournament_list(self):
         """ method to display list of tournaments """
-        TournamentController().display_tournament()
+        self.tournament_controller.display_tournament()
 
     def report_players_name(self, by_name, by_fname):
         """ method to display all players in alphabetic order """
+        self.by_name = by_name
+        self.by_fname = by_fname
         while True:
-            if PlayerModel().search_all_players("", "") == "no_result":
-                ReportView().choice_menu(
+            if self.player_model.search_all_players("", "") == "no_result":
+                self.report_view.choice_menu(
                          "Aucun joueurs. Appuyez sur [ENTRER] pour revenir"
                          " au menu et en créer.")
                 break
             else:
                 self.by_name = by_name
                 self.by_fname = by_fname
-                players_uuid_list = PlayerModel().\
+                players_uuid_list = self.player_model.\
                     search_all_players(self.by_name, self.by_fname)
-                players_list = PlayerModel().extract_data_player(
+                players_list = self.player_model.extract_data_player(
                     players_uuid_list)
                 for player in players_list:
                     print(PlayerModel(player[0], player[1], player[2],
                                       player[3]))
-                ReportView().choice_menu("Appuyez sur [ENTRER] pour revenir"
-                                         " au menu.")
+                self.report_view.choice_menu("Appuyez sur [ENTRER] pour"
+                                             " revenir au menu.")
                 break
 
-    @staticmethod
-    def report_tournament(display_type=None):
+    def report_tournament(self, display_type=None):
         """ method to display tournament report """
         while True:
-            if TournamentModel.search_all_tournaments() == "no_result":
-                ReportView().choice_menu(
+            if self.tournament_model.search_all_tournaments() == "no_result":
+                self.report_view.choice_menu(
                          "Aucun tournoi. Appuyez sur [ENTRER] pour revenir"
                          " au menu et en créer.")
                 break
             else:
                 """ display ended tournaments """
-                ended_tournaments = TournamentModel().\
+                ended_tournaments = self.tournament_model.\
                     search_completed_tournaments()
                 print("Liste des tournois terminés:")
                 for i in range(len(ended_tournaments)):
@@ -137,28 +135,28 @@ class ReportController:
                                         item['nb_round'])))
 
                 """ select a tournament """
-                choix = TournamentView().select_menu(ended_tournaments)
+                choix = self.tournament_view.select_menu(ended_tournaments)
                 selected_tournament = ended_tournaments[int(choix) - 1]
                 selected_tournament_uuid = \
                     selected_tournament['tournament_uuid']
 
                 """ extraction of all matchs associated to selected
                  tournament """
-                matchs_ids_list = TournamentModel()\
+                matchs_ids_list = self.tournament_model\
                     .extract_matchs_uuid_list_of_tournament(
-                    selected_tournament_uuid)
+                        selected_tournament_uuid)
 
                 """ extraction of all scores of matchs list associated to the
                  selected tournament """
-                tournaments_scores = MatchModel().extract_scores(
+                tournaments_scores = self.match_model.extract_scores(
                     matchs_ids_list)
                 tournament_name =\
-                    TournamentModel().extract_tournament_name(
+                    self.tournament_model.extract_tournament_name(
                         selected_tournament_uuid)
                 if display_type == "players":
-                    ReportView().display_scores_players(tournaments_scores,
-                                                        tournament_name)
+                    self.report_view.display_scores_players(tournaments_scores,
+                                                            tournament_name)
                 elif display_type == "scores":
-                    ReportView().display_scores_scores(tournaments_scores,
-                                                       tournament_name)
+                    self.report_view.display_scores_scores(tournaments_scores,
+                                                           tournament_name)
                 break

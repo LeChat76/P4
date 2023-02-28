@@ -19,10 +19,20 @@ Simply launch the script by typing "py main.py" and follow instruction :
 ```
 ## How to use
 ```sh
-1 ) create players (menu 1-1)
-2 ) create tournaments (menu 2-1)
-3 ) start tournaments (menu 2-3)
-4 ) view tournaments results (menu ...)
+1 ) manage players              (menu 1)
+    |_ create players           (....-1)
+    |_ display created players  (....-2)
+    |_ delete players           (....-3)
+2 ) manage tournaments          (menu 2)
+    |_ create tournaments       (....-1)
+    |_ display tournaments      (....-2)
+    |_ start tournament         (....-3) 
+    |_ resume tournament        (....-4)
+3 ) reporting                   (menu 3)
+    |_ display scores           (....-1 & ....-2)
+    |_ display players          (....-3 & ....-4)
+    |_ display tournaments      (....-5)
+    |_ display detailled tourn. (....-6)
 ```
 ## Features
 - data stored in json file

@@ -9,30 +9,31 @@ if not os.path.exists(DATA_FOLDER):
     with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as\
             creating_tournaments_file:
         pass
+
 from views.start_menu import MainMenu
 from controllers.player import PlayerController
 from controllers.tournament import TournamentController
 from controllers.report import ReportController
+from constantes import *
 MAIN_MENU = MainMenu()
-MENU_PLAYERS = 1
-MENU_TOURNAMENTS = 2
-MENU_REPORTS = 3
-MENU_EXIT = 4
 
 
 class ChessTournament:
-    """ Player controller """
+    def __init__(self):
+        self.view_main_menu = MainMenu()
+        self.tournament_controller = TournamentController()
+        self.player_controller = PlayerController()
+        self.report_controller = ReportController()
 
-    @staticmethod
-    def tournament_start():
+    def tournament_start(self):
         """ start tournament method """
         while True:
-            choix = MAIN_MENU.main_menu()
+            choix = self.view_main_menu.main_menu()
             if choix == MENU_PLAYERS:
-                PlayerController().menu_1()
+                self.player_controller.menu_player()
             elif choix == MENU_TOURNAMENTS:
-                TournamentController().menu_2()
+                self.tournament_controller.menu_tournament()
             elif choix == MENU_REPORTS:
-                ReportController().menu_3()
+                self.report_controller.menu_report()
             elif choix == MENU_EXIT:
                 exit()

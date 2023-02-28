@@ -1,11 +1,10 @@
 from models.player import PlayerModel
 from tinydb import TinyDB, Query
+from constantes import *
 import uuid
 DB = TinyDB('data/tournaments/matchs.json')
 MATCHS = DB.table('matchs')
 MATCH = Query()
-MATCHS_LIST = []
-MATCH_ID_LIST = []
 
 
 class MatchModel:

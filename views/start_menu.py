@@ -1,17 +1,14 @@
 import os
-MENU_PLAYERS = 1
-MENU_TOURNAMENT = 2
-MENU_RESULTS = 3
-MENU_QUIT = 4
+from constantes import *
 
 
 class MainMenu:
-
+    """ Main Menu Class """
     def main_menu(self):
         """ Root menu """
         choix = None
-        while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS\
-                and choix != MENU_RESULTS and choix != MENU_QUIT:
+        while choix != MENU_TOURNAMENTS and choix != MENU_PLAYERS\
+                and choix != MENU_REPORTS and choix != MENU_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("|            MENU               |")
