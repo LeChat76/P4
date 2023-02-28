@@ -1,3 +1,5 @@
+from views.start_menu import MainMenu
+from constantes import MENU_PLAYERS, MENU_TOURNAMENTS, MENU_REPORTS, MENU_EXIT
 import os
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data",
                            "tournaments")
@@ -9,13 +11,9 @@ if not os.path.exists(DATA_FOLDER):
     with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as\
             creating_tournaments_file:
         pass
-
-from views.start_menu import MainMenu
-from controllers.player import PlayerController
 from controllers.tournament import TournamentController
+from controllers.player import PlayerController
 from controllers.report import ReportController
-from constantes import *
-MAIN_MENU = MainMenu()
 
 
 class ChessTournament:

@@ -1,7 +1,6 @@
 from models.player import PlayerModel
 from tinydb import TinyDB, Query
-from constantes import MATCH_ID_LIST
-from constantes import MATCHS_LIST
+from constantes import MATCH_ID_LIST, MATCHS_LIST
 import uuid
 DB = TinyDB('data/tournaments/matchs.json')
 MATCHS = DB.table('matchs')

@@ -1,6 +1,7 @@
 from views.player import PlayerView
 from models.player import PlayerModel
-from constantes import *
+from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY,\
+    MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT
 
 
 class PlayerController:
