@@ -21,11 +21,11 @@ class PlayerModel:
         self.score = score
         self.player_uuid = None
         self.player_to_search = None
-        self.player_uuid_to_delete = None
         self.player_fname = player_fname
         self.player_name = player_name
         self.player_birthd = player_birthd
         self.player_clubid = player_clubid
+        self.enable = True
 
     def __str__(self):
         return f"{self.player_fname} {self.player_name} né le" \
@@ -36,19 +36,21 @@ class PlayerModel:
         PLAYERS.insert({'player_uuid': str(uuid.uuid1()),
                         'fname': self.player_fname, 'name': self.player_name,
                         'birthd': self.player_birthd,
-                        'clubid': self.player_clubid, 'score': self.score})
+                        'clubid': self.player_clubid, 'score': self.score,
+                        'enable': self.enable})
 
-    def delete_player(self, player_uuid_to_delete):
+    def delete_player(self, player_uuid):
         """ method to delete a player """
-        self.player_uuid_to_delete = player_uuid_to_delete
-        PLAYERS.remove(PLAYER.player_uuid == self.player_uuid_to_delete)
+        self.player_uuid = player_uuid
+        # PLAYERS.remove(PLAYER.player_uuid == self.player_uuid_to_delete)
+        PLAYERS.update({'enable': False}, PLAYER.player_uuid
+                       == self.player_uuid)
 
     def search_player(self, player_to_search):
         """ method to display player (search by name) """
         self.player_to_search = player_to_search
         try:
-            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search,
-                                                        flags=re.IGNORECASE))
+            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE) & (PLAYER.enable != False))
         except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez"
                   " le et recommencez.")
@@ -65,7 +67,7 @@ class PlayerModel:
         players_fname_list = []
         players_name_list = []
         try:
-            result = PLAYERS.search(PLAYER.name.matches('[aZ]*'))
+            result = PLAYERS.search(PLAYER.enable != False)
         except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez"
                   " le et recommencez.")
@@ -83,7 +85,7 @@ class PlayerModel:
             for player in result:
                 players_fname_list.append(player['fname'].capitalize())
                 players_uuid_list.append(player['player_uuid'])
-            players_fname_list, players_uuid_list =\
+            players_fname_list, players_uuid_list = \
                 zip(*sorted(zip(players_fname_list, players_uuid_list)))
             return players_uuid_list
         else:
@@ -109,7 +111,7 @@ class PlayerModel:
         if score0:
             random.shuffle(sorted_players_list)
         else:
-            players_scores, sorted_players_list =\
+            players_scores, sorted_players_list = \
                 zip(*sorted(zip(players_scores, sorted_players_list)))
         return list(sorted_players_list)
 
@@ -125,11 +127,11 @@ class PlayerModel:
                 p1_uuid = players_list.pop(0)
                 for p2_uuid in players_list:
                     match = [p1_uuid, p2_uuid]
-                    if match in previous_matchs_list or match[::-1] in\
+                    if match in previous_matchs_list or match[::-1] in \
                             previous_matchs_list:
                         already_played = True
                         continue
-                    elif match not in previous_matchs_list or match[::-1]\
+                    elif match not in previous_matchs_list or match[::-1] \
                             not in previous_matchs_list:
                         already_played = False
                         break
@@ -161,8 +163,8 @@ class PlayerModel:
         result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
-        player = player_first_name.capitalize() + " " + \
-                                                  player_name.capitalize()
+        player = player_first_name.capitalize() + " " + player_name.\
+            capitalize()
         return player
 
     def extract_data_player(self, players_uuid):
