@@ -45,9 +45,11 @@ class ReportController:
         """ method to display detail of a tournament """
         tournaments = TournamentModel.search_all_tournaments()
         if tournaments == "no_result":
-            ReportView().choice_menu(
-                "Appuyez sur [ENTRER] pour revenir au menu.")
-            break
+            answer = None
+            while not answer:
+                answer = ReportView().choice_menu(
+                         "Appuyez sur [ENTRER] pour revenir au menu.")
+                break
         for i in range(len(tournaments)):
             item = tournaments[i]
             print(str(i + 1) + " - " + str(TournamentModel(item['name'],
