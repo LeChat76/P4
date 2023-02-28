@@ -4,7 +4,9 @@ from views.player import PlayerView
 from models.tournament import TournamentModel
 from models.player import PlayerModel
 from models.match import MatchModel
-from constantes import *
+from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY,\
+    MENU_TOURNAMENT_START, MENU_TOURNAMENT_RECOVERY, MENU_TOURNAMENT_EXIT,\
+    NB_JOUEURS_BY_MATCH
 
 
 class TournamentController:
