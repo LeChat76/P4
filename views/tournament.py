@@ -1,5 +1,7 @@
 import os
-from constantes import *
+from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY,\
+    MENU_TOURNAMENT_START, MENU_TOURNAMENT_RECOVERY, MENU_TOURNAMENT_EXIT,\
+    TOURNAMENT_LIST
 
 
 class TournamentView:
