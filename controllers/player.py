@@ -1,7 +1,16 @@
+import os
 from views.player import PlayerView
 from models.player import PlayerModel
 from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY,\
     MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT
+
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data",
+                           "tournaments")
+if not os.path.exists(DATA_FOLDER):
+    os.makedirs(DATA_FOLDER)
+    with open(os.path.join(DATA_FOLDER, "players.json"), 'w') as\
+            creating_players_file:
+        pass
 
 
 class PlayerController:

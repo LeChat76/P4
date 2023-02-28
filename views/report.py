@@ -11,6 +11,7 @@ class ReportView:
     """ Result class """
 
     def __init__(self):
+        self.tournament_info = None
         self.question = None
         self.tournament_name = None
         self.tournaments_scores = None
@@ -185,6 +186,26 @@ class ReportView:
                 return "O"
             elif choix.upper() == "N":
                 return "N"
+
+    def display_tournament_details(self, tournament_info):
+        """ method to display tournament details for reporting menu """
+        self.tournament_info = tournament_info
+        print(f"Tournoi {self.tournament_info[0]} se déroulant à"
+              f" {self.tournament_info[1]} et comportant"
+              f" {self.tournament_info[4]} round(s).")
+        print(f"Description : {self.tournament_info[8]}.")
+        if self.tournament_info[2] and self.tournament_info[3]:
+            print(f"Ce tournoi a démarré le {self.tournament_info[2]} et s'est"
+                  f" terminé le {self.tournament_info[3]}.")
+        elif self.tournament_info[2] and not self.tournament_info[3]:
+            print(f"Ce tournoi a démarré le {self.tournament_info[2]} mais"
+                  f" n'est pas terminé, {self.tournament_info[5]} round(s) sur"
+                  f" {self.tournament_info[4]} ont étés joués.")
+        elif not self.tournament_info[2]:
+            print(f"Ce tournoi n'a pas encore démarré.")
+        if self.tournament_info[2]:
+            print(f"Il y'a eu " + str(len(self.tournament_info[6]))
+                  + " matchs joué(s).")
 
     @staticmethod
     def clear_screen():

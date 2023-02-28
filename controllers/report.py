@@ -58,28 +58,13 @@ class ReportController:
                 choix = self.tournament_view.select_menu(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
                 tournament_uuid = selected_tournament['tournament_uuid']
-                result =\
+                tournament_infos =\
                     self.tournament_model.extract_all_infos_tournaments(
                         tournament_uuid)
-                print(f"Tournoi {result[0]} se déroulant à {result[1]} et"
-                      f" comportant"
-                      f" {result[4]} round(s).")
-                print(f"Description : {result[8]}.")
-                if result[2] and result[3]:
-                    print(f"Ce tournoi a démarré le {result[2]} et s'est"
-                          f" terminé le {result[3]}.")
-                elif result[2] and not result[3]:
-                    print(f"Ce tournoi a démarré le {result[2]} mais n'est"
-                          f" pas terminé, {result[5]} round(s) sur"
-                          f" {result[4]} ont étés joués.")
-                elif not result[2]:
-                    print(f"Ce tournoi n'a pas encore démarré.")
-                if result[2]:
-                    print(f"Il y'a eu " + str(len(result[6]))
-                          + " matchs joué(s).")
-                if result[7]:
+                self.report_view.display_tournament_details(tournament_infos)
+                if tournament_infos[7]:
                     print("La liste des joueurs est la suivante :")
-                    for player_uuid in result[7]:
+                    for player_uuid in tournament_infos[7]:
                         print("- "
                               + self.player_model
                               .extract_player_fname_and_name(player_uuid))
