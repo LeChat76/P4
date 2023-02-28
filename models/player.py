@@ -120,6 +120,8 @@ class PlayerModel:
     @staticmethod
     def check_players_list(players_list, previous_matchs_list):
         """ method to compare matchs players VS previous matchs players """
+        match = None
+        p2_uuid = None
         checked_players_list = []
         already_played = False
         if previous_matchs_list:

@@ -10,7 +10,8 @@ class MainMenu:
     def main_menu(self):
         """ Root menu """
         choix = None
-        while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS and choix != MENU_RESULTS and choix != MENU_QUIT:
+        while choix != MENU_TOURNAMENT and choix != MENU_PLAYERS\
+                and choix != MENU_RESULTS and choix != MENU_QUIT:
             self.clear_screen()
             print("+-------------------------------+")
             print("|            MENU               |")

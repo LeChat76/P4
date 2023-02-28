@@ -217,8 +217,8 @@ class TournamentModel:
     def store_current_round(self, tournament_uuid, tournament_current_round):
         """ method to store current_round number in tournaments.json"""
         self.tournament_uuid = tournament_uuid
-        self.tournament_current_round = str(tournament_current_round)
-        TOURNAMENTS.update({'current_round': int(self.tournament_current_round)},
+        self.tournament_current_round = int(tournament_current_round)
+        TOURNAMENTS.update({'current_round': self.tournament_current_round},
                            TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
     def store_round_date(self, tournament_uuid, current_round,
