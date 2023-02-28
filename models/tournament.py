@@ -42,7 +42,7 @@ class TournamentModel:
                             'town': self.tournament_town,
                             'start_date': self.tournament_start_date,
                             'end_date': self.tournament_end_date,
-                            'nb_round': self.tournament_nb_round,
+                            'nb_round': int(self.tournament_nb_round),
                             'current_round': self.tournament_current_round,
                             'list_rounds': self.list_rounds,
                             'list_players': self.tournament_list_players,
@@ -92,7 +92,7 @@ class TournamentModel:
             exit()
         for i in range(len(result)):
             item = result[i]
-            if item['nb_round'] != item['current_round']\
+            if str(item['nb_round']) != str(item['current_round'])\
                     and item['current_round'] is not None:
                 list_current_tournament.append(item)
         if not list_current_tournament:
