@@ -4,7 +4,6 @@ from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
 from models.player import PlayerModel
-from views.player import PlayerView
 MENU_REPORT_TOURNAMENT_PLAYERS = 1
 MENU_REPORT_TOURNAMENT_SCORES = 2
 MENU_REPORT_PLAYER_NAME = 3

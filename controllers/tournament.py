@@ -330,6 +330,7 @@ class TournamentController:
     @staticmethod
     def resume_tournament():
         """ method to resume a not ended tournament """
+        match = None
         not_ended_tournament = TournamentModel().\
             search_current_tournaments()
         if not_ended_tournament == "no_result":
