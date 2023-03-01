@@ -182,7 +182,8 @@ class TournamentModel:
         """ method to store end date in tournament """
         self.tournament_start_date = tournament_end_date
         self.tournament_uuid = tournament_uuid
-        TOURNAMENTS.update({'end_date': self.tournament_start_date}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
+        TOURNAMENTS.update({'end_date': self.tournament_start_date}, TOURNAMENT.tournament_uuid
+                           == self.tournament_uuid)
 
     def store_match_id(self, tournament_uuid, match_id_list):
         """ method to store matchs id in tournament """
