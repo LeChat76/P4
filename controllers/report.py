@@ -4,7 +4,10 @@ from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
 from models.player import PlayerModel
-from constantes import *
+from constantes import MENU_REPORT_TOURNAMENT_PLAYERS,\
+    MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
+    MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST,\
+    MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT
 
 
 class ReportController:
