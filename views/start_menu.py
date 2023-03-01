@@ -1,5 +1,5 @@
 import os
-from constantes import *
+from constantes import MENU_TOURNAMENTS, MENU_PLAYERS, MENU_REPORTS, MENU_EXIT
 
 
 class MainMenu:

@@ -202,9 +202,9 @@ class ReportView:
                   f" n'est pas terminé, {self.tournament_info[5]} round(s) sur"
                   f" {self.tournament_info[4]} joué(s).")
         elif not self.tournament_info[2]:
-            print(f"Ce tournoi n'a pas encore démarré.")
+            print("Ce tournoi n'a pas encore démarré.")
         if self.tournament_info[2]:
-            print(f"Il y'a eu " + str(len(self.tournament_info[6]))
+            print("Il y'a eu " + str(len(self.tournament_info[6]))
                   + " match(s) joué(s).")
 
     @staticmethod
