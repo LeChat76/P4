@@ -33,9 +33,9 @@ class PlayerModel:
 
     def add_player(self):
         """ method for add a player in the json file """
-        PLAYERS.insert({'player_uuid': str(uuid.uuid1()),
-                        'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
-                        'clubid': self.player_clubid, 'score': self.score, 'enable': self.enable})
+        PLAYERS.insert({'player_uuid': str(uuid.uuid1()), 'fname': self.player_fname, 'name': self.player_name,
+                        'birthd': self.player_birthd, 'clubid': self.player_clubid, 'score': self.score,
+                        'enable': self.enable})
 
     def delete_player(self, player_uuid):
         """ method to delete a player """
@@ -85,8 +85,7 @@ class PlayerModel:
             return result
 
     def create_player_list(self, players_list):
-        """method to create player's list sorted by score
-        if all score egal 0, randomized players list """
+        """method to create player's list sorted by score if all score egal 0, randomized players list """
         players_scores = []
         sorted_players_list = []
         score0 = True

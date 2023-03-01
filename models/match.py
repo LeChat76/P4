@@ -10,8 +10,7 @@ MATCH = Query()
 class MatchModel:
     """ Match class """
 
-    def __init__(self, tournament_uuid="", round_nb="", match_nb="",
-                 player_one_uuid="", player_two_uuid="",
+    def __init__(self, tournament_uuid="", round_nb="", match_nb="", player_one_uuid="", player_two_uuid="",
                  player_one_score="", player_two_score=""):
         self.players_list = None
         self.matchs_list = None
@@ -25,12 +24,10 @@ class MatchModel:
         self.player_two_score = player_two_score
 
     def create_tuple_for_match(self):
-        """ method to store match result for a round in a list of tuple
-         (who contains list of players + scores) """
+        """ method to store match result for a round in a list of tuple (who contains list of players + scores) """
         p1 = (self.player_one_uuid, self.player_one_score)
         p2 = (self.player_two_uuid, self.player_two_score)
-        match_id = "T_" + str(self.tournament_uuid) + "_R" +\
-                   str(self.round_nb) + "_M" + str(self.match_nb)
+        match_id = "T_" + str(self.tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
         PlayerModel().store_score(self.player_one_uuid, self.player_one_score)
         PlayerModel().store_score(self.player_two_uuid, self.player_two_score)
         match = (match_id, p1, p2)
@@ -46,11 +43,8 @@ class MatchModel:
             p2 = match[2]
             p1_uuid, p1_score = p1[0], p1[1]
             p2_uuid, p2_score = p2[0], p2[1]
-            MATCHS.insert({'match_uuid': str(uuid.uuid1()),
-                           'match_id': match_id, 'player_one_uuid': p1_uuid,
-                           'player_two_uuid': p2_uuid,
-                           'player_one_score': p1_score,
-                           'player_two_score': p2_score})
+            MATCHS.insert({'match_uuid': str(uuid.uuid1()), 'match_id': match_id, 'player_one_uuid': p1_uuid,
+                           'player_two_uuid': p2_uuid, 'player_one_score': p1_score, 'player_two_score': p2_score})
             MATCH_ID_LIST.append(match_id)
         MATCHS_LIST.clear()
         return MATCH_ID_LIST
@@ -73,15 +67,12 @@ class MatchModel:
             matchs.append((match_id.split("_")[3])[1:])
             match_max = max(matchs)
             p1_uuid = result[0]['player_one_uuid']
-            p1_name.append(PlayerModel().
-                           extract_player_fname_and_name(p1_uuid))
+            p1_name.append(PlayerModel().extract_player_fname_and_name(p1_uuid))
             p2_uuid = result[0]['player_two_uuid']
-            p2_name.append(PlayerModel().
-                           extract_player_fname_and_name(p2_uuid))
+            p2_name.append(PlayerModel().extract_player_fname_and_name(p2_uuid))
             p1_scores.append(result[0]['player_one_score'])
             p2_scores.append(result[0]['player_two_score'])
-            tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores,
-                                 p2_scores, round_max, match_max]
+            tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores, p2_scores, round_max, match_max]
         return tournament_scores
 
     @staticmethod

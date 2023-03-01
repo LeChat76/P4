@@ -1,7 +1,6 @@
 import os
-from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY,\
-    MENU_TOURNAMENT_START, MENU_TOURNAMENT_RECOVERY, MENU_TOURNAMENT_EXIT,\
-    TOURNAMENT_LIST
+from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY, MENU_TOURNAMENT_START,\
+    MENU_TOURNAMENT_RECOVERY, MENU_TOURNAMENT_EXIT, TOURNAMENT_LIST
 
 
 class TournamentView:
@@ -14,10 +13,8 @@ class TournamentView:
     def tournament_menu(self):
         """ Menu 1 """
         choix = None
-        while choix != MENU_TOURNAMENT_CREATION and\
-                choix != MENU_TOURNAMENT_DISPLAY and\
-                choix != MENU_TOURNAMENT_START and\
-                choix != MENU_TOURNAMENT_RECOVERY and\
+        while choix != MENU_TOURNAMENT_CREATION and choix != MENU_TOURNAMENT_DISPLAY and\
+                choix != MENU_TOURNAMENT_START and choix != MENU_TOURNAMENT_RECOVERY and\
                 choix != MENU_TOURNAMENT_EXIT:
             self.clear_screen()
             print("+-------------------------------+")
@@ -44,42 +41,35 @@ class TournamentView:
 
         while new_one_tournament.upper() != "N":
 
-            """ Requests for tournament name """
+            # Requests for tournament name
             tournament_name = None
             while not tournament_name:
                 tournament_name = input("Nom du tournoi : ")
 
-            """ Requests for tournament name """
+            # Requests for tournament name
             tournament_town = None
             while not tournament_town:
                 tournament_town = input("Lieu du tournoi : ")
                 if any(chr.isdigit() for chr in tournament_town) is True:
-                    print("La ville ne peut contenir de chiffre."
-                          " Merci de ressaisir.")
+                    print("La ville ne peut contenir de chiffre. Merci de ressaisir.")
                     tournament_town = ""
 
-            """ Requests for number of rounds """
+            # Requests for number of rounds
             tournament_nb_round = None
             while not tournament_nb_round:
                 while True:
-                    tournament_nb_round = input("Nombre de tour ([ENTRER] pour"
-                                                " valeur par défaut = 4) : ")
+                    tournament_nb_round = input("Nombre de tour ([ENTRER] pour valeur par défaut = 4) : ")
                     if str(tournament_nb_round).isalpha():
-                        print("Valeur uniquement numérique. Ressaisir le"
-                              " nombre de tour.")
+                        print("Valeur uniquement numérique. Ressaisir le nombre de tour.")
                     elif not tournament_nb_round:
                         tournament_nb_round = 4
                         break
 
-            """ Requests for description of the tournament """
-            tournament_description = input("Description du tournoi"
-                                           " ([ENTRER pour laisser vide) : ")
+            # Requests for description of the tournament
+            tournament_description = input("Description du tournoi ([ENTRER pour laisser vide) : ")
             if not tournament_description:
                 tournament_description = ""
-            TOURNAMENT_LIST.append([tournament_name,
-                                    tournament_town,
-                                    tournament_nb_round,
-                                    tournament_description])
+            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_nb_round, tournament_description])
 
             new_one_tournament = input("Créer un autre tournoi (O/n)?")
 
@@ -89,13 +79,11 @@ class TournamentView:
     def display_tournament():
         """ method to display tournament(s) """
         dis_tournament_menu = ""
-        while dis_tournament_menu.upper() != "T" and\
-                dis_tournament_menu.upper() != "C" and\
-                dis_tournament_menu.upper() != "N":
+        while dis_tournament_menu.upper() != "T" and dis_tournament_menu.upper() != "C"\
+                and dis_tournament_menu.upper() != "N":
             while True:
-                dis_tournament_menu = input("Afficher tournois (t)erminés,"
-                                            " en (c)ours, (n)on commencé ou"
-                                            " tous[ENTER] ? ")
+                dis_tournament_menu = input("Afficher tournois (t)erminés, en (c)ours, (n)on commencé"
+                                            " ou tous[ENTER] ? ")
                 if not dis_tournament_menu:
                     return "display_all_tournaments"
                 elif dis_tournament_menu == "t":

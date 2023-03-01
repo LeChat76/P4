@@ -4,10 +4,8 @@ from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
 from models.player import PlayerModel
-from constantes import MENU_REPORT_TOURNAMENT_PLAYERS,\
-    MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
-    MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST,\
-    MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT
+from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
+    MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST, MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT
 
 
 class ReportController:
@@ -47,39 +45,29 @@ class ReportController:
         tournaments = self.tournament_model.search_all_tournaments()
         while True:
             if tournaments == "no_result":
-                self.report_view.choice_menu("Aucun tournoi. Appuyez sur"
-                                             " [ENTRER] pour revenir au menu"
-                                             " et en créer.")
+                self.report_view.choice_menu("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
             else:
                 for i in range(len(tournaments)):
                     item = tournaments[i]
                     print(str(i + 1) + " - "
-                          + str(TournamentModel(item['name'], item['town'],
-                                                item['nb_round'])))
+                          + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
 
                 # select a tournament
                 choix = self.tournament_view.select_menu(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
                 tournament_uuid = selected_tournament['tournament_uuid']
-                tournament_infos =\
-                    self.tournament_model.extract_all_infos_tournaments(
-                        tournament_uuid)
+                tournament_infos = self.tournament_model.extract_all_infos_tournaments(tournament_uuid)
                 self.report_view.display_tournament_details(tournament_infos)
                 # display ordered player list of a tournament
                 if tournament_infos[7]:
                     for player_uuid in tournament_infos[7]:
-                        player_fname_name_list.\
-                            append(self.
-                                   player_model.
-                                   extract_player_fname_and_name(player_uuid))
+                        player_fname_name_list.append(self.player_model.extract_player_fname_and_name(player_uuid))
                     player_fname_name_list.sort()
-                    print("La liste des joueurs (triée par ordre alphabétique)"
-                          " est la suivante :")
+                    print("La liste des joueurs (triée par ordre alphabétique) est la suivante :")
                     for player in player_fname_name_list:
                         print("- " + player)
-                self.report_view.choice_menu("Appuyez sur [ENTRER] pour"
-                                             " revenir au menu.")
+                self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
     def report_tournament_list(self):
@@ -92,66 +80,49 @@ class ReportController:
         self.by_fname = by_fname
         while True:
             if self.player_model.search_all_players("", "") == "no_result":
-                self.report_view.choice_menu(
-                         "Aucun joueurs. Appuyez sur [ENTRER] pour revenir"
-                         " au menu et en créer.")
+                self.report_view.choice_menu("Aucun joueurs. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
             else:
                 self.by_name = by_name
                 self.by_fname = by_fname
-                players_uuid_list = self.player_model.\
-                    search_all_players(self.by_name, self.by_fname)
-                players_list = self.player_model.extract_data_player(
-                    players_uuid_list)
+                players_uuid_list = self.player_model.search_all_players(self.by_name, self.by_fname)
+                players_list = self.player_model.extract_data_player(players_uuid_list)
                 for player in players_list:
-                    print(PlayerModel(player[0], player[1], player[2],
-                                      player[3]))
-                self.report_view.choice_menu("Appuyez sur [ENTRER] pour"
-                                             " revenir au menu.")
+                    print(PlayerModel(player[0], player[1], player[2], player[3]))
+                self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
     def report_tournament(self, display_type=None):
         """ method to display tournament report """
         while True:
             if self.tournament_model.search_all_tournaments() == "no_result":
-                self.report_view.choice_menu(
-                         "Aucun tournoi. Appuyez sur [ENTRER] pour revenir"
-                         " au menu et en créer.")
+                self.report_view.choice_menu("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
             else:
                 # display ended tournaments
-                ended_tournaments = self.tournament_model.\
-                    search_completed_tournaments()
+                ended_tournaments = self.tournament_model.search_completed_tournaments()
                 print("Liste des tournois terminés:")
                 for i in range(len(ended_tournaments)):
                     item = ended_tournaments[i]
-                    print(str(i + 1) + " - " + str(
-                        TournamentModel(item['name'], item['town'],
-                                        item['nb_round'])))
+                    print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
 
                 # select a tournament
                 choix = self.tournament_view.select_menu(ended_tournaments)
                 selected_tournament = ended_tournaments[int(choix) - 1]
-                selected_tournament_uuid = \
-                    selected_tournament['tournament_uuid']
+                selected_tournament_uuid = selected_tournament['tournament_uuid']
 
                 # extraction of all matchs associated to selected
                 # tournament
-                matchs_ids_list = self.tournament_model\
-                    .extract_matchs_uuid_list_of_tournament(
-                        selected_tournament_uuid)
+                matchs_ids_list = self.tournament_model.extract_matchs_uuid_list_of_tournament(
+                    selected_tournament_uuid)
 
                 # extraction of all scores of matchs list associated to the
                 # selected tournament
                 tournaments_scores = self.match_model.extract_scores(
                     matchs_ids_list)
-                tournament_name =\
-                    self.tournament_model.extract_tournament_name(
-                        selected_tournament_uuid)
+                tournament_name = self.tournament_model.extract_tournament_name(selected_tournament_uuid)
                 if display_type == "players":
-                    self.report_view.display_scores_players(tournaments_scores,
-                                                            tournament_name)
+                    self.report_view.display_scores_players(tournaments_scores, tournament_name)
                 elif display_type == "scores":
-                    self.report_view.display_scores_scores(tournaments_scores,
-                                                           tournament_name)
+                    self.report_view.display_scores_scores(tournaments_scores, tournament_name)
                 break
