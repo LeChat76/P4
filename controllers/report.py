@@ -55,7 +55,7 @@ class ReportController:
                           + str(TournamentModel(item['name'], item['town'],
                                                 item['nb_round'])))
 
-                """ select a tournament """
+                # select a tournament
                 choix = self.tournament_view.select_menu(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
                 tournament_uuid = selected_tournament['tournament_uuid']
@@ -71,7 +71,7 @@ class ReportController:
                                    player_model.
                                    extract_player_fname_and_name(player_uuid))
                     player_fname_name_list.sort()
-                    print("La liste des joueurs (trié par ordre alphabétique)"
+                    print("La liste des joueurs (triée par ordre alphabétique)"
                           " est la suivante :")
                     for player in player_fname_name_list:
                         print("- " + player)
@@ -116,7 +116,7 @@ class ReportController:
                          " au menu et en créer.")
                 break
             else:
-                """ display ended tournaments """
+                # display ended tournaments
                 ended_tournaments = self.tournament_model.\
                     search_completed_tournaments()
                 print("Liste des tournois terminés:")
@@ -126,20 +126,20 @@ class ReportController:
                         TournamentModel(item['name'], item['town'],
                                         item['nb_round'])))
 
-                """ select a tournament """
+                # select a tournament
                 choix = self.tournament_view.select_menu(ended_tournaments)
                 selected_tournament = ended_tournaments[int(choix) - 1]
                 selected_tournament_uuid = \
                     selected_tournament['tournament_uuid']
 
-                """ extraction of all matchs associated to selected
-                 tournament """
+                # extraction of all matchs associated to selected
+                # tournament
                 matchs_ids_list = self.tournament_model\
                     .extract_matchs_uuid_list_of_tournament(
                         selected_tournament_uuid)
 
-                """ extraction of all scores of matchs list associated to the
-                 selected tournament """
+                # extraction of all scores of matchs list associated to the
+                # selected tournament
                 tournaments_scores = self.match_model.extract_scores(
                     matchs_ids_list)
                 tournament_name =\

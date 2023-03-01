@@ -49,7 +49,9 @@ class PlayerModel:
         """ method to display player (search by name) """
         self.player_to_search = player_to_search
         try:
-            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE) & (PLAYER.enable != False))
+            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search,
+                                                        flags=re.IGNORECASE)
+                                    & (PLAYER.enable != False))
         except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez"
                   " le et recommencez.")
@@ -92,7 +94,6 @@ class PlayerModel:
 
     def create_player_list(self, players_list):
         """
-        players_list = players_uuid
         method to create player's list sorted by score
         if all score egal 0, randomized players list
         """

@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from views.tournament import TournamentView
 from views.player import PlayerView
@@ -157,13 +156,13 @@ class TournamentController:
                                                  " [ENTRER] pour revenir au"
                                                  " menu.")
                 break
-            """ create list of players (uuid) """
+            # create list of players (uuid)
             for i in range(len(players_available)):
                 item = players_available[i]
                 players_available_list.append(item['player_uuid'])
 
-            """ create list of available tournaments (tournament not already
-             started) """
+            # create list of available tournaments (tournament not already
+            # started)
             not_started_tournament =\
                 self.tournament_model.search_not_started_tournaments()
             if not_started_tournament == "no_result":
@@ -173,7 +172,7 @@ class TournamentController:
                                                  " continuer.")
                 break
 
-            """ displayer list of available tournaments """
+            # displayer list of available tournaments
             print("Liste des tournois non démarrés:")
             for i in range(len(not_started_tournament)):
                 item = not_started_tournament[i]
@@ -182,18 +181,18 @@ class TournamentController:
                                           item['town'],
                                           item['nb_round'])))
 
-            """ choose tournament """
+            # choose tournament
             result = self.tournament_view.select_menu(not_started_tournament)
             selected_tournament = not_started_tournament[int(result) - 1]
             selected_tournament_uuid = selected_tournament['tournament_uuid']
 
             tournament_nb_round = self.tournament_model.\
                 search_nb_round_for_tournament(selected_tournament_uuid)
-            """ compare nb rounds and nb players available to check if some
-            players will play with the same players twice - formula is nb
-            round should not be superior of nb players available - 1
-            example : if there is 8 players, nb match = 7 so nb round max
-            should be equal or inferior to 7 """
+            # compare nb rounds and nb players available to check if some
+            # players will play with the same players twice - formula is nb
+            # round should not be superior of nb players available - 1
+            # example : if there is 8 players, nb match = 7 so nb round max
+            # should be equal or inferior to 7 """
             if int(tournament_nb_round) > (int(len(players_available)) - 1):
                 print("Ce tournoi comporte "
                       + str(tournament_nb_round)
@@ -201,13 +200,13 @@ class TournamentController:
                         " pour éviter que certains ne se rencontrent deux"
                         " fois.")
 
-            """ Selection of players to add to the selected tournament """
+            # Selection of players to add to the selected tournament
             nb_players = 0
             nb_players_available = len(players_available_list)
 
-            """ check if nb players available is pair because in case of
-             nb players selected is odd, sometime a player will not play
-             so it's mandatory to select only pair numbers of players """
+            # check if nb players available is pair because in case of
+            # nb players selected is odd, sometime a player will not play
+            # so it s mandatory to select only pair numbers of players
             if nb_players_available % 2 != 0:
                 nb_players_available_pair = False
             else:
@@ -258,7 +257,7 @@ class TournamentController:
             self.tournament_view.choice_menu("Appuyez sur une [ENTRER] pour"
                                              " continuer.")
 
-            """ beginning of the tournament """
+            # beginning of the tournament
             current_round = 1
             date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
             self.tournament_model.\
@@ -268,7 +267,7 @@ class TournamentController:
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
 
             for j in range(int(nb_round)):
-                """ loop for all rounds """
+                # loop for all rounds
                 round_start_date = \
                     (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                 players_list =\
@@ -288,7 +287,7 @@ class TournamentController:
 
                 current_match = 1
                 for i in range(0, nb_match * 2, 2):
-                    """ loop for all matches for one round"""
+                    # loop for all matches for one round
                     player_one_uuid = players_list[i]
                     player_two_uuid = players_list[i + 1]
                     player_one = self.player_model.\
@@ -344,7 +343,7 @@ class TournamentController:
                                              "Appuyez sur [ENTRER]"
                                              " pour continuer.")
         else:
-            """ displayer list of not ended tournaments """
+            # displayer list of not ended tournaments
             print("Liste des tournois non démarrés:")
             for i in range(len(not_ended_tournament)):
                 item = not_ended_tournament[i]
@@ -353,7 +352,7 @@ class TournamentController:
                                           item['town'],
                                           item['nb_round'])))
 
-            """ choose tournament """
+            # choose tournament
             result = self.tournament_view.select_menu(not_ended_tournament)
             selected_tournament = not_ended_tournament[int(result) - 1]
             tournament_uuid = selected_tournament['tournament_uuid']
@@ -369,32 +368,32 @@ class TournamentController:
             print(f"Le prochain round est le"
                   f" {current_round} ème.")
 
-            """ resume the tournament """
+            # resume the tournament
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
 
             for j in range(current_round - 1, nb_round):
-                """ loop for all rounds """
+                # loop for all rounds
                 round_start_date = \
                     (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                """ extract matches ids from a tournament """
+                # extract matches ids from a tournament
                 matchs_list = self.tournament_model \
                     .extract_matchs_uuid_list_of_tournament(tournament_uuid)
-                """ create players list from previous matches """
+                # create players list from previous matches
                 previous_matchs_players_list = self.match_model \
                     .create_matchs_players_list(matchs_list)
-                """ extract previous scores from matches """
+                # extract previous scores from matches
                 previous_scores = \
                     self.match_model.extract_previous_scores(players_uuid_list,
                                                              matchs_list)
-                """ store scores in players.json file """
+                # store scores in players.json file
                 self.player_model.\
                     store_score_from_previous_match(players_uuid_list,
                                                     previous_scores)
-                """ create players list sorted by scores """
+                # create players list sorted by scores
                 players_list =\
                     self.player_model.create_player_list(players_uuid_list)
-                """ check players list to avoid players
-                 already played together (if possible) """
+                # check players list to avoid players
+                # already played together (if possible)
                 players_list = self.player_model\
                     .check_players_list(players_list,
                                         previous_matchs_players_list)
@@ -405,7 +404,7 @@ class TournamentController:
 
                 current_match = 1
                 for i in range(0, nb_match * 2, 2):
-                    """ loop for all matches for one round"""
+                    # loop for all matches for one round
                     player_one_uuid = players_list[i]
                     player_two_uuid = players_list[i + 1]
                     player_one = self.player_model.\
@@ -418,7 +417,6 @@ class TournamentController:
                           + " à " + player_two + ".")
                     scores = self.player_view.record_score(player_one,
                                                            player_two)
-                    """ TROUVER LE MOYEN D'AJOUTER ANCIENS MATCHS """
                     match = MatchModel(tournament_uuid, current_round,
                                        current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
