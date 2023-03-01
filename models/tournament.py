@@ -23,9 +23,9 @@ class TournamentModel:
         self.current_round = None
         self.round_end_date = None
         self.round_start_date = None
-        self.start_date = None
+        # self.start_date = None
         self.match_id_list = None
-        self.player_uuid = None
+        # self.player_uuid = None
         self.tournament_uuid = None
         self.tournament_name = tournament_name
         self.tournament_town = tournament_town

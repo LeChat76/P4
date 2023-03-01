@@ -38,8 +38,9 @@ class ReportController:
             elif choix == MENU_REPORT_EXIT:
                 break
 
-    def report_tournament_details(self):
+    def report_tournament_details(self, ):
         """ method to display detail of a tournament """
+        player_fname_name_list = []
         tournaments = self.tournament_model.search_all_tournaments()
         while True:
             if tournaments == "no_result":
@@ -62,12 +63,18 @@ class ReportController:
                     self.tournament_model.extract_all_infos_tournaments(
                         tournament_uuid)
                 self.report_view.display_tournament_details(tournament_infos)
+                # display ordered player list of a tournament
                 if tournament_infos[7]:
-                    print("La liste des joueurs est la suivante :")
                     for player_uuid in tournament_infos[7]:
-                        print("- "
-                              + self.player_model
-                              .extract_player_fname_and_name(player_uuid))
+                        player_fname_name_list.\
+                            append(self.
+                                   player_model.
+                                   extract_player_fname_and_name(player_uuid))
+                    player_fname_name_list.sort()
+                    print("La liste des joueurs (trié par ordre alphabétique)"
+                          " est la suivante :")
+                    for player in player_fname_name_list:
+                        print("- " + player)
                 self.report_view.choice_menu("Appuyez sur [ENTRER] pour"
                                              " revenir au menu.")
                 break

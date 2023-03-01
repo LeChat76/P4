@@ -42,7 +42,6 @@ class PlayerModel:
     def delete_player(self, player_uuid):
         """ method to delete a player """
         self.player_uuid = player_uuid
-        # PLAYERS.remove(PLAYER.player_uuid == self.player_uuid_to_delete)
         PLAYERS.update({'enable': False}, PLAYER.player_uuid
                        == self.player_uuid)
 
