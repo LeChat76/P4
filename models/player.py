@@ -25,7 +25,7 @@ class PlayerModel:
         self.player_name = player_name
         self.player_birthd = player_birthd
         self.player_clubid = player_clubid
-        self.enable = True
+        self.enable = "Y"
 
     def __str__(self):
         return f"{self.player_fname} {self.player_name} né le" \
@@ -51,7 +51,7 @@ class PlayerModel:
         try:
             result = PLAYERS.search(PLAYER.name.matches(self.player_to_search,
                                                         flags=re.IGNORECASE)
-                                    & (PLAYER.enable != False))
+                                    & (PLAYER.enable != "N"))
         except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez"
                   " le et recommencez.")
@@ -68,7 +68,7 @@ class PlayerModel:
         players_fname_list = []
         players_name_list = []
         try:
-            result = PLAYERS.search(PLAYER.enable != False)
+            result = PLAYERS.search(PLAYER.enable != "N")
         except ValueError:
             print("Problème de structure sur fichier players.json.\nVérifiez"
                   " le et recommencez.")
@@ -170,6 +170,7 @@ class PlayerModel:
     def extract_data_player(self, players_uuid):
         """ method to extract players' fname, name, birthd and clubid with
          player's uuid """
+        players_list = []
         self.players_uuid = players_uuid
         for player_uuid in self.players_uuid:
             result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
@@ -179,8 +180,8 @@ class PlayerModel:
             player_clubid = result[0]['clubid']
             player = [player_first_name.capitalize(), player_name.capitalize(),
                       player_birthd, player_clubid]
-            self.players_list.append(player)
-        return self.players_list
+            players_list.append(player)
+        return players_list
 
     def store_score(self, player_uuid, score):
         """ method to store score  (add score to current score) in the json
