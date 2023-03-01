@@ -2,6 +2,7 @@ from tinydb import TinyDB, Query
 import uuid
 import re
 import random
+import sys
 
 DB = TinyDB('data/tournaments/players.json')
 PLAYERS = DB.table('players')
@@ -11,8 +12,7 @@ PLAYER = Query()
 class PlayerModel:
     """" Player class """
 
-    def __init__(self, player_fname="", player_name="", player_birthd="",
-                 player_clubid="", score=0):
+    def __init__(self, player_fname="", player_name="", player_birthd="", player_clubid="", score=0):
         """ Init player """
         self.players_scores = None
         self.players_uuid = None
@@ -28,34 +28,29 @@ class PlayerModel:
         self.enable = "Y"
 
     def __str__(self):
-        return f"{self.player_fname} {self.player_name} né le" \
-               f" {self.player_birthd}, affilié au club {self.player_clubid}."
+        return f"{self.player_fname} {self.player_name} né le {self.player_birthd}," \
+               f" affilié au club {self.player_clubid}."
 
     def add_player(self):
         """ method for add a player in the json file """
         PLAYERS.insert({'player_uuid': str(uuid.uuid1()),
-                        'fname': self.player_fname, 'name': self.player_name,
-                        'birthd': self.player_birthd,
-                        'clubid': self.player_clubid, 'score': self.score,
-                        'enable': self.enable})
+                        'fname': self.player_fname, 'name': self.player_name, 'birthd': self.player_birthd,
+                        'clubid': self.player_clubid, 'score': self.score, 'enable': self.enable})
 
     def delete_player(self, player_uuid):
         """ method to delete a player """
         self.player_uuid = player_uuid
-        PLAYERS.update({'enable': False}, PLAYER.player_uuid
-                       == self.player_uuid)
+        PLAYERS.update({'enable': False}, PLAYER.player_uuid == self.player_uuid)
 
     def search_player(self, player_to_search):
         """ method to display player (search by name) """
         self.player_to_search = player_to_search
         try:
-            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search,
-                                                        flags=re.IGNORECASE)
+            result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE)
                                     & (PLAYER.enable != "N"))
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez"
-                  " le et recommencez.")
-            exit()
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            sys.exit()
         if len(result) == 0:
             return "no_result"
         else:
@@ -70,33 +65,28 @@ class PlayerModel:
         try:
             result = PLAYERS.search(PLAYER.enable != "N")
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez"
-                  " le et recommencez.")
-            exit()
+            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
+            sys.exit()
         if len(result) == 0:
             return "no_result"
         elif by_name:
             for player in result:
                 players_name_list.append((player['name']).capitalize())
                 players_uuid_list.append(player['player_uuid'])
-            players_name_list, players_uuid_list = \
-                zip(*sorted(zip(players_name_list, players_uuid_list)))
+            players_name_list, players_uuid_list = zip(*sorted(zip(players_name_list, players_uuid_list)))
             return players_uuid_list
         elif by_fname:
             for player in result:
                 players_fname_list.append(player['fname'].capitalize())
                 players_uuid_list.append(player['player_uuid'])
-            players_fname_list, players_uuid_list = \
-                zip(*sorted(zip(players_fname_list, players_uuid_list)))
+            players_fname_list, players_uuid_list = zip(*sorted(zip(players_fname_list, players_uuid_list)))
             return players_uuid_list
         else:
             return result
 
     def create_player_list(self, players_list):
-        """
-        method to create player's list sorted by score
-        if all score egal 0, randomized players list
-        """
+        """method to create player's list sorted by score
+        if all score egal 0, randomized players list """
         players_scores = []
         sorted_players_list = []
         score0 = True
@@ -111,8 +101,7 @@ class PlayerModel:
         if score0:
             random.shuffle(sorted_players_list)
         else:
-            players_scores, sorted_players_list = \
-                zip(*sorted(zip(players_scores, sorted_players_list)))
+            players_scores, sorted_players_list = zip(*sorted(zip(players_scores, sorted_players_list)))
         return list(sorted_players_list)
 
     @staticmethod
@@ -127,12 +116,10 @@ class PlayerModel:
                 p1_uuid = players_list.pop(0)
                 for p2_uuid in players_list:
                     match = [p1_uuid, p2_uuid]
-                    if match in previous_matchs_list or match[::-1] in \
-                            previous_matchs_list:
+                    if match in previous_matchs_list or match[::-1] in previous_matchs_list:
                         already_played = True
                         continue
-                    elif match not in previous_matchs_list or match[::-1] \
-                            not in previous_matchs_list:
+                    elif match not in previous_matchs_list or match[::-1] not in previous_matchs_list:
                         already_played = False
                         break
                 checked_players_list.append(match)
@@ -146,8 +133,7 @@ class PlayerModel:
     def search_player_score(self, player_uuid):
         """method to search player's score """
         self.player_uuid = player_uuid
-        player = \
-            (PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid)))[0]
+        player = (PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid)))[0]
         player_score = player['score']
         return player_score
 
@@ -163,13 +149,11 @@ class PlayerModel:
         result = PLAYERS.search(PLAYER.player_uuid.matches(player_uuid))
         player_first_name = result[0]['fname']
         player_name = result[0]['name']
-        player = player_first_name.capitalize() + " " + player_name.\
-            capitalize()
+        player = player_first_name.capitalize() + " " + player_name.capitalize()
         return player
 
     def extract_data_player(self, players_uuid):
-        """ method to extract players' fname, name, birthd and clubid with
-         player's uuid """
+        """ method to extract players' fname, name, birthd and clubid with player's uuid """
         players_list = []
         self.players_uuid = players_uuid
         for player_uuid in self.players_uuid:
@@ -178,29 +162,24 @@ class PlayerModel:
             player_name = result[0]['name']
             player_birthd = result[0]['birthd']
             player_clubid = result[0]['clubid']
-            player = [player_first_name.capitalize(), player_name.capitalize(),
-                      player_birthd, player_clubid]
+            player = [player_first_name.capitalize(), player_name.capitalize(), player_birthd, player_clubid]
             players_list.append(player)
         return players_list
 
     def store_score(self, player_uuid, score):
-        """ method to store score  (add score to current score) in the json
-         player's file, to use with only one player """
+        """ method to store score  (add score to current score) in the json player's file, to use with only
+        one player """
         self.player_uuid = player_uuid
         self.score = score
         player = PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid))
         current_score = player[0]['score']
         new_score = float(current_score) + float(score)
-        PLAYERS.update({'score': new_score}, PLAYER.player_uuid
-                       == self.player_uuid)
+        PLAYERS.update({'score': new_score}, PLAYER.player_uuid == self.player_uuid)
 
     def store_score_from_previous_match(self, players_list, players_scores):
-        """
-        method to store previous scores in players when resume previous
-        tournament (replace score from previous, used for a list of players)
-        """
+        """ method to store previous scores in players when resume previous tournament (replace score from previous,
+        used for a list of players) """
         self.players_list = players_list
         self.players_scores = players_scores
         for i in range(len(players_list)):
-            PLAYERS.update({'score': players_scores[i]}, PLAYER.player_uuid
-                           == self.players_list[i])
+            PLAYERS.update({'score': players_scores[i]}, PLAYER.player_uuid == self.players_list[i])
