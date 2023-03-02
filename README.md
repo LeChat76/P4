@@ -19,6 +19,12 @@ Simply launch the script by typing "py main.py" and follow instruction :
 ```
 ## How to use
 ```sh
+- Create somes users            (menu 1-1)
+- Create tournaments            (menu 2-1)
+- Start tournament              (menu 2-3)
+- Display reports               (menu 3  )
+
+Menu branches :
 1 ) manage players              (menu 1)
     |_ create players           (....-1)
     |_ display created players  (....-2)
@@ -34,7 +40,21 @@ Simply launch the script by typing "py main.py" and follow instruction :
     |_ display tournaments      (....-5)
     |_ display detailled tourn. (....-6)
 ```
+## Generate new flake8 report
+```sh
+-In this projet I do not use default line lenght =79 so you need to modifiy this value in the config file located
+ in ".venv\Lib\site-packages\flake8" folder file named "defaults.py". Use your favorite text editor to modify the line
+ "MAX_LINE_LENGTH = 79" by "MAX_LINE_LENGTH = 119" (with DOS : "notepad .venv\Lib\site-packages\flake8\defaults.py" 
+ from Projet4OC folder).
+- Otherwise you will only see errors about line lenght.
+- From Projet4OC folder, launch command  "flake8 models controllers views --format=html --htmldir=flake-report".
+- The HTML report will be generated in the "flake-report" folder, file "index.html".
+```
 ## Features
+```sh
 - data stored in json file
+```
 ## Features to come 
+```sh
  - graphical interface (with tkinter)
+```
