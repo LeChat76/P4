@@ -51,7 +51,7 @@ Menu branches :
 ```
 ## Features
 ```sh
-- data stored in json file
+- data persistence (stored in json file)
 - resume tournament
 ```
 ## Features to come 
