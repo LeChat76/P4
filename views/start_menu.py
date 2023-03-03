@@ -24,7 +24,7 @@ class MainMenu:
                 choix = None
             else:
                 choix = int(choix)
-
+        self.clear_screen()
         return choix
 
     @staticmethod

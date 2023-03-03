@@ -34,6 +34,7 @@ class PlayerView:
                 choix = None
             else:
                 choix = int(choix)
+        self.clear_screen()
         return choix
 
     def add_player_menu(self):
