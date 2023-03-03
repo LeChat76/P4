@@ -43,6 +43,7 @@ class ReportView:
                 choix = None
             else:
                 choix = int(choix)
+        self.clear_screen()
         return choix
 
     def display_scores_players(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
