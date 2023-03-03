@@ -9,6 +9,7 @@ class ReportView:
     """ Result class """
 
     def __init__(self):
+        self.players_scores = None
         self.tournament_start_date = None
         self.tournament_end_date = None
         self.rounds_list = None
@@ -45,7 +46,7 @@ class ReportView:
         return choix
 
     def display_scores_players(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
-                               tournament_name):
+                               tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with names details """
         self.clear_screen()
         # extraction/creation of attributs
@@ -54,6 +55,7 @@ class ReportView:
         self.tournament_end_date = tournament_end_date
         self.tournament_start_date = tournament_start_date
         self.rounds_list = rounds_list
+        self.players_scores = players_scores
         rounds_list = self.tournaments_scores[0]
         matchs_list = self.tournaments_scores[1]
         p1names_list = self.tournaments_scores[2]
@@ -105,10 +107,20 @@ class ReportView:
                     print("+" + " " * floor(blank_width) + "Vainqueur : " + winner + " " * ceil(blank_width) + "+")
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
+        # print final results
+        blank_width = (REPORT_TABLE_WIDTH - len("Résultats")) / 2
+        print("+" + " " * floor(blank_width) + "Résultats" + " " * ceil(blank_width) + "+")
+        print("+" + "-" * REPORT_TABLE_WIDTH + "+")
+        for i in range(len(players_scores[0])):
+            blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
+                                                    + str(players_scores[1][i])))
+            print("+ " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
+                  + " " * (blank_width -1) + "+")
+        print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
     def display_scores_scores(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
-                              tournament_name):
+                              tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with scores details """
         self.clear_screen()
         # extraction/creation of attributs
@@ -117,6 +129,7 @@ class ReportView:
         self.tournament_end_date = tournament_end_date
         self.tournament_start_date = tournament_start_date
         self.rounds_list = rounds_list
+        self.players_scores = players_scores
         rounds_list = self.tournaments_scores[0]
         matchs_list = self.tournaments_scores[1]
         p1names_list = self.tournaments_scores[2]
@@ -170,6 +183,16 @@ class ReportView:
                           + str(score_float))
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
+        # print final results
+        blank_width = (REPORT_TABLE_WIDTH - len("Résultats")) / 2
+        print("+" + " " * floor(blank_width) + "Résultats" + " " * ceil(blank_width) + "+")
+        print("+" + "-" * REPORT_TABLE_WIDTH + "+")
+        for i in range(len(players_scores[0])):
+            blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
+                                                    + str(players_scores[1][i])))
+            print("+ " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
+                  + " " * (blank_width - 1) + "+")
+        print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
     def choice_menu(self, question):

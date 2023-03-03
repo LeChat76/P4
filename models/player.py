@@ -100,7 +100,7 @@ class PlayerModel:
         if score0:
             random.shuffle(sorted_players_list)
         else:
-            players_scores, sorted_players_list = zip(*sorted(zip(players_scores, sorted_players_list)))
+            players_scores, sorted_players_list = zip(*sorted(zip(players_scores, sorted_players_list), reverse=True))
         return list(sorted_players_list)
 
     @staticmethod
@@ -182,3 +182,10 @@ class PlayerModel:
         self.players_scores = players_scores
         for i in range(len(players_list)):
             PLAYERS.update({'score': players_scores[i]}, PLAYER.player_uuid == self.players_list[i])
+
+    def delete_score_player(self, players_list):
+        """ method to delete scores in players.json """
+        self.players_list = players_list
+        for player_uuid in self.players_list:
+            for i in range(len(players_list)):
+                PLAYERS.update({'score': 0}, PLAYER.player_uuid == player_uuid)

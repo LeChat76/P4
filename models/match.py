@@ -106,3 +106,16 @@ class MatchModel:
                     player_score += p2_score
             scores.append(player_score)
         return scores
+
+    def extract_players_scores(self, matchs_ids_list):
+        """ method to extract players list and scores list from matchs ids list """
+        self.matchs_ids_list = matchs_ids_list
+        players_uuid_list = []
+        players_scores = []
+        for match_id in matchs_ids_list:
+            match = MATCHS.search(MATCH.match_id.matches(match_id))
+            players_uuid_list.append(match[0]['player_one_uuid'])
+            players_uuid_list.append(match[0]['player_two_uuid'])
+            players_scores.append(match[0]['player_one_score'])
+            players_scores.append(match[0]['player_two_score'])
+        return players_uuid_list, players_scores
