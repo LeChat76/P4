@@ -216,3 +216,9 @@ class TournamentModel:
             all_rounds.append(round)
 
         TOURNAMENTS.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
+
+    def extract_rounds_list(self, tournament_uuid):
+        """ method to extract all rounds details of a tournament"""
+        self.tournament_uuid = tournament_uuid
+        rounds_list = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_rounds']
+        return rounds_list

@@ -9,6 +9,9 @@ class ReportView:
     """ Result class """
 
     def __init__(self):
+        self.tournament_start_date = None
+        self.tournament_end_date = None
+        self.rounds_list = None
         self.tournament_info = None
         self.question = None
         self.tournament_name = None
@@ -41,12 +44,16 @@ class ReportView:
                 choix = int(choix)
         return choix
 
-    def display_scores_players(self, tournaments_scores, tournament_name):
+    def display_scores_players(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
+                               tournament_name):
         """ method to display all scores for one tournament displayed with names details """
         self.clear_screen()
         # extraction/creation of attributs
         self.tournaments_scores = tournaments_scores
         self.tournament_name = tournament_name
+        self.tournament_end_date = tournament_end_date
+        self.tournament_start_date = tournament_start_date
+        self.rounds_list = rounds_list
         rounds_list = self.tournaments_scores[0]
         matchs_list = self.tournaments_scores[1]
         p1names_list = self.tournaments_scores[2]
@@ -59,12 +66,22 @@ class ReportView:
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
+        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(self.tournament_start_date) + " au : "
+                                                 + str(tournament_end_date)) - 1) / 2
         print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
+        print("+" + " " * floor(blank_width2) + " Du : " + str(self.tournament_start_date) + " au : "
+              + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
+            round_start = self.rounds_list[round_nb - 1][1]
+            round_end = self.rounds_list[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
+            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
+                                                     + str(round_end))) / 2
             print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
+            print("+" + " " * floor(blank_width2) + "Du : " + str(round_start) + " au : "
+                  + str(round_end) + " " * ceil(blank_width2) + "+")
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
             # print scores table
             for round in rounds_list:
@@ -90,12 +107,16 @@ class ReportView:
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
-    def display_scores_scores(self, tournaments_scores, tournament_name):
+    def display_scores_scores(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
+                              tournament_name):
         """ method to display all scores for one tournament displayed with scores details """
         self.clear_screen()
         # extraction/creation of attributs
         self.tournaments_scores = tournaments_scores
         self.tournament_name = tournament_name
+        self.tournament_end_date = tournament_end_date
+        self.tournament_start_date = tournament_start_date
+        self.rounds_list = rounds_list
         rounds_list = self.tournaments_scores[0]
         matchs_list = self.tournaments_scores[1]
         p1names_list = self.tournaments_scores[2]
@@ -108,12 +129,22 @@ class ReportView:
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
+        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(self.tournament_start_date) + " au : "
+                                                 + str(tournament_end_date)) - 1) / 2
         print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
+        print("+" + " " * floor(blank_width2) + " Du : " + str(self.tournament_start_date) + " au : "
+              + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
+            round_start = self.rounds_list[round_nb - 1][1]
+            round_end = self.rounds_list[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
+            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
+                                                     + str(round_end)))/2
             print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
+            print("+" + " " * floor(blank_width2) + "Du : " + str(round_start) + " au : "
+                  + str(round_end) + " " * ceil(blank_width2) + "+")
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
             # print scores table
             for round in rounds_list:

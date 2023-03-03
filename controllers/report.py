@@ -116,13 +116,22 @@ class ReportController:
                 matchs_ids_list = self.tournament_model.extract_matchs_uuid_list_of_tournament(
                     selected_tournament_uuid)
 
+                # extraction of all rounds details
+                rounds_list = self.tournament_model.extract_rounds_list(selected_tournament_uuid)
+
+                # extraction of start and end dates of a tournament
+                tournament_start_date = self.tournament_model.extract_all_infos_tournaments(selected_tournament_uuid)[2]
+                tournament_end_date = self.tournament_model.extract_all_infos_tournaments(selected_tournament_uuid)[3]
+
                 # extraction of all scores of matchs list associated to the
                 # selected tournament
                 tournaments_scores = self.match_model.extract_scores(
                     matchs_ids_list)
                 tournament_name = self.tournament_model.extract_tournament_name(selected_tournament_uuid)
                 if display_type == "players":
-                    self.report_view.display_scores_players(tournaments_scores, tournament_name)
+                    self.report_view.display_scores_players(tournaments_scores, rounds_list, tournament_start_date,
+                                                            tournament_end_date, tournament_name)
                 elif display_type == "scores":
-                    self.report_view.display_scores_scores(tournaments_scores, tournament_name)
+                    self.report_view.display_scores_scores(tournaments_scores, rounds_list, tournament_start_date,
+                                                           tournament_end_date, tournament_name)
                 break
