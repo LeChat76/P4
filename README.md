@@ -42,10 +42,11 @@ Menu branches :
 ```
 ## Generate new flake8 report
 ```sh
--In this projet I do not use default line lenght(79) so you need to modifiy this value in the config file
- located in ".venv\Lib\site-packages\flake8" folder file named "defaults.py". Use your favorite text editor
-  to modify the line "MAX_LINE_LENGTH = 79" by "MAX_LINE_LENGTH = 119". Otherwise you will only see errors
-  about line lenght.
+Note :
+ In this projet I do not use default line lenght(79) so you need to modifiy this value in the config
+ file located in ".venv\Lib\site-packages\flake8" folder file named "defaults.py". Use your favorite
+ text editor to modify the line "MAX_LINE_LENGTH = 79" by "MAX_LINE_LENGTH = 119". Otherwise you will
+ only see errors about line lenght.
 - From Projet4OC folder, launch "flake8 models controllers views --format=html --htmldir=flake-report".
 - The HTML report will be generated in the "flake-report" folder, file "index.html".
 ```
