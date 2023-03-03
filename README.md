@@ -52,7 +52,7 @@ Note :
 ```
 ## Features
 ```sh
-- data persistence (stored in json file)
+- data persistence (stored in JSON file)
 - resume tournament
 ```
 ## Features to come 
