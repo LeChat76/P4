@@ -116,7 +116,7 @@ class ReportView:
             blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
                                                     + str(players_scores[1][i])))
             print("+ " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
-                  + " " * (blank_width -1) + "+")
+                  + " " * (blank_width - 1) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
