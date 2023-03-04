@@ -51,12 +51,13 @@ class TournamentController:
                     break
                 else:
                     if (len(result)) == 1:
-                        print(str(len(result)) + " résultat.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
-                        print(str(len(result)) + " résultats.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
-                        print(TournamentModel(item['name'], item['town'], item['nb_round']))
+                        self.tournament_view.text_to_print(TournamentModel(item['name'], item['town'],
+                                                                           item['nb_round']))
                     choix = self.tournament_view.choice_menu("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
@@ -69,12 +70,13 @@ class TournamentController:
                         break
                 else:
                     if (len(result)) == 1:
-                        print(str(len(result)) + " résultat.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
-                        print(str(len(result)) + " résultats.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
-                        print(TournamentModel(item['name'], item['town'], item['nb_round']))
+                        self.tournament_view.text_to_print(TournamentModel(item['name'], item['town'],
+                                                                           item['nb_round']))
                     choix = self.tournament_view.choice_menu("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
@@ -87,12 +89,13 @@ class TournamentController:
                         break
                 else:
                     if (len(result)) == 1:
-                        print(str(len(result)) + " résultat.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
-                        print(str(len(result)) + " résultats.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
-                        print(TournamentModel(item['name'], item['town'], item['nb_round']))
+                        self.tournament_view.text_to_print(TournamentModel(item['name'], item['town'],
+                                                                           item['nb_round']))
                     choix = self.tournament_view.choice_menu("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
@@ -105,12 +108,13 @@ class TournamentController:
                         break
                 else:
                     if (len(result)) == 1:
-                        print(str(len(result)) + " résultat.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultat.")
                     elif (len(result)) > 1:
-                        print(str(len(result)) + " résultats.")
+                        self.tournament_view.text_to_print(str(len(result)) + " résultats.")
                     for i in range(len(result)):
                         item = result[i]
-                        print(TournamentModel(item['name'], item['town'], item['nb_round']))
+                        self.tournament_view.text_to_print(TournamentModel(item['name'], item['town'],
+                                                                           item['nb_round']))
                     choix = self.tournament_view.choice_menu("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
@@ -140,11 +144,11 @@ class TournamentController:
                 break
 
             # displayer list of available tournaments
-            print("Liste des tournois non démarrés:")
+            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
             for i in range(len(not_started_tournament)):
                 item = not_started_tournament[i]
-                print(str(i + 1) + " - " +
-                      str(TournamentModel(item['name'], item['town'], item['nb_round'])))
+                self.tournament_view.text_to_print(str(i + 1) + " - " +
+                                                   str(TournamentModel(item['name'], item['town'], item['nb_round'])))
 
             # choose tournament
             result = self.tournament_view.select_menu(not_started_tournament)
@@ -158,10 +162,9 @@ class TournamentController:
             # example : if there is 8 players, nb match = 7 so nb round max
             # should be equal or inferior to 7 """
             if int(tournament_nb_round) > (int(len(players_available)) - 1):
-                print("Ce tournoi comporte "
-                      + str(tournament_nb_round)
-                      + " round(s) donc pas assez de joueurs disponibles pour éviter que certains ne se rencontrent"
-                        " plusieurs fois.")
+                self.tournament_view.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
+                                                   + " round(s) donc pas assez de joueurs disponibles"
+                                                     " pour éviter que certains ne se rencontrent plusieurs fois.")
 
             # Selection of players to add to the selected tournament
             nb_players = 0
@@ -175,13 +178,13 @@ class TournamentController:
             else:
                 nb_players_available_pair = True
             while True:
-                print(str(nb_players_available) + " joueurs disponibles:")
+                self.tournament_view.text_to_print(str(nb_players_available) + " joueurs disponibles:")
                 for i in range(len(players_available_list)):
                     player_uuid = players_available_list[i]
                     player = self.player_model.extract_player_fname_and_name(
                             player_uuid)
-                    print(str(i + 1) + " - " + player + ".")
-                print(str(nb_players) + " sélectionné(s).")
+                    self.tournament_view.text_to_print(str(i + 1) + " - " + player + ".")
+                self.tournament_view.text_to_print(str(nb_players) + " sélectionné(s).")
                 result = self.player_view.select_available_players_menu(len(players_available_list), nb_players)
                 if result == "end_players_selection":
                     break
@@ -191,20 +194,23 @@ class TournamentController:
                 nb_players += 1
                 players_available_list.remove(selected_player_uuid)
                 if nb_players_available == 1 and nb_players_available_pair is False:
-                    print("Il ne reste plus qu'une personne, impossible de former une paire.\nFin de la selection.")
+                    self.tournament_view.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
+                                                       " paire.\nFin de la selection.")
                     break
                 elif nb_players_available == 0 or nb_players_available_pair == "True":
-                    print("Plus de personne à ajouter.")
+                    self.tournament_view.text_to_print("Plus de personne à ajouter.")
                     break
 
             self.tournament_model.store_players_uuids(selected_tournament_uuid, players_uuid_list)
-            print('Tournoi "' + selected_tournament['name'] + '" prêt.')
+            self.tournament_view.text_to_print('Tournoi "' + selected_tournament['name'] + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
-                print("Pour information : vu le faible nombre de joueurs sélectionnés et le grand nombre de rounds,"
-                      " certains joueurs se rencontreront plusieurs fois.")
+                self.tournament_view.text_to_print("Pour information : vu le faible nombre de joueurs sélectionnés"
+                                                   " et le grand nombre de rounds, certains joueurs se rencontreront"
+                                                   " plusieurs fois.")
             elif (nb_players - 1) > int(tournament_nb_round):
-                print("Pour information : vu le faible nombre de rounds du tournoi et la quantité de joueurs"
-                      " sélectionnés, certains joueurs ne se rencontreront pas.")
+                self.tournament_view.text_to_print("Pour information : vu le faible nombre de rounds du tournoi et la"
+                                                   " quantité de joueurs sélectionnés, certains joueurs ne se"
+                                                   " rencontreront pas.")
 
             self.tournament_view.choice_menu("Appuyez sur une [ENTRER] pour continuer.")
 
@@ -224,7 +230,8 @@ class TournamentController:
                 previous_matchs_players_list = self.match_model.create_matchs_players_list(matchs_list)
                 players_list = self.player_model.check_players_list(players_list, previous_matchs_players_list)
                 if players_list[1]:
-                    print("/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
+                    self.tournament_view.text_to_print("/!\\ Certains joueurs de ce round"
+                                                       " ont déjà joués ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -234,8 +241,9 @@ class TournamentController:
                     player_two_uuid = players_list[i + 1]
                     player_one = self.player_model.extract_player_fname_and_name(player_one_uuid)
                     player_two = self.player_model.extract_player_fname_and_name(player_two_uuid)
-                    print("Tour : " + str(current_round) + "/" + str(nb_round) + ", match " + str(current_match)
-                          + "/" + str(nb_match) + " opposant " + player_one + " à " + player_two + ".")
+                    self.tournament_view.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
+                                                       + ", match " + str(current_match) + "/" + str(nb_match)
+                                                       + " opposant " + player_one + " à " + player_two + ".")
                     scores = self.player_view.record_score(player_one, player_two)
                     match = MatchModel(selected_tournament_uuid, current_round, current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
@@ -269,10 +277,12 @@ class TournamentController:
             self.tournament_view.choice_menu("Aucun tournoi(s) non terminé(s). Appuyez sur [ENTRER] pour continuer.")
         else:
             # displayer list of not ended tournaments
-            print("Liste des tournois non démarrés:")
+            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
             for i in range(len(not_ended_tournament)):
                 item = not_ended_tournament[i]
-                print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
+                self.tournament_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
+                                                                                            item['town'],
+                                                                                            item['nb_round'])))
 
             # choose tournament
             result = self.tournament_view.select_menu(not_ended_tournament)
@@ -282,10 +292,11 @@ class TournamentController:
             players_uuid_list = tournament_info[7]
             nb_round = int(tournament_info[4])
             current_round = int(tournament_info[5]) + 1
-            print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
+            self.tournament_view.text_to_print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
             for player_uuid in players_uuid_list:
-                print(" - " + self.player_model.extract_player_fname_and_name(player_uuid))
-            print(f"Le prochain round est le {current_round} ème.")
+                self.tournament_view.text_to_print(" - " + self.player_model
+                                                   .extract_player_fname_and_name(player_uuid))
+            self.tournament_view.text_to_print(f"Le prochain round est le {current_round} ème.")
 
             # resume the tournament
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
@@ -307,7 +318,8 @@ class TournamentController:
                 # already played together (if possible)
                 players_list = self.player_model.check_players_list(players_list, previous_matchs_players_list)
                 if players_list[1]:
-                    print("/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
+                    self.tournament_view.text_to_print("/!\\ Certains joueurs de ce round"
+                                                       " ont déjà joués ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -317,8 +329,9 @@ class TournamentController:
                     player_two_uuid = players_list[i + 1]
                     player_one = self.player_model.extract_player_fname_and_name(player_one_uuid)
                     player_two = self.player_model.extract_player_fname_and_name(player_two_uuid)
-                    print("Tour : " + str(current_round) + "/" + str(nb_round) + ", match " + str(current_match)
-                          + "/" + str(nb_match) + " opposant " + player_one + " à " + player_two + ".")
+                    self.tournament_view.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
+                                                       + ", match " + str(current_match) + "/" + str(nb_match)
+                                                       + " opposant " + player_one + " à " + player_two + ".")
                     scores = self.player_view.record_score(player_one, player_two)
                     match = MatchModel(tournament_uuid, current_round, current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])

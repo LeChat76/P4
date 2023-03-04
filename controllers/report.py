@@ -50,8 +50,9 @@ class ReportController:
             else:
                 for i in range(len(tournaments)):
                     item = tournaments[i]
-                    print(str(i + 1) + " - "
-                          + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
+                    self.report_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
+                                                                                            item['town'],
+                                                                                            item['nb_round'])))
 
                 # select a tournament
                 choix = self.tournament_view.select_menu(tournaments)
@@ -64,9 +65,10 @@ class ReportController:
                     for player_uuid in tournament_infos[7]:
                         player_fname_name_list.append(self.player_model.extract_player_fname_and_name(player_uuid))
                     player_fname_name_list.sort()
-                    print("La liste des joueurs (triée par ordre alphabétique) est la suivante :")
+                    self.report_view.text_to_print("La liste des joueurs (triée par ordre alphabétique) est la"
+                                                   " suivante :")
                     for player in player_fname_name_list:
-                        print("- " + player)
+                        self.report_view.text_to_print("- " + player)
                 self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
@@ -88,7 +90,7 @@ class ReportController:
                 players_uuid_list = self.player_model.search_all_players(self.by_name, self.by_fname)
                 players_list = self.player_model.extract_data_player(players_uuid_list)
                 for player in players_list:
-                    print(PlayerModel(player[0], player[1], player[2], player[3]))
+                    self.report_view.text_to_print(PlayerModel(player[0], player[1], player[2], player[3]))
                 self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
@@ -101,10 +103,12 @@ class ReportController:
             else:
                 # display ended tournaments
                 ended_tournaments = self.tournament_model.search_completed_tournaments()
-                print("Liste des tournois terminés:")
+                self.report_view.text_to_print("Liste des tournois terminés:")
                 for i in range(len(ended_tournaments)):
                     item = ended_tournaments[i]
-                    print(str(i + 1) + " - " + str(TournamentModel(item['name'], item['town'], item['nb_round'])))
+                    self.report_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
+                                                                                            item['town'],
+                                                                                            item['nb_round'])))
 
                 # select a tournament
                 choix = self.tournament_view.select_menu(ended_tournaments)

@@ -6,6 +6,7 @@ from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_
 class PlayerView:
     """ Menu class """
     def __init__(self):
+        self.text = None
         self.score_is_float = None
         self.all_player_list = None
         self.player_one = None
@@ -195,6 +196,11 @@ class PlayerView:
             return True
         except ValueError:
             return False
+
+    def text_to_print(self, text):
+        """ method to print text from controller """
+        self.text = text
+        print(text)
 
     @staticmethod
     def clear_screen():

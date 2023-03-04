@@ -9,6 +9,7 @@ class ReportView:
     """ Result class """
 
     def __init__(self):
+        self.text = None
         self.players_scores = None
         self.tournament_start_date = None
         self.tournament_end_date = None
@@ -222,6 +223,11 @@ class ReportView:
             print("Ce tournoi n'a pas encore démarré.")
         if self.tournament_info[2]:
             print("Il y'a eu " + str(len(self.tournament_info[6])) + " match(s) joué(s).")
+
+    def text_to_print(self, text):
+        """ method to print text from controller """
+        self.text = text
+        print(text)
 
     @staticmethod
     def clear_screen():

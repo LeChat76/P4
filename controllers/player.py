@@ -47,8 +47,8 @@ class PlayerController:
             index_player_to_delete = self.player_view.delete_player_menu(
                 all_player_list)
             player_to_delete = all_player_list[index_player_to_delete]
-            print("Utilisateur " + player_to_delete['fname'] + " " + player_to_delete['name'].capitalize() +
-                  " supprimé.")
+            self.player_view.text_to_print("Utilisateur " + player_to_delete['fname'] + " "
+                                           + player_to_delete['name'].capitalize() + " supprimé.")
             self.player_model.delete_player(player_to_delete['player_uuid'])
             choix = self.player_view.choice_menu("Supprimer un autre joueur(O/n)?")
             if choix == "N":
@@ -70,25 +70,25 @@ class PlayerController:
                                                  " au menu.")
                     break
                 if (len(result)) == 1:
-                    print(str(len(result)) + " résultat.")
+                    self.player_view.text_to_print(str(len(result)) + " résultat.")
                 elif (len(result)) > 1:
-                    print(str(len(result)) + " résultats.")
+                    self.player_view.text_to_print(str(len(result)) + " résultats.")
                 for i in range(len(result)):
                     item = result[i]
-                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'],
-                                      item['clubid']))
+                    self.player_view.text_to_print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(),
+                                                               item['birthd'], item['clubid']))
                 choix = self.player_view.choice_menu("Faire une autre recherche (O/n)? ")
                 if choix == "N":
                     break
             elif len(result) > 0:
                 if len(result) == 1:
-                    print(str(len(result)) + " résultat:")
+                    self.player_view.text_to_print(str(len(result)) + " résultat:")
                 else:
-                    print(str(len(result)) + " résultats:")
+                    self.player_view.text_to_print(str(len(result)) + " résultats:")
                 for i in range(len(result)):
                     item = result[i]
-                    print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(), item['birthd'],
-                                      item['clubid']))
+                    self.player_view.text_to_print(PlayerModel(item['fname'].capitalize(), item['name'].capitalize(),
+                                                               item['birthd'], item['clubid']))
                 choix = self.player_view.choice_menu("Faire une autre recherche (O/n)? ")
                 if choix.upper() == "N":
                     break

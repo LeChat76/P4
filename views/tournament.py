@@ -7,6 +7,7 @@ class TournamentView:
     """ Tournament class """
 
     def __init__(self):
+        self.text = None
         self.tournaments = None
         self.question = None
 
@@ -121,6 +122,11 @@ class TournamentView:
                 choice = ""
             elif choice.isnumeric():
                 return choice
+
+    def text_to_print(self, text):
+        """ method to print text from controller """
+        self.text = text
+        print(text)
 
     @staticmethod
     def clear_screen():
