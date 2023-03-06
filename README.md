@@ -14,8 +14,7 @@ Install all needed libraries by typing : "pip install -r requirements.txt"
 ```
 ## Execution
 ```sh
-Simply launch the script by typing "py main.py" and follow instruction :
-* this project is in progress so be patient ;-)
+Simply launch the script by typing "py main.py" from "Projet4OC" folder and follow instruction.
 ```
 ## How to use
 ```sh
@@ -24,21 +23,22 @@ Simply launch the script by typing "py main.py" and follow instruction :
 - Start tournament              (menu 2-3)
 - Display reports               (menu 3  )
 
-Menu branches :
+Detailled menu branches :
 1 ) manage players              (menu 1)
-    |_ create players           (....-1)
-    |_ display created players  (....-2)
-    |_ delete players           (....-3)
+    |_ create players           (menu 1-1)
+    |_ display created players  (menu 1-2)
+    |_ delete players           (menu 1-3)
 2 ) manage tournaments          (menu 2)
-    |_ create tournaments       (....-1)
-    |_ display tournaments      (....-2)
-    |_ start tournament         (....-3) 
-    |_ resume tournament        (....-4)
+    |_ create tournaments       (menu 2-1)
+    |_ display tournaments      (menu 2-2)
+    |_ start tournament         (menu 2-3) 
+    |_ resume tournament        (menu 2-4)
 3 ) reporting                   (menu 3)
-    |_ display scores           (....-1 & ....-2)
-    |_ display players          (....-3 & ....-4)
-    |_ display tournaments      (....-5)
-    |_ display detailled tourn. (....-6)
+    |_ display scores           (menu 3-1 & menu 3-2)
+    |_ display players          (menu 3-3 & menu 3-4)
+    |_ display tournaments      (menu 3-5)
+    |_ display detailled tourn. (menu 3-6)
+    |_ exporting html report    (menu 3-7)
 ```
 ## Generate new flake8 report
 ```sh
@@ -54,6 +54,7 @@ Note :
 ```sh
 - data persistence (stored in JSON file)
 - resume tournament
+- html file reporting
 ```
 ## Features to come 
 ```sh

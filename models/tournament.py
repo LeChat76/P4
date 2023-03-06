@@ -2,11 +2,13 @@ from tinydb import TinyDB, Query
 from tinydb.operations import add
 import uuid
 import os
+import datetime
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "tournaments")
 if not os.path.exists(DATA_FOLDER):
     os.makedirs(DATA_FOLDER)
-    with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as creating_tournaments_file:
+    with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as tournaments_file:
         pass
+    tournaments_file.close()
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS = DB.table('tournaments')
 TOURNAMENT = Query()
@@ -17,6 +19,9 @@ class TournamentModel:
 
     def __init__(self, tournament_name="", tournament_town="", tournament_nb_round="", tournament_description=""):
         """ Init tournament """
+        self.rounds_list = None
+        self.tournaments_scores = None
+        self.players_scores = None
         self.current_round = None
         self.round_end_date = None
         self.round_start_date = None
@@ -209,3 +214,77 @@ class TournamentModel:
         self.tournament_uuid = tournament_uuid
         rounds_list = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_rounds']
         return rounds_list
+
+    def export_tournament(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
+                          tournament_name, players_scores):
+        self.tournaments_scores = tournaments_scores
+        self.rounds_list = rounds_list
+        self.tournament_start_date = tournament_start_date
+        self.tournament_end_date = tournament_end_date
+        self.tournament_name = tournament_name
+        self.players_scores = players_scores
+        rounds_list = self.tournaments_scores[0]
+        matchs_list = self.tournaments_scores[1]
+        p1names_list = self.tournaments_scores[2]
+        p2names_list = self.tournaments_scores[3]
+        p1scores_list = self.tournaments_scores[4]
+        p2scores_list = self.tournaments_scores[5]
+        round_max = self.tournaments_scores[6]
+        index = 0
+        """ method to export in html file a tournament """
+        data_folder = os.path.join(os.path.dirname(__file__), "..", "data", "reports")
+        file_name = "tournoi " + self.tournament_name + " " + datetime.datetime.today().strftime('%d-%m-%Y %H-%M-%S')\
+                    + ".html"
+        with open(os.path.join(data_folder, file_name), 'w') as report_file:
+            report_file.write('<style type="text/css">')
+            report_file.write('.tg  {border-collapse:collapse;border-spacing:0}')
+            report_file.write('.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial,'
+                              ' sans-serif;')
+            report_file.write('  overflow:hidden;padding:10px 5px;word-break:normal;}')
+            report_file.write('.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial,'
+                              ' sans-serif;')
+            report_file.write('  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}')
+            report_file.write('.tg .tg-33h5{background-color:#3166ff;border-color:#000000;color:#ffffff;'
+                              'text-align:center;font-size:20px;vertical-align:top}')
+            report_file.write('.tg .tg-2uuq{background-color:#ffcb2f;border-color:#000000;text-align:center;'
+                              'font-size:16px;vertical-align:top}')
+            report_file.write('.tg .tg-73oq{border-color:#000000;text-align:left;font-size:14px;vertical-align:top}')
+            report_file.write('</style>')
+            report_file.write('<table class="tg">')
+            report_file.write("  <tr>")
+            report_file.write('    <th class="tg-33h5" colspan="3">Tournoi ' + self.tournament_name + ' du '
+                              + self.tournament_start_date + ' au ' + self.tournament_end_date + '</th>')
+            report_file.write('  </tr>')
+            report_file.write('  <tr>')
+            for round_nb in range(1, int(round_max) + 1):
+                round_start = self.rounds_list[round_nb - 1][1]
+                round_end = self.rounds_list[round_nb - 1][2]
+                report_file.write('    <td class="tg-2uuq" colspan="3">Round ' + str(round_nb) + ' du '
+                                  + str(round_start) + ' au ' + str(round_end) + '</td>')
+                report_file.write('  </tr>')
+                report_file.write('  <tr>')
+                for round in rounds_list:
+                    if int(round) == round_nb:
+                        match = matchs_list[index]
+                        p1name = (p1names_list[index])
+                        p2name = (p2names_list[index])
+                        p1score = p1scores_list[index]
+                        p2score = p2scores_list[index]
+                        report_file.write('<td class="tg-73oq" colspan="1">Match ' + str(match) + ' & Scores</td>')
+                        report_file.write('<td class="tg-73oq" colspan="1">' + str(p1name) + ' : '
+                                          + str(p1score) + '</td>')
+                        report_file.write('<td class="tg-73oq" colspan="1">' + str(p2name) + ' : '
+                                          + str(p2score) + '</td>')
+                        report_file.write('  </tr>')
+                        report_file.write('  <tr>')
+                        index += 1
+            report_file.write('    <td class="tg-2uuq" colspan="3">Résultats</td>')
+            report_file.write('  </tr>')
+            report_file.write('  <tr>')
+            result = '    <td class="tg-73oq" colspan="3">'
+            for i in range(len(players_scores[0])):
+                result = result + str(players_scores[0][i] + ' - score : ' + str(players_scores[1][i]) + '<br>')
+            report_file.write(result)
+        report_file.close()
+        return 'Le fichier "' + file_name + '" à été exporté\ndans le dossier '\
+            + data_folder.replace("models\\..\\", "") + '\.'

@@ -6,7 +6,8 @@ from models.match import MatchModel
 from models.player import PlayerModel
 import sys
 from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
-    MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST, MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT
+    MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST, MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT,\
+    MENU_REPORT_EXPORT_HTML
 
 
 class ReportController:
@@ -37,6 +38,8 @@ class ReportController:
                 self.report_tournament_list()
             elif choix == MENU_RESULT_TOURNAMENT_DETAIL:
                 self.report_tournament_details()
+            elif choix == MENU_REPORT_EXPORT_HTML:
+                self.report_tournament("html_file")
             elif choix == MENU_REPORT_EXIT:
                 break
 
@@ -58,9 +61,8 @@ class ReportController:
                     self.report_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
                                                                                             item['town'],
                                                                                             item['nb_round'])))
-
                 # select a tournament
-                choix = self.tournament_view.select_menu(tournaments)
+                choix = self.tournament_view.select(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
                 tournament_uuid = selected_tournament['tournament_uuid']
                 tournament_infos = self.tournament_model.extract_all_infos_tournaments(tournament_uuid)
@@ -120,10 +122,6 @@ class ReportController:
             else:
                 # display ended tournaments
                 ended_tournaments = self.tournament_model.search_completed_tournaments()
-                if ended_tournaments == "error":
-                    self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                   " le et recommencez.")
-                    sys.exit()
                 self.report_view.text_to_print("Liste des tournois terminés:")
                 for i in range(len(ended_tournaments)):
                     item = ended_tournaments[i]
@@ -132,7 +130,7 @@ class ReportController:
                                                                                             item['nb_round'])))
 
                 # select a tournament
-                choix = self.tournament_view.select_menu(ended_tournaments)
+                choix = self.tournament_view.select(ended_tournaments)
                 selected_tournament = ended_tournaments[int(choix) - 1]
                 selected_tournament_uuid = selected_tournament['tournament_uuid']
 
@@ -181,4 +179,10 @@ class ReportController:
                 elif display_type == "scores":
                     self.report_view.display_scores_scores(tournaments_scores, rounds_list, tournament_start_date,
                                                            tournament_end_date, tournament_name, players_scores)
+                elif display_type == "html_file":
+                    result = self.tournament_model.export_tournament(tournaments_scores, rounds_list,
+                                                                     tournament_start_date, tournament_end_date,
+                                                                     tournament_name, players_scores)
+                    self.report_view.text_to_print(result)
+                    self.report_view.choice("Appuyez sur [ENTRER] pour continuer.")
                 break

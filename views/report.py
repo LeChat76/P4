@@ -2,7 +2,7 @@ from math import floor, ceil
 import os
 from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_PLAYER_NAME, MENU_REPORT_EXIT,\
     MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST,\
-    MENU_RESULT_TOURNAMENT_DETAIL, REPORT_TABLE_WIDTH, PLAYER_MAX_LENGTH, REPORT_MATCH_WIDTH
+    MENU_RESULT_TOURNAMENT_DETAIL, REPORT_TABLE_WIDTH, PLAYER_MAX_LENGTH, REPORT_MATCH_WIDTH, MENU_REPORT_EXPORT_HTML
 
 
 class ReportView:
@@ -25,7 +25,7 @@ class ReportView:
         while choix != MENU_REPORT_TOURNAMENT_PLAYERS and choix != MENU_REPORT_PLAYER_NAME and choix !=\
                 MENU_REPORT_EXIT and choix != MENU_REPORT_TOURNAMENT_SCORES and choix != \
                 MENU_REPORT_PLAYER_FNAME and choix != MENU_RESULT_TOURNAMENT_LIST and choix != \
-                MENU_RESULT_TOURNAMENT_DETAIL:
+                MENU_RESULT_TOURNAMENT_DETAIL and choix != MENU_REPORT_EXPORT_HTML:
             self.clear_screen()
             print("+-------------------------------+")
             print("|       MENU RAPPORTS           |")
@@ -36,7 +36,8 @@ class ReportView:
             print("| 4 - list des joueurs/prénom   |")
             print("| 5 - liste des tournois        |")
             print("| 6 - détail d'un tournoi       |")
-            print("| 7 - revenir au menu principal |")
+            print("| 7 - export tournois html      |")
+            print("| 8 - revenir au menu principal |")
             print("+-------------------------------+")
             choix = input("Quel est votre choix : ")
             if not choix.isnumeric():

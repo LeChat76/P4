@@ -7,8 +7,15 @@ from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "tournaments")
 if not os.path.exists(DATA_FOLDER):
     os.makedirs(DATA_FOLDER)
-    with open(os.path.join(DATA_FOLDER, "players.json"), 'w') as creating_players_file:
+    with open(os.path.join(DATA_FOLDER, "players.json"), 'w') as players_file:
         pass
+    players_file.close()
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "reports")
+if not os.path.exists(DATA_FOLDER):
+    os.makedirs(DATA_FOLDER)
+    with open(os.path.join(DATA_FOLDER, "report.html"), 'w') as report_file:
+        pass
+    report_file.close()
 
 
 class PlayerController:
