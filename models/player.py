@@ -40,7 +40,7 @@ class PlayerModel:
     def delete_player(self, player_uuid):
         """ method to delete a player """
         self.player_uuid = player_uuid
-        PLAYERS.update({'enable': False}, PLAYER.player_uuid == self.player_uuid)
+        PLAYERS.update({'enable': "N"}, PLAYER.player_uuid == self.player_uuid)
 
     def search_player(self, player_to_search):
         """ method to display player (search by name) """
@@ -49,8 +49,7 @@ class PlayerModel:
             result = PLAYERS.search(PLAYER.name.matches(self.player_to_search, flags=re.IGNORECASE)
                                     & (PLAYER.enable != "N"))
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
-            sys.exit()
+            return "error"
         if len(result) == 0:
             return "no_result"
         else:
@@ -59,14 +58,11 @@ class PlayerModel:
     @staticmethod
     def search_all_players(by_name=False, by_fname=False):
         """ method to count players in players.json DB"""
-        players_uuid_list = []
-        players_fname_list = []
-        players_name_list = []
+        players_uuid_list, players_fname_list, players_name_list = [], [], []
         try:
             result = PLAYERS.search(PLAYER.enable != "N")
         except ValueError:
-            print("Problème de structure sur fichier players.json.\nVérifiez le et recommencez.")
-            sys.exit()
+            return "error"
         if len(result) == 0:
             return "no_result"
         elif by_name:
@@ -86,8 +82,7 @@ class PlayerModel:
 
     def create_player_list(self, players_list):
         """method to create player's list sorted by score if all score egal 0, randomized players list """
-        players_scores = []
-        sorted_players_list = []
+        players_scores, sorted_players_list = [], []
         score0 = True
         nb_players = len(players_list)
         for i in range(nb_players):
@@ -106,8 +101,7 @@ class PlayerModel:
     @staticmethod
     def check_players_list(players_list, previous_matchs_list):
         """ method to compare matchs players VS previous matchs players """
-        match = None
-        p2_uuid = None
+        match, p2_uuid = None, None
         checked_players_list = []
         already_played = False
         if previous_matchs_list:
@@ -166,8 +160,10 @@ class PlayerModel:
         return players_list
 
     def store_score(self, player_uuid, score):
-        """ method to store score  (add score to current score) in the json player's file, to use with only
-        one player """
+        """
+        method to store score  (add score to current score) in the json player's file, to use with only
+        one player
+        """
         self.player_uuid = player_uuid
         self.score = score
         player = PLAYERS.search(PLAYER.player_uuid.matches(self.player_uuid))
@@ -176,8 +172,10 @@ class PlayerModel:
         PLAYERS.update({'score': new_score}, PLAYER.player_uuid == self.player_uuid)
 
     def store_score_from_previous_match(self, players_list, players_scores):
-        """ method to store previous scores in players when resume previous tournament (replace score from previous,
-        used for a list of players) """
+        """
+        method to store previous scores in players when resume previous tournament (replace score from previous,
+        used for a list of players)
+        """
         self.players_list = players_list
         self.players_scores = players_scores
         for i in range(len(players_list)):

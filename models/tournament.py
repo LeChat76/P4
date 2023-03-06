@@ -39,16 +39,11 @@ class TournamentModel:
 
     def add_tournament(self):
         """ method for add a tournament in the json file """
-        TOURNAMENTS.insert({'tournament_uuid': str(uuid.uuid1()),
-                            'name': self.tournament_name,
-                            'town': self.tournament_town,
-                            'start_date': self.tournament_start_date,
-                            'end_date': self.tournament_end_date,
-                            'nb_round': int(self.tournament_nb_round),
-                            'current_round': self.tournament_current_round,
-                            'list_rounds': self.list_rounds,
-                            'list_players': self.tournament_list_players,
-                            'list_matchs': self.tournament_list_matchs,
+        TOURNAMENTS.insert({'tournament_uuid': str(uuid.uuid1()), 'name': self.tournament_name,
+                            'town': self.tournament_town, 'start_date': self.tournament_start_date,
+                            'end_date': self.tournament_end_date, 'nb_round': int(self.tournament_nb_round),
+                            'current_round': self.tournament_current_round, 'list_rounds': self.list_rounds,
+                            'list_players': self.tournament_list_players, 'list_matchs': self.tournament_list_matchs,
                             'description': self.tournament_description})
 
     @staticmethod
@@ -57,9 +52,7 @@ class TournamentModel:
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
-            print("Problème de structure sur fichier"
-                  " tournaments.json.\nVérifiez le et recommencez.")
-            exit()
+            return "error"
         if len(result) == 0:
             return "no_result"
         return result
@@ -71,8 +64,7 @@ class TournamentModel:
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
-            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
-            exit()
+            return "error"
         for i in range(len(result)):
             item = result[i]
             if item['nb_round'] == item['current_round']:
@@ -88,8 +80,7 @@ class TournamentModel:
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
-            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
-            exit()
+            return "error"
         for i in range(len(result)):
             item = result[i]
             if str(item['nb_round']) != str(item['current_round']) and item['current_round'] is not None:
@@ -106,8 +97,7 @@ class TournamentModel:
         try:
             result = TOURNAMENTS.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
-            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
-            exit()
+            return "error"
         for i in range(len(result)):
             item = result[i]
             if item['current_round'] is None:
@@ -123,8 +113,7 @@ class TournamentModel:
         try:
             result = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
         except ValueError:
-            print("Problème de structure sur fichier tournaments.json.\nVérifiez le et recommencez.")
-            exit()
+            return "error"
         result = result[0]['nb_round']
         return result
 
@@ -151,8 +140,7 @@ class TournamentModel:
     def extract_tournament_name(self, tournament_uuid):
         """ method to extract tournament's name of a tournament with tournament uuid """
         self.tournament_uuid = tournament_uuid
-        tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.
-                                        matches(self.tournament_uuid))
+        tournament = TOURNAMENTS.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
         tournament_name = tournament[0]['name']
         return tournament_name
 
@@ -214,7 +202,6 @@ class TournamentModel:
             all_rounds = [round]
         else:
             all_rounds.append(round)
-
         TOURNAMENTS.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
     def extract_rounds_list(self, tournament_uuid):

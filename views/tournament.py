@@ -36,7 +36,7 @@ class TournamentView:
         self.clear_screen()
         return choix
 
-    def add_tournament_menu(self):
+    def add_tournament(self):
         self.clear_screen()
         new_one_tournament = " "
         TOURNAMENT_LIST.clear()
@@ -95,7 +95,7 @@ class TournamentView:
                 elif dis_tournament_menu == "c":
                     return "display_current_tournaments"
 
-    def choice_menu(self, question):
+    def choice(self, question):
         """ method for asking to restart request """
         self.question = question
         choix = ""
@@ -106,7 +106,7 @@ class TournamentView:
             elif choix.upper() == "N":
                 return "N"
 
-    def select_menu(self, tournaments):
+    def select(self, tournaments):
         """ method to select tournament """
         self.tournaments = tournaments
         choice = ""

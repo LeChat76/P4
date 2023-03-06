@@ -4,6 +4,7 @@ from views.tournament import TournamentView
 from models.tournament import TournamentModel
 from models.match import MatchModel
 from models.player import PlayerModel
+import sys
 from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
     MENU_REPORT_PLAYER_FNAME, MENU_RESULT_TOURNAMENT_LIST, MENU_RESULT_TOURNAMENT_DETAIL, MENU_REPORT_EXIT
 
@@ -45,8 +46,12 @@ class ReportController:
         tournaments = self.tournament_model.search_all_tournaments()
         while True:
             if tournaments == "no_result":
-                self.report_view.choice_menu("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
+                self.report_view.choice("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
+            elif tournaments == "error":
+                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
+                sys.exit()
             else:
                 for i in range(len(tournaments)):
                     item = tournaments[i]
@@ -69,7 +74,7 @@ class ReportController:
                                                    " suivante :")
                     for player in player_fname_name_list:
                         self.report_view.text_to_print("- " + player)
-                self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
+                self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
     def report_tournament_list(self):
@@ -82,27 +87,43 @@ class ReportController:
         self.by_fname = by_fname
         while True:
             if self.player_model.search_all_players("", "") == "no_result":
-                self.report_view.choice_menu("Aucun joueurs. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
+                self.report_view.choice("Aucun joueurs. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
+            elif self.player_model.search_all_players("", "") == "error":
+                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
+                sys.exit()
             else:
                 self.by_name = by_name
                 self.by_fname = by_fname
                 players_uuid_list = self.player_model.search_all_players(self.by_name, self.by_fname)
+                if players_uuid_list == "error":
+                    self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
+                    sys.exit()
                 players_list = self.player_model.extract_data_player(players_uuid_list)
                 for player in players_list:
                     self.report_view.text_to_print(PlayerModel(player[0], player[1], player[2], player[3]))
-                self.report_view.choice_menu("Appuyez sur [ENTRER] pour revenir au menu.")
+                self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
     def report_tournament(self, display_type=None):
         """ method to display tournament report """
         while True:
             if self.tournament_model.search_all_tournaments() == "no_result":
-                self.report_view.choice_menu("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
+                self.report_view.choice("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
+            elif self.tournament_model.search_all_tournaments() == "error":
+                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
+                sys.exit()
             else:
                 # display ended tournaments
                 ended_tournaments = self.tournament_model.search_completed_tournaments()
+                if ended_tournaments == "error":
+                    self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
+                    sys.exit()
                 self.report_view.text_to_print("Liste des tournois terminés:")
                 for i in range(len(ended_tournaments)):
                     item = ended_tournaments[i]

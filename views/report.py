@@ -197,7 +197,7 @@ class ReportView:
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
-    def choice_menu(self, question):
+    def choice(self, question):
         """ method for asking to restart request """
         self.question = question
         choix = ""

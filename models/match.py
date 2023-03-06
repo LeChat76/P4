@@ -22,6 +22,7 @@ class MatchModel:
         self.player_two_uuid = player_two_uuid
         self.player_one_score = player_one_score
         self.player_two_score = player_two_score
+        self.PlayerModel = PlayerModel()
 
     def create_tuple_for_match(self):
         """ method to store match result for a round in a list of tuple (who contains list of players + scores) """
@@ -52,12 +53,7 @@ class MatchModel:
     def extract_scores(self, matchs_ids_list):
         """ method to extract score from a match id """
         tournament_scores = None
-        rounds = []
-        matchs = []
-        p1_name = []
-        p2_name = []
-        p1_scores = []
-        p2_scores = []
+        rounds, matchs, p1_name, p2_name, p1_scores, p2_scores = [], [], [], [], [], []
         self.matchs_ids_list = matchs_ids_list
         for i in range(len(self.matchs_ids_list)):
             match_id = matchs_ids_list[i]
@@ -67,9 +63,9 @@ class MatchModel:
             matchs.append((match_id.split("_")[3])[1:])
             match_max = max(matchs)
             p1_uuid = result[0]['player_one_uuid']
-            p1_name.append(PlayerModel().extract_player_fname_and_name(p1_uuid))
+            p1_name.append(self.PlayerModel.extract_player_fname_and_name(p1_uuid))
             p2_uuid = result[0]['player_two_uuid']
-            p2_name.append(PlayerModel().extract_player_fname_and_name(p2_uuid))
+            p2_name.append(self.PlayerModel.extract_player_fname_and_name(p2_uuid))
             p1_scores.append(result[0]['player_one_score'])
             p2_scores.append(result[0]['player_two_score'])
             tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores, p2_scores, round_max, match_max]
@@ -110,8 +106,7 @@ class MatchModel:
     def extract_players_scores(self, matchs_ids_list):
         """ method to extract players list and scores list from matchs ids list """
         self.matchs_ids_list = matchs_ids_list
-        players_uuid_list = []
-        players_scores = []
+        players_uuid_list, players_scores = [], []
         for match_id in matchs_ids_list:
             match = MATCHS.search(MATCH.match_id.matches(match_id))
             players_uuid_list.append(match[0]['player_one_uuid'])

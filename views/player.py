@@ -38,7 +38,7 @@ class PlayerView:
         self.clear_screen()
         return choix
 
-    def add_player_menu(self):
+    def add_player(self):
         """ Requests for player first name """
         new_one_player = " "
         PLAYER_LIST.clear()
@@ -98,7 +98,7 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    def delete_player_menu(self, all_player_list):
+    def delete_player(self, all_player_list):
         """ Request for select player to delete """
         self.all_player_list = all_player_list
         player_to_delete = None
@@ -114,7 +114,7 @@ class PlayerView:
                     return int(player_to_delete) - 1
 
     @staticmethod
-    def display_player_menu():
+    def display_player():
         """ Request for display player """
         dis_player_menu = None
         while not dis_player_menu:
@@ -127,7 +127,7 @@ class PlayerView:
                 elif dis_player_name.isalpha() and len(dis_player_name) > 0:
                     return dis_player_name
 
-    def choice_menu(self, question):
+    def choice(self, question):
         """ method for asking to restart request """
         self.question = question
         choix = ""
@@ -138,7 +138,7 @@ class PlayerView:
             elif choix.upper() == "N":
                 return "N"
 
-    def select_available_players_menu(self, nb_players_available, nb_players):
+    def select_available_players(self, nb_players_available, nb_players):
         """ method to select multiples players """
         self.nb_players_available = nb_players_available
         self.nb_players = nb_players
