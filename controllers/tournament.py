@@ -218,7 +218,7 @@ class TournamentController:
                 players_available_list.remove(selected_player_uuid)
                 if nb_players_available == 1 and nb_players_available_pair is False:
                     self.tournament_view.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
-                                                       " paire.\nFin de la selection.")
+                                                       " pair.\nFin de la selection.")
                     break
                 elif nb_players_available == 0 or nb_players_available_pair == "True":
                     self.tournament_view.text_to_print("Plus de personne à ajouter.")

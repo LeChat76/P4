@@ -144,7 +144,6 @@ class PlayerView:
         self.nb_players = nb_players
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
-            self.clear_screen()
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
             elif not choice:
