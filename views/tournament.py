@@ -66,6 +66,8 @@ class TournamentView:
                     elif not tournament_nb_round:
                         tournament_nb_round = 4
                         break
+                    elif str(tournament_nb_round).isnumeric():
+                        break
 
             # Requests for description of the tournament
             tournament_description = input("Description du tournoi ([ENTRER pour laisser vide) : ")
