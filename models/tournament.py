@@ -287,4 +287,4 @@ class TournamentModel:
             report_file.write(result)
         report_file.close()
         return 'Le fichier "' + file_name + '" à été exporté\ndans le dossier '\
-            + data_folder.replace("models\\..\\", "") + '\.'
+            + data_folder.replace("models\\..\\", "") + '\\.'
