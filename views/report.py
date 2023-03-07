@@ -111,8 +111,8 @@ class ReportView:
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         # print final results
-        blank_width = (REPORT_TABLE_WIDTH - len("Résultats")) / 2
-        print("+" + " " * floor(blank_width) + "Résultats" + " " * ceil(blank_width) + "+")
+        blank_width = (REPORT_TABLE_WIDTH - len("Résultats(triés par score)")) / 2
+        print("+" + " " * floor(blank_width) + "Résultats(triés par score)" + " " * ceil(blank_width) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         for i in range(len(players_scores[0])):
             blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
@@ -187,8 +187,8 @@ class ReportView:
                     index += 1
             print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         # print final results
-        blank_width = (REPORT_TABLE_WIDTH - len("Résultats")) / 2
-        print("+" + " " * floor(blank_width) + "Résultats" + " " * ceil(blank_width) + "+")
+        blank_width = (REPORT_TABLE_WIDTH - len("Résultats(triés par score)")) / 2
+        print("+" + " " * floor(blank_width) + "Résultats(triés par score)" + " " * ceil(blank_width) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         for i in range(len(players_scores[0])):
             blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "

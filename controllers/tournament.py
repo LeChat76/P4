@@ -236,6 +236,7 @@ class TournamentController:
                                                    " rencontreront pas.")
 
             self.tournament_view.choice("Appuyez sur une [ENTRER] pour continuer.")
+            self.tournament_view.clear_screen()
 
             # beginning of the tournament
             current_round = 1
