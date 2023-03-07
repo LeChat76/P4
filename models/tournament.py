@@ -233,7 +233,7 @@ class TournamentModel:
         index = 0
         """ method to export in html file a tournament """
         data_folder = os.path.join(os.path.dirname(__file__), "..", "data", "reports")
-        file_name = "tournoi " + self.tournament_name + " " + datetime.datetime.today().strftime('%d-%m-%Y %H-%M-%S')\
+        file_name = "Tournoi " + self.tournament_name + " " + datetime.datetime.today().strftime('%d-%m-%Y %H-%M-%S')\
                     + ".html"
         with open(os.path.join(data_folder, file_name), 'w') as report_file:
             report_file.write('<style type="text/css">')
@@ -270,7 +270,7 @@ class TournamentModel:
                         p2name = (p2names_list[index])
                         p1score = p1scores_list[index]
                         p2score = p2scores_list[index]
-                        report_file.write('<td class="tg-73oq" colspan="1">Match ' + str(match) + ' & Scores</td>')
+                        report_file.write('<td class="tg-73oq" colspan="1">Match ' + str(match) + '</td>')
                         report_file.write('<td class="tg-73oq" colspan="1">' + str(p1name) + ' : '
                                           + str(p1score) + '</td>')
                         report_file.write('<td class="tg-73oq" colspan="1">' + str(p2name) + ' : '
@@ -278,7 +278,7 @@ class TournamentModel:
                         report_file.write('  </tr>')
                         report_file.write('  <tr>')
                         index += 1
-            report_file.write('    <td class="tg-2uuq" colspan="3">Résultats</td>')
+            report_file.write('    <td class="tg-2uuq" colspan="3">Résultats (triés par scores)</td>')
             report_file.write('  </tr>')
             report_file.write('  <tr>')
             result = '    <td class="tg-73oq" colspan="3">'
