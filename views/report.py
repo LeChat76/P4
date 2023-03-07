@@ -213,8 +213,8 @@ class ReportView:
         """ method to display tournament details for reporting menu """
         self.tournament_info = tournament_info
         self.clear_screen()
-        print(f"Tournoi {self.tournament_info[0]} se déroulant à {self.tournament_info[1]} et comportant"
-              f" {self.tournament_info[4]} round(s).")
+        print(f'Tournoi "{self.tournament_info[0]}" se déroulant à {self.tournament_info[1]} et comportant'
+              f' {self.tournament_info[4]} round(s).')
         print(f"Description : {self.tournament_info[8]}.")
         if self.tournament_info[2] and self.tournament_info[3]:
             print(f"Ce tournoi a démarré le {self.tournament_info[2]} et s'est terminé le {self.tournament_info[3]}.")
