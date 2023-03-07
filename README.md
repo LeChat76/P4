@@ -14,7 +14,7 @@ Install all needed libraries by typing : "pip install -r requirements.txt"
 ```
 ## Execution
 ```sh
-Simply launch the script by typing "py main.py" from "Projet4OC" folder and follow instruction.
+Simply launch "py main.py" from "Projet4OC" folder and follow instructions.
 ```
 ## How to use
 ```sh
