@@ -60,13 +60,13 @@ class ReportController:
                 # select a tournament
                 choix = TournamentView.select(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
-                tournament = TournamentModel.extract_all_infos_tournaments(selected_tournament)
+                tournament = selected_tournament.extract_all_infos_tournaments()
                 ReportView.display_tournament_details(tournament)
                 # display ordered player list of a tournament
                 if tournament[7]:
                     for player_uuid in tournament[7]:
                         player = PlayerModel.create_player_object(player_uuid)
-                        player_fname_name_list.append(PlayerModel.extract_player_fname_and_name(player))
+                        player_fname_name_list.append(player.extract_player_fname_and_name())
                     player_fname_name_list.sort()
                     ReportView.text_to_print("La liste des joueurs (triée par ordre alphabétique) est la suivante :")
                     for player in player_fname_name_list:
@@ -149,7 +149,7 @@ class ReportController:
                 scores, players_uuid = zip(*sorted(zip(scores, players_uuid), reverse=True))
                 for player_uuid in players_uuid:
                     player = PlayerModel.create_player_object(player_uuid)
-                    player_fname_name = PlayerModel.extract_player_fname_and_name(player)
+                    player_fname_name = player.extract_player_fname_and_name()
                     players_object.append(player_fname_name)
                 players_scores = [players_object, scores]
 

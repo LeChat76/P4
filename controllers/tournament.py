@@ -31,19 +31,21 @@ class TournamentController:
             elif choix == MENU_TOURNAMENT_EXIT:
                 break
 
-    def add_tournament(self):
+    @staticmethod
+    def add_tournament():
         """ method to record new tournaments """
-        new_tournament = self.tournament_view.add_tournament()
+        new_tournament = TournamentView.add_tournament()
         for tournament in new_tournament:
             tournament_to_add = TournamentModel(tournament_name=tournament[0], tournament_town=tournament[1],
                                                 tournament_nb_round=tournament[2],
                                                 tournament_description=tournament[3])
-            tournament_to_add.add_tournament()
+            tournament_to_add.save_tournament()
 
-    def display_tournament(self):
+    @staticmethod
+    def display_tournament():
         """ method to display tournaments completed, current or all """
         while True:
-            tournament_to_display = self.tournament_view.display_tournament()
+            tournament_to_display = TournamentView.display_tournament()
             if tournament_to_display == "display_all_tournaments":
                 result = TournamentModel.search_all_tournaments()
                 if result == "no_result":
@@ -154,7 +156,7 @@ class TournamentController:
             result = self.tournament_view.select(not_started_tournament)
             tournament = not_started_tournament[int(result) - 1]
 
-            tournament_nb_round = TournamentModel.search_nb_round_for_tournament(tournament)
+            tournament_nb_round = tournament.search_nb_round_for_tournament()
             # compare nb rounds and nb players available to check if some players will play with the same
             # players twice - formula is nb# round should not be superior of nb players available - 1
             # example : if there is 8 players, nb match = 7 so nb round max should be equal or inferior to 7
@@ -183,7 +185,7 @@ class TournamentController:
                 index = 0
                 for player in players_available_list:
                     index += 1
-                    player_fname_name = PlayerModel.extract_player_fname_and_name(player)
+                    player_fname_name = player.extract_player_fname_and_name()
                     TournamentView.text_to_print(str(index) + " - " + player_fname_name + ".")
                 TournamentView.text_to_print(str(nb_players) + " sélectionné(s).")
                 result = self.player_view.select_available_players(len(players_available_list), nb_players)
@@ -202,7 +204,7 @@ class TournamentController:
                     TournamentView.text_to_print("Plus de personne à ajouter.")
                     break
 
-            TournamentModel.store_players(tournament, PlayerModel.extract_player_uuid_list(players_list))
+            tournament.store_players(PlayerModel.extract_player_uuid_list(players_list))
             TournamentView.text_to_print('Tournoi "' + tournament.tournament_name + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
                 TournamentView.text_to_print("Pour information : vu le faible nombre de joueurs sélectionnés"
@@ -220,8 +222,8 @@ class TournamentController:
             PlayerModel.delete_score_player_object(players_list)
             current_round = 1
             date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-            TournamentModel.store_tournament_start_date(tournament, date)
-            nb_round = TournamentModel.search_nb_round_for_tournament(tournament)
+            tournament.store_tournament_start_date(date)
+            nb_round = tournament.search_nb_round_for_tournament()
 
             nb_match = int(len(players_list) / NB_JOUEURS_BY_MATCH)
 
@@ -242,8 +244,8 @@ class TournamentController:
                     # loop for all matches for one round
                     p1 = players_list[i]
                     p2 = players_list[i + 1]
-                    player_one = PlayerModel.extract_player_fname_and_name(p1)
-                    player_two = PlayerModel.extract_player_fname_and_name(p2)
+                    player_one = p1.extract_player_fname_and_name()
+                    player_two = p2.extract_player_fname_and_name()
                     TournamentView.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
                                                  + ", match " + str(current_match) + "/" + str(nb_match)
                                                  + " opposant " + player_one + " à " + player_two + ".")
@@ -253,22 +255,21 @@ class TournamentController:
                     match.create_tuple_for_match()
                     current_match += 1
 
-                TournamentModel.store_current_round(tournament, current_round)
+                tournament.store_current_round(current_round)
                 round_end_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                TournamentModel.store_round_date(tournament, current_round, round_start_date,
-                                                 round_end_date)
+                tournament.store_round_date(current_round, round_start_date, round_end_date)
                 current_round += 1
                 if int(nb_round) >= current_round:
                     choix = TournamentView.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
                         match_id_list = match.store_match()
-                        TournamentModel.store_match_id(tournament, match_id_list)
+                        tournament.store_match_id(match_id_list)
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                    TournamentModel.store_tournament_end_date(tournament, date)
+                    tournament.store_tournament_end_date(date)
                 match_id_list = match.store_match()
-                TournamentModel.store_match_id(tournament, match_id_list)
+                tournament.store_match_id(match_id_list)
             TournamentView.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
             break
 
@@ -329,10 +330,10 @@ class TournamentController:
                 current_match = 1
                 for i in range(0, nb_match * 2, 2):
                     # loop for all matches for one round
-                    player_one = PlayerModel.extract_player_fname_and_name(players_list[i])
-                    player_two = PlayerModel.extract_player_fname_and_name(players_list[i + 1])
-                    player_one_uuid = PlayerModel.extract_player_uuid(players_list[i])
-                    player_two_uuid = PlayerModel.extract_player_uuid(players_list[i + 1])
+                    player_one = players_list[i].extract_player_fname_and_name()
+                    player_two = players_list[i + 1].extract_player_fname_and_name()
+                    player_one_uuid = players_list[i].extract_player_uuid()
+                    player_two_uuid = players_list[i + 1].extract_player_uuid()
                     TournamentView.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
                                                  + ", match " + str(current_match) + "/" + str(nb_match)
                                                  + " opposant " + player_one + " à " + player_two + ".")
@@ -342,22 +343,21 @@ class TournamentController:
                     match.create_tuple_for_match()
                     current_match += 1
 
-                TournamentModel.store_current_round(tournament, current_round)
+                tournament.store_current_round(current_round)
                 round_end_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                TournamentModel.store_round_date(tournament, current_round, round_start_date,
-                                                 round_end_date)
+                tournament.store_round_date(current_round, round_start_date, round_end_date)
                 current_round += 1
                 if int(nb_round) >= current_round:
                     choix = TournamentView.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
                         match_id_list = match.store_match()
-                        TournamentModel.store_match_id(tournament, match_id_list)
+                        tournament.store_match_id(match_id_list)
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                    TournamentModel.store_tournament_end_date(tournament, date)
+                    tournament.store_tournament_end_date(date)
                 match_id_list = match.store_match()
-                TournamentModel.store_match_id(tournament, match_id_list)
+                tournament.store_match_id(match_id_list)
             TournamentView.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
 
     @staticmethod

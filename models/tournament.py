@@ -37,12 +37,6 @@ class TournamentModel:
         return f"Tournoi {self.tournament_name} se déroulant à {self.tournament_town} et comportant" \
                f" {self.tournament_nb_round} round(s)."
 
-    def add_tournament(self):
-        """ method for add a tournament in the json file """
-        TournamentModel(self.tournament_name.capitalize(), self.tournament_town.capitalize(), self.tournament_nb_round,
-                        self.tournament_description)
-        self.save_tournament()
-
     def save_tournament(self):
         """ method to save tournament in json file """
         tournament_uuid = str(uuid.uuid1())
@@ -170,19 +164,17 @@ class TournamentModel:
         else:
             return not_started_tournaments
 
-    @staticmethod
-    def search_nb_round_for_tournament(tournament):
-        """ method to search nb_round for a tournament """
-        return tournament.tournament_nb_round
+    def search_nb_round_for_tournament(self):
+        """ method to search nb_round for a tournament object """
+        return self.tournament_nb_round
 
-    @staticmethod
-    def store_players(tournament, players_uuids):
+    def store_players(self, players_uuids):
         """ method to add player's uuid to tournaments.json """
         players_uuid_list = []
         for player_uuid in players_uuids:
             players_uuid_list.append(player_uuid)
         TOURNAMENTS_DB.update({'list_players': players_uuid_list}, TOURNAMENT.tournament_uuid
-                              == tournament.tournament_uuid)
+                              == self.tournament_uuid)
 
     def extract_players_uuid_of_tournament(self):
         """ method to extract all player's uuid of a tournament """
@@ -196,61 +188,52 @@ class TournamentModel:
         matchs_id_list = result_doc[0]['list_matchs']
         return matchs_id_list
 
-    def extract_tournament_name(self, tournament):
-        """ method to extract tournament's name of a tournament with tournament uuid """
-        self.tournament_uuid = tournament.tournament_uuid
-        tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        tournament_name = tournament[0]['name']
-        return tournament_name
+    # def extract_tournament_name(self, tournament):
+    #     """ method to extract tournament's name of a tournament with tournament uuid """
+    #     self.tournament_uuid = tournament.tournament_uuid
+    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+    #     tournament_name = tournament[0]['name']
+    #     return tournament_name
 
-    @staticmethod
-    def extract_all_infos_tournaments(tournament):
+    def extract_all_infos_tournaments(self):
         """ method to extract all infos of a tournament with the uuid's tournament """
-        return tournament.tournament_name, tournament.tournament_town, tournament.tournament_start_date,\
-            tournament.tournament_end_date, tournament.tournament_nb_round, tournament.tournament_current_round,\
-            tournament.tournament_list_matchs, tournament.tournament_list_players, tournament.tournament_description
+        return self.tournament_name, self.tournament_town, self.tournament_start_date,\
+            self.tournament_end_date, self.tournament_nb_round, self.tournament_current_round,\
+            self.tournament_list_matchs, self.tournament_list_players, self.tournament_description
 
-    @staticmethod
-    def store_tournament_start_date(tournament, tournament_start_date):
+    def store_tournament_start_date(self, tournament_start_date):
         """ method to store start date in tournament """
         TOURNAMENTS_DB.update({'start_date': tournament_start_date},
-                              TOURNAMENT.tournament_uuid == tournament.tournament_uuid)
+                              TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    @staticmethod
-    def store_tournament_end_date(tournament, tournament_end_date):
+    def store_tournament_end_date(self, tournament_end_date):
         """ method to store end date in tournament """
-        TOURNAMENTS_DB.update({'end_date': tournament_end_date}, TOURNAMENT.tournament_uuid
-                              == tournament.tournament_uuid)
+        TOURNAMENTS_DB.update({'end_date': tournament_end_date}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    @staticmethod
-    def store_match_id(tournament, match_id_list):
+    def store_match_id(self, match_id_list):
         """ method to store matchs id in tournament """
         is_list_matchs = TOURNAMENTS_DB.search(
-            TOURNAMENT.tournament_uuid.matches(tournament.tournament_uuid))[0]['list_matchs']
+            TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_matchs']
         if is_list_matchs:
-            TOURNAMENTS_DB.update(add('list_matchs', match_id_list),
-                                  Query().tournament_uuid == tournament.tournament_uuid)
+            TOURNAMENTS_DB.update(add('list_matchs', match_id_list), Query().tournament_uuid == self.tournament_uuid)
         else:
-            TOURNAMENTS_DB.update({'list_matchs': match_id_list},
-                                  TOURNAMENT.tournament_uuid == tournament.tournament_uuid)
+            TOURNAMENTS_DB.update({'list_matchs': match_id_list}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    @staticmethod
-    def store_current_round(tournament, tournament_current_round):
+    def store_current_round(self, tournament_current_round):
         """ method to store current_round number in tournaments.json"""
         TOURNAMENTS_DB.update({'current_round': int(tournament_current_round)},
-                              TOURNAMENT.tournament_uuid == tournament.tournament_uuid)
+                              TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    @staticmethod
-    def store_round_date(tournament, current_round, round_start_date, round_end_date):
+    def store_round_date(self, current_round, round_start_date, round_end_date):
         """ method to store start and end dates for a round """
         all_rounds = TOURNAMENTS_DB.search(
-            TOURNAMENT.tournament_uuid.matches(tournament.tournament_uuid))[0]['list_rounds']
+            TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_rounds']
         round = ["Round" + str(current_round), str(round_start_date), str(round_end_date)]
         if all_rounds is None:
             all_rounds = [round]
         else:
             all_rounds.append(round)
-        TOURNAMENTS_DB.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == tournament.tournament_uuid)
+        TOURNAMENTS_DB.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
     def extract_start_date_tournament(self):
         """ method to extract start date of a tournament object """
@@ -260,12 +243,12 @@ class TournamentModel:
         """ method to extract start date of a tournament object """
         return self.tournament_end_date
 
-    def extract_rounds_list(self, tournament):
-        """ method to extract all rounds details of a tournament"""
-        self.tournament_uuid = tournament.tournament_uuid
-        tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        rounds_list = tournament[0]['list_rounds']
-        return rounds_list
+    # def extract_rounds_list(self, tournament):
+    #     """ method to extract all rounds details of a tournament"""
+    #     self.tournament_uuid = tournament.tournament_uuid
+    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+    #     rounds_list = tournament[0]['list_rounds']
+    #     return rounds_list
 
     @staticmethod
     def export_tournament(tournaments_scores, detailed_rounds_list, tournament_start_date, tournament_end_date,

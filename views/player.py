@@ -99,11 +99,10 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    @staticmethod
-    def delete_player(player_list):
+    def delete_player(self):
         """ Request for select player to delete """
         index = 1
-        for player in player_list:
+        for player in self:
             print(str(index) + " - " + str(player))
             index += 1
         while True:
@@ -112,7 +111,7 @@ class PlayerView:
                 if not choice.isnumeric():
                     print("La saisie doit être uniquement un chiffre. Merci de ressaisir.")
                 else:
-                    return player_list[int(choice) - 1]
+                    return self[int(choice) - 1]
 
     @staticmethod
     def display_player():

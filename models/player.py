@@ -36,23 +36,11 @@ class PlayerModel:
                            'name': player_name, 'birthd': player_birthd, 'clubid': player_clubid, 'score': 0,
                            'enable': "Y"})
 
-    @staticmethod
-    def save_player_test(player):
-        """ method to store player in DB """
-        player_fname = unidecode.unidecode(player.player_fname.capitalize())
-        player_name = unidecode.unidecode(player.player_name.capitalize())
-        player_birthd = player.player_birthd
-        player_clubid = player.player_clubid
-        PLAYERS_DB.insert({'player_uuid': str(uuid.uuid1()), 'fname': player_fname,
-                           'name': player_name, 'birthd': player_birthd, 'clubid': player_clubid, 'score': 0,
-                           'enable': "Y"})
-
-    @staticmethod
-    def delete_player(player):
+    def delete_player(self):
         """ method to delete a player (delete = modify 'enable' value with 'N' """
-        player_uuid = player.player_uuid
-        player_fname = player.player_fname
-        player_name = player.player_name
+        player_uuid = self.player_uuid
+        player_fname = self.player_fname
+        player_name = self.player_name
         PLAYERS_DB.update({'enable': "N"}, PLAYER.player_uuid == player_uuid)
         return player_fname + " " + player_name
 
@@ -160,14 +148,13 @@ class PlayerModel:
     #     player_uuid = self.player['player_uuid']
     #     return player_uuid
 
-    @staticmethod
-    def extract_player_fname_and_name(player):
+    def extract_player_fname_and_name(self):
         """ method to extract players' fname and name from player object """
-        player_uuid = player.player_uuid
+        player_uuid = self.player_uuid
         result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player_uuid))
-        player.player_fname = result_doc[0]['fname']
-        player.player_name = result_doc[0]['name']
-        player = player.player_fname + " " + player.player_name
+        self.player_fname = result_doc[0]['fname']
+        self.player_name = result_doc[0]['name']
+        player = self.player_fname + " " + self.player_name
         return player
 
     # def extract_data_player(self, players_uuid):
@@ -222,17 +209,16 @@ class PlayerModel:
 
     @staticmethod
     def extract_player_uuid_list(players):
-        """ method to extract players uuids """
+        """ method to extract players uuids from list of objects """
         players_uuid_list = []
         for player in players:
             player_uuid = player.player_uuid
             players_uuid_list.append(player_uuid)
         return players_uuid_list
 
-    @staticmethod
-    def extract_player_uuid(player):
+    def extract_player_uuid(self):
         """ method to extract players uuid for a single player object """
-        return player.player_uuid
+        return self.player_uuid
 
     @staticmethod
     def create_player_object(player_uuid):

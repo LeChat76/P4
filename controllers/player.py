@@ -44,7 +44,6 @@ class PlayerController:
             player = PlayerModel(player_fname=player[0], player_name=player[1], player_birthd=player[2],
                                  player_clubid=player[3])
             player.save_player()
-
     @staticmethod
     def delete_player():
         """ method to delete players """
@@ -58,7 +57,7 @@ class PlayerController:
                                          " le et recommencez.")
                 sys.exit()
             player_to_delete = PlayerView.delete_player(players_list)
-            player_deleted = PlayerModel.delete_player(player_to_delete)
+            player_deleted = player_to_delete.delete_player()
             PlayerView.text_to_print("Utilisateur " + player_deleted + " supprimé.")
             choix = PlayerView.choice("Supprimer un autre joueur(O/n)?")
             if choix == "N":

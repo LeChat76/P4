@@ -36,8 +36,9 @@ class TournamentView:
         self.clear_screen()
         return choix
 
-    def add_tournament(self):
-        self.clear_screen()
+    @staticmethod
+    def add_tournament():
+        TournamentView.clear_screen()
         new_one_tournament = " "
         TOURNAMENT_LIST.clear()
 
