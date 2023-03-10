@@ -44,6 +44,7 @@ class PlayerController:
             player = PlayerModel(player_fname=player[0], player_name=player[1], player_birthd=player[2],
                                  player_clubid=player[3])
             player.save_player()
+
     @staticmethod
     def delete_player():
         """ method to delete players """
