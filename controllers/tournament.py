@@ -178,6 +178,7 @@ class TournamentController:
                 nb_players_available_pair = True
             players_list = []
             while True:
+                PlayerView.clear_screen()
                 TournamentView.text_to_print(str(nb_players_available) + " joueurs disponibles:")
                 index = 0
                 for player in players_available_list:
