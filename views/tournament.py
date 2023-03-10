@@ -97,26 +97,26 @@ class TournamentView:
                 elif dis_tournament_menu == "c":
                     return "display_current_tournaments"
 
-    def choice(self, question):
+    @staticmethod
+    def choice(question):
         """ method for asking to restart request """
-        self.question = question
         choix = ""
         while choix.upper() != "O" or choix.upper() != "N":
-            choix = input(self.question)
+            choix = input(question)
             if choix.upper() == "O" or choix == "":
                 return "O"
             elif choix.upper() == "N":
                 return "N"
 
-    def select(self, tournaments):
+    @staticmethod
+    def select(tournaments):
         """ method to select tournament """
-        self.tournaments = tournaments
         choice = ""
         while not choice.isnumeric():
             choice = input("Choisir un tournoi (renseigner un chiffre) : ")
             if not choice.isnumeric():
                 print("Merci de saisir un chiffre.")
-            elif int(choice) > len(self.tournaments):
+            elif int(choice) > len(tournaments):
                 print("Choix incorrect, merci de ressaisir.")
                 choice = ""
             elif int(choice) <= 0:
@@ -125,9 +125,9 @@ class TournamentView:
             elif choice.isnumeric():
                 return choice
 
-    def text_to_print(self, text):
+    @staticmethod
+    def text_to_print(text):
         """ method to print text from controller """
-        self.text = text
         print(text)
 
     @staticmethod

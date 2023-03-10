@@ -18,9 +18,6 @@ class ReportController:
         self.tournament_controller = TournamentController()
         self.report_view = ReportView()
         self.tournament_view = TournamentView()
-        self.tournament_model = TournamentModel()
-        self.match_model = MatchModel()
-        self.player_model = PlayerModel()
 
     def menu_report(self):
         """ Reports menu """
@@ -46,36 +43,34 @@ class ReportController:
     def report_tournament_details(self, ):
         """ method to display detail of a tournament """
         player_fname_name_list = []
-        tournaments = self.tournament_model.search_all_tournaments()
+        tournaments = TournamentModel.search_all_tournaments()
         while True:
             if tournaments == "no_result":
                 self.report_view.choice("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
             elif tournaments == "error":
-                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                               " le et recommencez.")
+                ReportView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                         " le et recommencez.")
                 sys.exit()
             else:
-                for i in range(len(tournaments)):
-                    item = tournaments[i]
-                    self.report_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
-                                                                                            item['town'],
-                                                                                            item['nb_round'])))
+                index = 0
+                for tournament in tournaments:
+                    index += 1
+                    ReportView.text_to_print(str(index) + " - " + str(tournament))
                 # select a tournament
-                choix = self.tournament_view.select(tournaments)
+                choix = TournamentView.select(tournaments)
                 selected_tournament = tournaments[int(choix) - 1]
-                tournament_uuid = selected_tournament['tournament_uuid']
-                tournament_infos = self.tournament_model.extract_all_infos_tournaments(tournament_uuid)
-                self.report_view.display_tournament_details(tournament_infos)
+                tournament = TournamentModel.extract_all_infos_tournaments(selected_tournament)
+                ReportView.display_tournament_details(tournament)
                 # display ordered player list of a tournament
-                if tournament_infos[7]:
-                    for player_uuid in tournament_infos[7]:
-                        player_fname_name_list.append(self.player_model.extract_player_fname_and_name(player_uuid))
+                if tournament[7]:
+                    for player_uuid in tournament[7]:
+                        player = PlayerModel.create_player_object(player_uuid)
+                        player_fname_name_list.append(PlayerModel.extract_player_fname_and_name(player))
                     player_fname_name_list.sort()
-                    self.report_view.text_to_print("La liste des joueurs (triée par ordre alphabétique) est la"
-                                                   " suivante :")
+                    ReportView.text_to_print("La liste des joueurs (triée par ordre alphabétique) est la suivante :")
                     for player in player_fname_name_list:
-                        self.report_view.text_to_print("- " + player)
+                        ReportView.text_to_print("- " + player)
                 self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
@@ -88,101 +83,97 @@ class ReportController:
         self.by_name = by_name
         self.by_fname = by_fname
         while True:
-            if self.player_model.search_all_players("", "") == "no_result":
+            if PlayerModel.search_all_players() == "no_result":
                 self.report_view.choice("Aucun joueurs. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
-            elif self.player_model.search_all_players("", "") == "error":
-                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                               " le et recommencez.")
+            elif PlayerModel.search_all_players() == "error":
+                ReportView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                         " le et recommencez.")
                 sys.exit()
             else:
                 self.by_name = by_name
                 self.by_fname = by_fname
-                players_uuid_list = self.player_model.search_all_players(self.by_name, self.by_fname)
-                if players_uuid_list == "error":
-                    self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                   " le et recommencez.")
-                    sys.exit()
-                players_list = self.player_model.extract_data_player(players_uuid_list)
+                players_list = PlayerModel.search_all_players(self.by_name, self.by_fname)
                 for player in players_list:
-                    self.report_view.text_to_print(PlayerModel(player[0], player[1], player[2], player[3]))
+                    ReportView.text_to_print(player)
                 self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
     def report_tournament(self, display_type=None):
         """ method to display tournament report """
         while True:
-            if self.tournament_model.search_all_tournaments() == "no_result":
+            if TournamentModel.search_all_tournaments() == "no_result":
                 self.report_view.choice("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
-            elif self.tournament_model.search_all_tournaments() == "error":
-                self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                               " le et recommencez.")
+            elif TournamentModel.search_all_tournaments() == "error":
+                ReportView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                         " le et recommencez.")
                 sys.exit()
             else:
                 # display ended tournaments
-                ended_tournaments = self.tournament_model.search_completed_tournaments()
-                self.report_view.text_to_print("Liste des tournois terminés:")
-                for i in range(len(ended_tournaments)):
-                    item = ended_tournaments[i]
-                    self.report_view.text_to_print(str(i + 1) + " - " + str(TournamentModel(item['name'],
-                                                                                            item['town'],
-                                                                                            item['nb_round'])))
+                ended_tournaments = TournamentModel.search_completed_tournaments()
+                ReportView.text_to_print("Liste des tournois terminés:")
+                index = 0
+                for tournament in ended_tournaments:
+                    index += 1
+                    TournamentView.text_to_print(str(index) + " - " + str(tournament))
 
                 # select a tournament
                 choix = self.tournament_view.select(ended_tournaments)
-                selected_tournament = ended_tournaments[int(choix) - 1]
-                selected_tournament_uuid = selected_tournament['tournament_uuid']
+                tournament = ended_tournaments[int(choix) - 1]
 
                 # extraction of all matchs associated to selected tournament
-                matchs_ids_list = self.tournament_model.extract_matchs_uuid_list_of_tournament(
-                    selected_tournament_uuid)
+                matchs_ids_list = tournament.tournament_list_matchs
 
                 # extract all players and scores from matchs id list
-                players_uuid_list, players_scores = self.match_model.extract_players_scores(matchs_ids_list)
+                players_uuid_list, players_scores = MatchModel.extract_players_scores(matchs_ids_list)
 
                 # reinit scores in players.json
-                self.player_model.delete_score_player(players_uuid_list)
+                PlayerModel.delete_score_player(players_uuid_list)
 
                 # store scores in players.json for create ordered winners
                 for player_uuid, player_score in zip(players_uuid_list, players_scores):
-                    self.player_model.store_score(player_uuid, player_score)
+                    PlayerModel.store_score(player_uuid, player_score)
 
                 # create tuple contains players names + scores
                 players_uuid_list = list(set(players_uuid_list))
 
                 # create [(fname + name), score] list
-                players = []
+                players_uuid = []
+                players_object = []
                 scores = []
                 for player_uuid in players_uuid_list:
-                    player = self.player_model.extract_player_fname_and_name(player_uuid)
-                    score = self.player_model.search_player_score(player_uuid)
-                    players.append(player)
+                    score = PlayerModel.search_player_score(player_uuid)
+                    players_uuid.append(player_uuid)
                     scores.append(score)
-                scores, players = zip(*sorted(zip(scores, players), reverse=True))
-                players_scores = [players, scores]
+                scores, players_uuid = zip(*sorted(zip(scores, players_uuid), reverse=True))
+                for player_uuid in players_uuid:
+                    player = PlayerModel.create_player_object(player_uuid)
+                    player_fname_name = PlayerModel.extract_player_fname_and_name(player)
+                    players_object.append(player_fname_name)
+                players_scores = [players_object, scores]
 
                 # extraction of all rounds details
-                rounds_list = self.tournament_model.extract_rounds_list(selected_tournament_uuid)
+                rounds_list = tournament.tournament_list_rounds
 
                 # extraction of start and end dates of a tournament
-                tournament_start_date =\
-                    self.tournament_model.extract_all_infos_tournaments(selected_tournament_uuid)[2]
-                tournament_end_date = self.tournament_model.extract_all_infos_tournaments(selected_tournament_uuid)[3]
+                tournament_start_date = tournament.tournament_start_date
+                tournament_end_date = tournament.tournament_end_date
 
                 # extraction of all scores of matchs list associated to the selected tournament
-                tournaments_scores = self.match_model.extract_scores(matchs_ids_list)
-                tournament_name = self.tournament_model.extract_tournament_name(selected_tournament_uuid)
+                tournaments_scores = MatchModel.extract_scores(matchs_ids_list)
                 if display_type == "players":
                     self.report_view.display_scores_players(tournaments_scores, rounds_list, tournament_start_date,
-                                                            tournament_end_date, tournament_name, players_scores)
+                                                            tournament_end_date, tournament.tournament_name,
+                                                            players_scores)
                 elif display_type == "scores":
                     self.report_view.display_scores_scores(tournaments_scores, rounds_list, tournament_start_date,
-                                                           tournament_end_date, tournament_name, players_scores)
+                                                           tournament_end_date, tournament.tournament_name,
+                                                           players_scores)
                 elif display_type == "html_file":
-                    result = self.tournament_model.export_tournament(tournaments_scores, rounds_list,
-                                                                     tournament_start_date, tournament_end_date,
-                                                                     tournament_name, players_scores)
+                    result = TournamentModel.export_tournament(tournaments_scores, rounds_list, tournament_start_date,
+                                                               tournament_end_date, tournament.tournament_name,
+                                                               players_scores)
                     self.report_view.text_to_print(result)
                     self.report_view.choice("Appuyez sur [ENTRER] pour continuer.")
                 break

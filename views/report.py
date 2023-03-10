@@ -209,26 +209,26 @@ class ReportView:
             elif choix.upper() == "N":
                 return "N"
 
-    def display_tournament_details(self, tournament_info):
+    @staticmethod
+    def display_tournament_details(tournament):
         """ method to display tournament details for reporting menu """
-        self.tournament_info = tournament_info
-        self.clear_screen()
-        print(f'Tournoi "{self.tournament_info[0]}" se déroulant à {self.tournament_info[1]} et comportant'
-              f' {self.tournament_info[4]} round(s).')
-        print(f"Description : {self.tournament_info[8]}.")
-        if self.tournament_info[2] and self.tournament_info[3]:
-            print(f"Ce tournoi a démarré le {self.tournament_info[2]} et s'est terminé le {self.tournament_info[3]}.")
-        elif self.tournament_info[2] and not self.tournament_info[3]:
-            print(f"Ce tournoi a démarré le {self.tournament_info[2]} mais n'est pas terminé,"
-                  f" {self.tournament_info[5]} round(s) sur {self.tournament_info[4]} joué(s).")
-        elif not self.tournament_info[2]:
+        ReportView.clear_screen()
+        print(f'Tournoi "{tournament[0]}" se déroulant à {tournament[1]} et comportant'
+              f' {tournament[4]} round(s).')
+        print(f"Description : {tournament[8]}.")
+        if tournament[2] and tournament[3]:
+            print(f"Ce tournoi a démarré le {tournament[2]} et s'est terminé le {tournament[3]}.")
+        elif tournament[2] and not tournament[3]:
+            print(f"Ce tournoi a démarré le {tournament[2]} mais n'est pas terminé,"
+                  f" {tournament[5]} round(s) sur {tournament[4]} joué(s).")
+        elif not tournament[2]:
             print("Ce tournoi n'a pas encore démarré.")
-        if self.tournament_info[2]:
-            print("Il y'a eu " + str(len(self.tournament_info[6])) + " match(s) joué(s).")
+        if tournament[2]:
+            print("Il y'a eu " + str(len(tournament[6])) + " match(s) joué(s).")
 
-    def text_to_print(self, text):
+    @staticmethod
+    def text_to_print(text):
         """ method to print text from controller """
-        self.text = text
         print(text)
 
     @staticmethod

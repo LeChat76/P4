@@ -12,9 +12,6 @@ class MatchModel:
 
     def __init__(self, tournament_uuid="", round_nb="", match_nb="", player_one_uuid="", player_two_uuid="",
                  player_one_score="", player_two_score=""):
-        self.players_list = None
-        self.matchs_list = None
-        self.matchs_ids_list = []
         self.tournament_uuid = tournament_uuid
         self.round_nb = round_nb
         self.match_nb = match_nb
@@ -22,15 +19,15 @@ class MatchModel:
         self.player_two_uuid = player_two_uuid
         self.player_one_score = player_one_score
         self.player_two_score = player_two_score
-        self.PlayerModel = PlayerModel()
 
     def create_tuple_for_match(self):
         """ method to store match result for a round in a list of tuple (who contains list of players + scores) """
         p1 = (self.player_one_uuid, self.player_one_score)
         p2 = (self.player_two_uuid, self.player_two_score)
-        match_id = "T_" + str(self.tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
-        PlayerModel().store_score(self.player_one_uuid, self.player_one_score)
-        PlayerModel().store_score(self.player_two_uuid, self.player_two_score)
+        tournament_uuid = self.tournament_uuid
+        match_id = "T_" + str(tournament_uuid) + "_R" + str(self.round_nb) + "_M" + str(self.match_nb)
+        PlayerModel.store_score(self.player_one_uuid, self.player_one_score)
+        PlayerModel.store_score(self.player_two_uuid, self.player_two_score)
         match = (match_id, p1, p2)
         MATCHS_LIST.append(match)
 
@@ -50,12 +47,13 @@ class MatchModel:
         MATCHS_LIST.clear()
         return MATCH_ID_LIST
 
-    def extract_scores(self, matchs_ids_list):
+    @staticmethod
+    def extract_scores(matchs_ids_list):
         """ method to extract score from a match id """
         tournament_scores = None
         rounds, matchs, p1_name, p2_name, p1_scores, p2_scores = [], [], [], [], [], []
-        self.matchs_ids_list = matchs_ids_list
-        for i in range(len(self.matchs_ids_list)):
+        matchs_ids_list = matchs_ids_list
+        for i in range(len(matchs_ids_list)):
             match_id = matchs_ids_list[i]
             result = MATCHS.search(MATCH.match_id.matches(match_id))
             rounds.append((match_id.split("_")[2])[1:])
@@ -63,9 +61,11 @@ class MatchModel:
             matchs.append((match_id.split("_")[3])[1:])
             match_max = max(matchs)
             p1_uuid = result[0]['player_one_uuid']
-            p1_name.append(self.PlayerModel.extract_player_fname_and_name(p1_uuid))
+            player1 = PlayerModel.create_player_object(p1_uuid)
+            p1_name.append(PlayerModel.extract_player_fname_and_name(player1))
             p2_uuid = result[0]['player_two_uuid']
-            p2_name.append(self.PlayerModel.extract_player_fname_and_name(p2_uuid))
+            player2 = PlayerModel.create_player_object(p2_uuid)
+            p2_name.append(PlayerModel.extract_player_fname_and_name(player2))
             p1_scores.append(result[0]['player_one_score'])
             p2_scores.append(result[0]['player_two_score'])
             tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores, p2_scores, round_max, match_max]
@@ -77,16 +77,15 @@ class MatchModel:
         previous_matchs_players_list = []
         if matchs_list:
             for match in matchs_list:
-                result = MATCHS.search(MATCH.match_id.matches(match))
-                p1_uuid = result[0]['player_one_uuid']
-                p2_uuid = result[0]['player_two_uuid']
+                result_doc = MATCHS.search(MATCH.match_id.matches(match))
+                p1_uuid = result_doc[0]['player_one_uuid']
+                p2_uuid = result_doc[0]['player_two_uuid']
                 previous_matchs_players_list.append([p1_uuid, p2_uuid])
         return previous_matchs_players_list
 
-    def extract_previous_scores(self, players_list, matchs_list):
+    @staticmethod
+    def extract_previous_scores(players_list, matchs_list):
         """ method to extract all previous scores from stored matches """
-        self.matchs_list = matchs_list
-        self.players_list = players_list
         scores = []
         for i in range(len(players_list)):
             player_score = 0
@@ -103,9 +102,9 @@ class MatchModel:
             scores.append(player_score)
         return scores
 
-    def extract_players_scores(self, matchs_ids_list):
+    @staticmethod
+    def extract_players_scores(matchs_ids_list):
         """ method to extract players list and scores list from matchs ids list """
-        self.matchs_ids_list = matchs_ids_list
         players_uuid_list, players_scores = [], []
         for match_id in matchs_ids_list:
             match = MATCHS.search(MATCH.match_id.matches(match_id))

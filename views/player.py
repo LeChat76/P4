@@ -38,14 +38,15 @@ class PlayerView:
         self.clear_screen()
         return choix
 
-    def add_player(self):
+    @staticmethod
+    def add_player():
         """ Requests for player first name """
         new_one_player = " "
         PLAYER_LIST.clear()
 
         while new_one_player.upper() != "N":
 
-            self.clear_screen()
+            PlayerView.clear_screen()
             player_fname = None
             while not player_fname:
                 while True:
@@ -98,20 +99,20 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    def delete_player(self, all_player_list):
+    @staticmethod
+    def delete_player(player_list):
         """ Request for select player to delete """
-        self.all_player_list = all_player_list
-        player_to_delete = None
-        for i in range(len(all_player_list)):
-            item = all_player_list[i]
-            print(str(i + 1) + " - " + item['fname'].capitalize() + " " + item['name'].upper() + ".")
-        while not player_to_delete:
+        index = 1
+        for player in player_list:
+            print(str(index) + " - " + str(player))
+            index += 1
+        while True:
             while True:
-                player_to_delete = input("Saisir le numéro du joueur à supprimer : ")
-                if not player_to_delete.isnumeric():
+                choice = input("Saisir le numéro du joueur à supprimer : ")
+                if not choice.isnumeric():
                     print("La saisie doit être uniquement un chiffre. Merci de ressaisir.")
                 else:
-                    return int(player_to_delete) - 1
+                    return player_list[int(choice) - 1]
 
     @staticmethod
     def display_player():
@@ -127,12 +128,12 @@ class PlayerView:
                 elif dis_player_name.isalpha() and len(dis_player_name) > 0:
                     return dis_player_name
 
-    def choice(self, question):
+    @staticmethod
+    def choice(question):
         """ method for asking to restart request """
-        self.question = question
         choix = ""
         while choix.upper() != "O" or choix.upper() != "N":
-            choix = input(self.question)
+            choix = input(question)
             if choix.upper() == "O" or choix == "":
                 return "O"
             elif choix.upper() == "N":
@@ -196,9 +197,9 @@ class PlayerView:
         except ValueError:
             return False
 
-    def text_to_print(self, text):
+    @staticmethod
+    def text_to_print(text):
         """ method to print text from controller """
-        self.text = text
         print(text)
 
     @staticmethod
