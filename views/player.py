@@ -5,15 +5,15 @@ from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_
 
 class PlayerView:
     """ Menu class """
-    def __init__(self):
-        self.text = None
-        self.score_is_float = None
-        self.all_player_list = None
-        self.player_one = None
-        self.player_two = None
-        self.nb_players = None
-        self.nb_players_available = None
-        self.question = None
+#     def __init__(self):
+#         self.text = None
+#         self.score_is_float = None
+#         self.all_player_list = None
+#         self.player_one = None
+#         self.player_two = None
+#         self.nb_players = None
+#         self.nb_players_available = None
+#         self.question = None
 
     def player_menu(self):
         """ Menu 2 """
@@ -38,15 +38,14 @@ class PlayerView:
         self.clear_screen()
         return choix
 
-    @staticmethod
-    def add_player():
+    def add_player(self):
         """ Requests for player first name """
         new_one_player = " "
         PLAYER_LIST.clear()
 
         while new_one_player.upper() != "N":
 
-            PlayerView.clear_screen()
+            self.clear_screen()
             player_fname = None
             while not player_fname:
                 while True:
@@ -99,10 +98,10 @@ class PlayerView:
 
         return PLAYER_LIST
 
-    def delete_player(self):
+    def delete_player(self, players_list):
         """ Request for select player to delete """
         index = 1
-        for player in self:
+        for player in players_list:
             print(str(index) + " - " + str(player))
             index += 1
         while True:
@@ -111,10 +110,9 @@ class PlayerView:
                 if not choice.isnumeric():
                     print("La saisie doit être uniquement un chiffre. Merci de ressaisir.")
                 else:
-                    return self[int(choice) - 1]
+                    return players_list[int(choice) - 1]
 
-    @staticmethod
-    def display_player():
+    def display_player(self):
         """ Request for display player """
         dis_player_menu = None
         while not dis_player_menu:
@@ -127,8 +125,7 @@ class PlayerView:
                 elif dis_player_name.isalpha() and len(dis_player_name) > 0:
                     return dis_player_name
 
-    @staticmethod
-    def choice(question):
+    def choice(self, question):
         """ method for asking to restart request """
         choix = ""
         while choix.upper() != "O" or choix.upper() != "N":
@@ -140,14 +137,14 @@ class PlayerView:
 
     def select_available_players(self, nb_players_available, nb_players):
         """ method to select multiples players """
-        self.nb_players_available = nb_players_available
-        self.nb_players = nb_players
+        # self.nb_players_available = nb_players_available
+        # self.nb_players = nb_players
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
             elif not choice:
-                if self.nb_players % 2 != 0 or self.nb_players == 0:
+                if nb_players % 2 != 0 or nb_players == 0:
                     print("Vous avez sélectionné " + str(nb_players) + " joueurs. Il faut un nombre pair de\njoueurs"
                                                                        " pour former des équipes.")
                     continue
@@ -163,8 +160,8 @@ class PlayerView:
     def record_score(self, player_one, player_two):
         """ method to request score for player's match """
         result1 = None
-        self.player_one = player_one
-        self.player_two = player_two
+        # self.player_one = player_one
+        # self.player_two = player_two
         while result1 != 0 and result1 != 0.5 and result1 != 1:
             result1 = input("Score du joueur " + player_one + " : ")
             if result1.isnumeric():
@@ -189,20 +186,17 @@ class PlayerView:
         return result1, result2
 
     def isfloat(self, score_is_float):
-        self.score_is_float = score_is_float
         try:
-            float(self.score_is_float)
+            float(score_is_float)
             return True
         except ValueError:
             return False
 
-    @staticmethod
-    def text_to_print(text):
+    def text_to_print(self, text):
         """ method to print text from controller """
         print(text)
 
-    @staticmethod
-    def clear_screen():
+    def clear_screen(self):
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":

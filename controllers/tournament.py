@@ -31,88 +31,86 @@ class TournamentController:
             elif choix == MENU_TOURNAMENT_EXIT:
                 break
 
-    @staticmethod
-    def add_tournament():
+    def add_tournament(self):
         """ method to record new tournaments """
-        new_tournament = TournamentView.add_tournament()
+        new_tournament = self.tournament_view.add_tournament()
         for tournament in new_tournament:
             tournament_to_add = TournamentModel(tournament_name=tournament[0], tournament_town=tournament[1],
                                                 tournament_nb_round=tournament[2],
                                                 tournament_description=tournament[3])
             tournament_to_add.save_tournament()
 
-    @staticmethod
-    def display_tournament():
+    def display_tournament(self):
         """ method to display tournaments completed, current or all """
         while True:
-            tournament_to_display = TournamentView.display_tournament()
+            tournament_to_display = self.tournament_view.display_tournament()
             if tournament_to_display == "display_all_tournaments":
                 result = TournamentModel.search_all_tournaments()
                 if result == "no_result":
-                    TournamentView.choice("Aucun tournoi à afficher. Appuyez sur [ENTRER] pour revenir au menu.")
+                    self.tournament_view.choice("Aucun tournoi à afficher. Appuyez sur [ENTRER] pour revenir au menu.")
                     break
                 elif result == "error":
-                    TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                 " le et recommencez.")
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
                     sys.exit()
                 else:
-                    TournamentView.text_to_print(str(len(result)) + " résultat(s).")
+                    self.tournament_view.text_to_print(str(len(result)) + " résultat(s).")
                     for tournament in result:
-                        TournamentView.text_to_print(tournament)
-                    choix = TournamentView.choice("Faire une autre recherche (O/n)? ")
+                        self.tournament_view.text_to_print(tournament)
+                    choix = self.tournament_view.choice("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
             elif tournament_to_display == "display_completed_tournaments":
                 result = TournamentModel.search_completed_tournaments()
                 if result == "no_result":
-                    choix = TournamentView.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
+                    choix = self.tournament_view.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
                     if choix == "N":
                         break
                 elif result == "error":
-                    TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                 " le et recommencez.")
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
                     sys.exit()
                 else:
-                    TournamentView.text_to_print(str(len(result)) + " résultat(s).")
+                    self.tournament_view.text_to_print(str(len(result)) + " résultat(s).")
                     for tournament in result:
-                        TournamentView.text_to_print(tournament)
-                    choix = TournamentView.choice("Faire une autre recherche (O/n)? ")
+                        self.tournament_view.text_to_print(tournament)
+                    choix = self.tournament_view.choice("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
 
             elif tournament_to_display == "display_current_tournaments":
                 result = TournamentModel.search_current_tournaments()
                 if result == "no_result":
-                    choix = TournamentView.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
+                    choix = self.tournament_view.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
                     if choix == "N":
                         break
                 elif result == "error":
-                    TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                 " le et recommencez.")
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
                     sys.exit()
                 else:
-                    TournamentView.text_to_print(str(len(result)) + " résultat(s).")
+                    self.tournament_view.text_to_print(str(len(result)) + " résultat(s).")
                     for tournament in result:
-                        TournamentView.text_to_print(tournament)
-                    choix = TournamentView.choice("Faire une autre recherche (O/n)? ")
+                        self.tournament_view.text_to_print(tournament)
+                    choix = self.tournament_view.choice("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
 
             elif tournament_to_display == "display_not_started_tournaments":
                 result = TournamentModel.search_not_started_tournaments()
                 if result == "no_result":
-                    choix = TournamentView.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
+                    choix = self.tournament_view.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
                     if choix == "N":
                         break
                 elif result == "error":
-                    TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                 " le et recommencez.")
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
                     sys.exit()
                 else:
-                    TournamentView.text_to_print(str(len(result)) + " résultat(s).")
+                    self.tournament_view.text_to_print(str(len(result)) + " résultat(s).")
                     for tournament in result:
-                        TournamentView.text_to_print(tournament)
-                    choix = TournamentView.choice("Faire une autre recherche (O/n)? ")
+                        self.tournament_view.text_to_print(tournament)
+                    choix = self.tournament_view.choice("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
 
@@ -123,12 +121,12 @@ class TournamentController:
         while True:
             players_available = PlayerModel.search_all_players()
             if players_available == "error":
-                TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                             " le et recommencez.")
+                self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
                 sys.exit()
             if players_available == "no_result" or len(players_available) <= 1:
-                TournamentView.choice("Liste des joueurs vide. Merci d'en créer au moins deux\ndisponibles"
-                                      " pour démarrer un tournoi [ENTRER] pour revenir au menu.")
+                self.tournament_view.choice("Liste des joueurs vide. Merci d'en créer au moins deux\ndisponibles"
+                                            " pour démarrer un tournoi [ENTRER] pour revenir au menu.")
                 break
             # create list of players (uuid)
             for player in players_available:
@@ -137,20 +135,20 @@ class TournamentController:
             # create list of available tournaments (tournament not already started)
             not_started_tournament = TournamentModel.search_not_started_tournaments()
             if not_started_tournament == "no_result":
-                TournamentView.choice("Aucun tournoi disponible. Vous devez en créer un nouveau. [ENTRER]"
-                                      " pour continuer.")
+                self.tournament_view.choice("Aucun tournoi disponible. Vous devez en créer un nouveau. [ENTRER]"
+                                            " pour continuer.")
                 break
             elif not_started_tournament == "error":
-                TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                             " le et recommencez.")
+                self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
                 sys.exit()
 
             # displayer list of available tournaments
-            TournamentView.text_to_print("Liste des tournois non démarrés:")
+            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
             index = 0
             for tournament in not_started_tournament:
                 index += 1
-                TournamentView.text_to_print(str(index) + " - " + str(tournament))
+                self.tournament_view.text_to_print(str(index) + " - " + str(tournament))
 
             # choose tournament
             result = self.tournament_view.select(not_started_tournament)
@@ -161,13 +159,13 @@ class TournamentController:
             # players twice - formula is nb# round should not be superior of nb players available - 1
             # example : if there is 8 players, nb match = 7 so nb round max should be equal or inferior to 7
             if tournament_nb_round == "error":
-                TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                             " le et recommencez.")
+                self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
                 sys.exit()
             elif int(tournament_nb_round) > (int(len(players_available)) - 1):
-                TournamentView.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
-                                             + " round(s) donc pas assez de joueurs disponibles"
-                                             " pour éviter que certains ne se rencontrent plusieurs fois.")
+                self.tournament_view.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
+                                                   + " round(s) donc pas assez de joueurs disponibles"
+                                                   " pour éviter que certains ne se rencontrent plusieurs fois.")
             # Selection of players to add to the selected tournament
             nb_players = 0
             nb_players_available = len(players_available_list)
@@ -180,14 +178,14 @@ class TournamentController:
                 nb_players_available_pair = True
             players_list = []
             while True:
-                PlayerView.clear_screen()
-                TournamentView.text_to_print(str(nb_players_available) + " joueurs disponibles:")
+                self.tournament_view.clear_screen()
+                self.tournament_view.text_to_print(str(nb_players_available) + " joueurs disponibles:")
                 index = 0
                 for player in players_available_list:
                     index += 1
                     player_fname_name = player.extract_player_fname_and_name()
-                    TournamentView.text_to_print(str(index) + " - " + player_fname_name + ".")
-                TournamentView.text_to_print(str(nb_players) + " sélectionné(s).")
+                    self.tournament_view.text_to_print(str(index) + " - " + player_fname_name + ".")
+                self.tournament_view.text_to_print(str(nb_players) + " sélectionné(s).")
                 result = self.player_view.select_available_players(len(players_available_list), nb_players)
                 if result == "end_players_selection":
                     break
@@ -197,26 +195,26 @@ class TournamentController:
                 nb_players += 1
                 players_available_list.remove(selected_player)
                 if nb_players_available == 1 and nb_players_available_pair is False:
-                    TournamentView.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
-                                                 " pair.\nFin de la selection.")
+                    self.tournament_view.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
+                                                       " pair.\nFin de la selection.")
                     break
                 elif nb_players_available == 0 or nb_players_available_pair == "True":
-                    TournamentView.text_to_print("Plus de personne à ajouter.")
+                    self.tournament_view.text_to_print("Plus de personne à ajouter.")
                     break
 
             tournament.store_players(PlayerModel.extract_player_uuid_list(players_list))
-            TournamentView.text_to_print('Tournoi "' + tournament.tournament_name + '" prêt.')
+            self.tournament_view.text_to_print('Tournoi "' + tournament.tournament_name + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
-                TournamentView.text_to_print("Pour information : vu le faible nombre de joueurs sélectionnés"
-                                             " et le grand nombre de rounds, certains joueurs se rencontreront"
-                                             " plusieurs fois.")
+                self.tournament_view.text_to_print("Pour information : vu le faible nombre de joueurs sélectionnés"
+                                                   " et le grand nombre de rounds, certains joueurs se rencontreront"
+                                                   " plusieurs fois.")
             elif (nb_players - 1) > int(tournament_nb_round):
-                TournamentView.text_to_print("Pour information : vu le faible nombre de rounds du tournoi et la"
-                                             " quantité de joueurs sélectionnés, certains joueurs ne se"
-                                             " rencontreront pas.")
+                self.tournament_view.text_to_print("Pour information : vu le faible nombre de rounds du tournoi et la"
+                                                   " quantité de joueurs sélectionnés, certains joueurs ne se"
+                                                   " rencontreront pas.")
 
-            TournamentView.choice("Appuyez sur une [ENTRER] pour continuer.")
-            TournamentView.clear_screen()
+            self.tournament_view.choice("Appuyez sur une [ENTRER] pour continuer.")
+            self.tournament_view.clear_screen()
 
             # beginning of the tournament
             PlayerModel.delete_score_player_object(players_list)
@@ -236,7 +234,8 @@ class TournamentController:
                 PlayerModel.update_score_in_player_object(players_list)
                 players_list = PlayerModel.check_players_list(players_list, previous_matchs_players_list)
                 if players_list[1]:
-                    TournamentView.text_to_print("/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
+                    self.tournament_view.text_to_print(
+                        "/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -246,9 +245,9 @@ class TournamentController:
                     p2 = players_list[i + 1]
                     player_one = p1.extract_player_fname_and_name()
                     player_two = p2.extract_player_fname_and_name()
-                    TournamentView.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
-                                                 + ", match " + str(current_match) + "/" + str(nb_match)
-                                                 + " opposant " + player_one + " à " + player_two + ".")
+                    self.tournament_view.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
+                                                       + ", match " + str(current_match) + "/" + str(nb_match)
+                                                       + " opposant " + player_one + " à " + player_two + ".")
                     scores = self.player_view.record_score(player_one, player_two)
                     match = MatchModel(tournament.tournament_uuid, current_round, current_match, p1.player_uuid,
                                        p2.player_uuid, scores[0], scores[1])
@@ -260,7 +259,7 @@ class TournamentController:
                 tournament.store_round_date(current_round, round_start_date, round_end_date)
                 current_round += 1
                 if int(nb_round) >= current_round:
-                    choix = TournamentView.choice("Continuer l'enregistrement des scores (O/n) ?")
+                    choix = self.tournament_view.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
                         match_id_list = match.store_match()
                         tournament.store_match_id(match_id_list)
@@ -270,7 +269,7 @@ class TournamentController:
                     tournament.store_tournament_end_date(date)
                 match_id_list = match.store_match()
                 tournament.store_match_id(match_id_list)
-            TournamentView.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
+            self.tournament_view.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
             break
 
     def resume_tournament(self):
@@ -278,18 +277,18 @@ class TournamentController:
         match = None
         not_ended_tournament = TournamentModel.search_current_tournaments()
         if not_ended_tournament == "no_result":
-            TournamentView.choice("Aucun tournoi(s) non terminé(s). Appuyez sur [ENTRER] pour continuer.")
+            self.tournament_view.choice("Aucun tournoi(s) non terminé(s). Appuyez sur [ENTRER] pour continuer.")
         elif not_ended_tournament == "error":
-            TournamentView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                         " le et recommencez.")
+            self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
             sys.exit()
         else:
             # displayer list of not ended tournaments
-            TournamentView.text_to_print("Liste des tournois non démarrés:")
+            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
             index = 0
             for tournament in not_ended_tournament:
                 index += 1
-                TournamentView.text_to_print(str(index) + " - " + str(tournament))
+                self.tournament_view.text_to_print(str(index) + " - " + str(tournament))
 
             # choose tournament
             result = self.tournament_view.select(not_ended_tournament)
@@ -297,13 +296,13 @@ class TournamentController:
             players_uuid_list = tournament.tournament_list_players
             nb_round = tournament.tournament_nb_round
             current_round = int(tournament.tournament_current_round) + 1
-            TournamentView.text_to_print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
+            self.tournament_view.text_to_print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
             players = []
             for player_uuid in players_uuid_list:
                 player = PlayerModel.create_player_object(player_uuid)
                 players.append(player)
-                TournamentView.text_to_print(" - " + str(player))
-            TournamentView.text_to_print(f"Le prochain round est le {current_round} ème.")
+                self.tournament_view.text_to_print(" - " + str(player))
+            self.tournament_view.text_to_print(f"Le prochain round est le {current_round} ème.")
 
             # resume the tournament
             nb_match = int(len(players_uuid_list) / NB_JOUEURS_BY_MATCH)
@@ -324,7 +323,8 @@ class TournamentController:
                 # check players list to avoid players already played together (if possible)
                 players_list = PlayerModel.check_players_list(players_list, previous_matchs_players_list)
                 if players_list[1]:
-                    TournamentView.text_to_print("/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
+                    self.tournament_view.text_to_print(
+                        "/!\\ Certains joueurs de ce round ont déjà joués ensemble /!\\")
                 players_list = players_list[0]
 
                 current_match = 1
@@ -334,9 +334,9 @@ class TournamentController:
                     player_two = players_list[i + 1].extract_player_fname_and_name()
                     player_one_uuid = players_list[i].extract_player_uuid()
                     player_two_uuid = players_list[i + 1].extract_player_uuid()
-                    TournamentView.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
-                                                 + ", match " + str(current_match) + "/" + str(nb_match)
-                                                 + " opposant " + player_one + " à " + player_two + ".")
+                    self.tournament_view.text_to_print("Tour : " + str(current_round) + "/" + str(nb_round)
+                                                       + ", match " + str(current_match) + "/" + str(nb_match)
+                                                       + " opposant " + player_one + " à " + player_two + ".")
                     scores = self.player_view.record_score(player_one, player_two)
                     match = MatchModel(tournament.tournament_uuid, current_round, current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
@@ -348,7 +348,7 @@ class TournamentController:
                 tournament.store_round_date(current_round, round_start_date, round_end_date)
                 current_round += 1
                 if int(nb_round) >= current_round:
-                    choix = TournamentView.choice("Continuer l'enregistrement des scores (O/n) ?")
+                    choix = self.tournament_view.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
                         match_id_list = match.store_match()
                         tournament.store_match_id(match_id_list)
@@ -358,9 +358,8 @@ class TournamentController:
                     tournament.store_tournament_end_date(date)
                 match_id_list = match.store_match()
                 tournament.store_match_id(match_id_list)
-            TournamentView.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
+            self.tournament_view.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
 
-    @staticmethod
-    def text_to_print(text):
+    def text_to_print(self, text):
         """ method to print a text with method text_to_print in view model """
         TournamentView.text_to_print(text)

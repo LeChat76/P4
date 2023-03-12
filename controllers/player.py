@@ -36,73 +36,70 @@ class PlayerController:
             elif choix == MENU_PLAYERS_EXIT:
                 break
 
-    @staticmethod
-    def add_player():
+    def add_player(self):
         """ Method for recording new players """
-        players_list = PlayerView.add_player()
+        players_list = self.player_view.add_player()
         for player in players_list:
             player = PlayerModel(player_fname=player[0], player_name=player[1], player_birthd=player[2],
                                  player_clubid=player[3])
             player.save_player()
 
-    @staticmethod
-    def delete_player():
+    def delete_player(self):
         """ method to delete players """
         while True:
             players_list = PlayerModel.search_all_players()
             if players_list == "no_result":
-                PlayerView.choice("Aucun joueur, merci d'en créer. Appuyez sur [ENTRER] pour revenir au menu.")
+                self.player_view.choice("Aucun joueur, merci d'en créer. Appuyez sur [ENTRER] pour revenir au menu.")
                 break
             elif players_list == "error":
-                PlayerView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                         " le et recommencez.")
+                self.player_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
                 sys.exit()
-            player_to_delete = PlayerView.delete_player(players_list)
+            player_to_delete = self.player_view.delete_player(players_list)
             player_deleted = player_to_delete.delete_player()
-            PlayerView.text_to_print("Utilisateur " + player_deleted + " supprimé.")
-            choix = PlayerView.choice("Supprimer un autre joueur(O/n)?")
+            self.player_view.text_to_print("Utilisateur " + player_deleted + " supprimé.")
+            choix = self.player_view.choice("Supprimer un autre joueur(O/n)?")
             if choix == "N":
                 break
 
-    @staticmethod
-    def display_player():
+    def display_player(self):
         """ method to display players by selecting name or all players """
         while True:
-            player_to_search = PlayerView.display_player()
+            player_to_search = self.player_view.display_player()
             players_list = PlayerModel.search_player(player_to_search)
 
             # case when you specify a name with no result
             if players_list == "no_result" and not player_to_search == "display_all":
-                choix = PlayerView.choice("Aucun résultat. Recommencer (O/n)? ")
+                choix = self.player_view.choice("Aucun résultat. Recommencer (O/n)? ")
                 if choix == "N":
                     break
 
             # case of error structure file players.json
             elif players_list == "error":
-                PlayerView.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                         " le et recommencez.")
+                self.player_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                               " le et recommencez.")
                 sys.exit()
 
             # case when you want to display all users [ENTER]
             elif players_list == "no_result" and player_to_search == "display_all":
                 players_list = PlayerModel.search_all_players()
                 if players_list == "no_result":
-                    PlayerView.choice("Liste vide. Veuillez en créer. Appuyez sur [ENTRER] pour revenir"
-                                      " au menu.")
+                    self.player_view.choice("Liste vide. Veuillez en créer. Appuyez sur [ENTRER] pour revenir"
+                                            " au menu.")
                     break
                 else:
-                    PlayerView.text_to_print(str(len(players_list)) + " résultat(s).")
+                    self.player_view.text_to_print(str(len(players_list)) + " résultat(s).")
                     for player in players_list:
-                        PlayerView.text_to_print(player)
-                    choix = PlayerView.choice("Faire une autre recherche (O/n)? ")
+                        self.player_view.text_to_print(player)
+                    choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
                     if choix == "N":
                         break
 
             # case when you specify a name and there is some results
             elif len(players_list) > 0:
-                PlayerView.text_to_print(str(len(players_list)) + " résultat(s):")
+                self.player_view.text_to_print(str(len(players_list)) + " résultat(s):")
                 for player in players_list:
-                    PlayerView.text_to_print(player)
-                choix = PlayerView.choice("Faire une autre recherche (O/n)? ")
+                    self.player_view.text_to_print(player)
+                choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
                 if choix.upper() == "N":
                     break

@@ -36,9 +36,8 @@ class TournamentView:
         self.clear_screen()
         return choix
 
-    @staticmethod
-    def add_tournament():
-        TournamentView.clear_screen()
+    def add_tournament(self):
+        self.clear_screen()
         new_one_tournament = " "
         TOURNAMENT_LIST.clear()
 
@@ -80,8 +79,7 @@ class TournamentView:
 
         return TOURNAMENT_LIST
 
-    @staticmethod
-    def display_tournament():
+    def display_tournament(self):
         """ method to display tournament(s) """
         dis_tournament_menu = ""
         while dis_tournament_menu.upper() != "T" and dis_tournament_menu.upper() != "C"\
@@ -98,8 +96,7 @@ class TournamentView:
                 elif dis_tournament_menu == "c":
                     return "display_current_tournaments"
 
-    @staticmethod
-    def choice(question):
+    def choice(self, question):
         """ method for asking to restart request """
         choix = ""
         while choix.upper() != "O" or choix.upper() != "N":
@@ -109,8 +106,7 @@ class TournamentView:
             elif choix.upper() == "N":
                 return "N"
 
-    @staticmethod
-    def select(tournaments):
+    def select(self, tournaments):
         """ method to select tournament """
         choice = ""
         while not choice.isnumeric():
@@ -126,13 +122,11 @@ class TournamentView:
             elif choice.isnumeric():
                 return choice
 
-    @staticmethod
-    def text_to_print(text):
+    def text_to_print(self, text):
         """ method to print text from controller """
         print(text)
 
-    @staticmethod
-    def clear_screen():
+    def clear_screen(self):
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":

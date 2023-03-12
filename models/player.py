@@ -208,10 +208,10 @@ class PlayerModel:
             PLAYERS_DB.update({'score': 0}, PLAYER.player_uuid == player_uuid)
 
     @staticmethod
-    def extract_player_uuid_list(players):
+    def extract_player_uuid_list(players_list):
         """ method to extract players uuids from list of objects """
         players_uuid_list = []
-        for player in players:
+        for player in players_list:
             player_uuid = player.player_uuid
             players_uuid_list.append(player_uuid)
         return players_uuid_list

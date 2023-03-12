@@ -8,16 +8,16 @@ from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_PLAYER_NAME, 
 class ReportView:
     """ Result class """
 
-    def __init__(self):
-        self.text = None
-        self.players_scores = None
-        self.tournament_start_date = None
-        self.tournament_end_date = None
-        self.rounds_list = None
-        self.tournament_info = None
-        self.question = None
-        self.tournament_name = None
-        self.tournaments_scores = None
+    # def __init__(self):
+    #     self.text = None
+    #     self.players_scores = None
+    #     self.tournament_start_date = None
+    #     self.tournament_end_date = None
+    #     self.rounds_list = None
+    #     self.tournament_info = None
+    #     self.question = None
+    #     self.tournament_name = None
+    #     self.tournaments_scores = None
 
     def report_menu(self):
         """ Menu 3 """
@@ -48,38 +48,38 @@ class ReportView:
         self.clear_screen()
         return choix
 
-    def display_scores_players(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
-                               tournament_name, players_scores):
+    def display_scores_players(self, tournaments_scores, rounds_list_details, tournament_start_date,
+                               tournament_end_date, tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with names details """
-        self.clear_screen()
+        # self.clear_screen()
         # extraction/creation of attributs
-        self.tournaments_scores = tournaments_scores
-        self.tournament_name = tournament_name
-        self.tournament_end_date = tournament_end_date
-        self.tournament_start_date = tournament_start_date
-        self.rounds_list = rounds_list
-        self.players_scores = players_scores
-        rounds_list = self.tournaments_scores[0]
-        matchs_list = self.tournaments_scores[1]
-        p1names_list = self.tournaments_scores[2]
-        p2names_list = self.tournaments_scores[3]
-        p1scores_list = self.tournaments_scores[4]
-        p2scores_list = self.tournaments_scores[5]
-        round_max = self.tournaments_scores[6]
+        # self.tournaments_scores = tournaments_scores
+        # self.tournament_name = tournament_name
+        # self.tournament_end_date = tournament_end_date
+        # self.tournament_start_date = tournament_start_date
+        # self.rounds_list = rounds_list
+        # self.players_scores = players_scores
+        rounds_list = tournaments_scores[0]
+        matchs_list = tournaments_scores[1]
+        p1names_list = tournaments_scores[2]
+        p2names_list = tournaments_scores[3]
+        p1scores_list = tournaments_scores[4]
+        p2scores_list = tournaments_scores[5]
+        round_max = tournaments_scores[6]
         index = 0
 
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
-        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(self.tournament_start_date) + " au : "
+        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + tournament_name) - 1) / 2
+        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(tournament_start_date) + " au : "
                                                  + str(tournament_end_date)) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
-        print("+" + " " * floor(blank_width2) + " Du : " + str(self.tournament_start_date) + " au : "
+        print("+" + " " * floor(blank_width) + " Tournoi " + tournament_name + " " * ceil(blank_width) + "+")
+        print("+" + " " * floor(blank_width2) + " Du : " + str(tournament_start_date) + " au : "
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
-            round_start = self.rounds_list[round_nb - 1][1]
-            round_end = self.rounds_list[round_nb - 1][2]
+            round_start = rounds_list_details[round_nb - 1][1]
+            round_end = rounds_list_details[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
             blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
@@ -122,38 +122,38 @@ class ReportView:
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
-    def display_scores_scores(self, tournaments_scores, rounds_list, tournament_start_date, tournament_end_date,
+    def display_scores_scores(self, tournaments_scores, rounds_list_details, tournament_start_date, tournament_end_date,
                               tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with scores details """
         self.clear_screen()
         # extraction/creation of attributs
-        self.tournaments_scores = tournaments_scores
-        self.tournament_name = tournament_name
-        self.tournament_end_date = tournament_end_date
-        self.tournament_start_date = tournament_start_date
-        self.rounds_list = rounds_list
-        self.players_scores = players_scores
-        rounds_list = self.tournaments_scores[0]
-        matchs_list = self.tournaments_scores[1]
-        p1names_list = self.tournaments_scores[2]
-        p2names_list = self.tournaments_scores[3]
-        p1scores_list = self.tournaments_scores[4]
-        p2scores_list = self.tournaments_scores[5]
-        round_max = self.tournaments_scores[6]
+        # self.tournaments_scores = tournaments_scores
+        # self.tournament_name = tournament_name
+        # self.tournament_end_date = tournament_end_date
+        # self.tournament_start_date = tournament_start_date
+        # self.rounds_list = rounds_list
+        # self.players_scores = players_scores
+        rounds_list = tournaments_scores[0]
+        matchs_list = tournaments_scores[1]
+        p1names_list = tournaments_scores[2]
+        p2names_list = tournaments_scores[3]
+        p1scores_list = tournaments_scores[4]
+        p2scores_list = tournaments_scores[5]
+        round_max = tournaments_scores[6]
         index = 0
 
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + self.tournament_name) - 1) / 2
-        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(self.tournament_start_date) + " au : "
+        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + tournament_name) - 1) / 2
+        blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(tournament_start_date) + " au : "
                                                  + str(tournament_end_date)) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + self.tournament_name + " " * ceil(blank_width) + "+")
-        print("+" + " " * floor(blank_width2) + " Du : " + str(self.tournament_start_date) + " au : "
+        print("+" + " " * floor(blank_width) + " Tournoi " + tournament_name + " " * ceil(blank_width) + "+")
+        print("+" + " " * floor(blank_width2) + " Du : " + str(tournament_start_date) + " au : "
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
-            round_start = self.rounds_list[round_nb - 1][1]
-            round_end = self.rounds_list[round_nb - 1][2]
+            round_start = rounds_list_details[round_nb - 1][1]
+            round_end = rounds_list_details[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
             blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
@@ -200,19 +200,18 @@ class ReportView:
 
     def choice(self, question):
         """ method for asking to restart request """
-        self.question = question
+        # self.question = question
         choix = ""
         while choix.upper() != "O" or choix.upper() != "N":
-            choix = input(self.question)
+            choix = input(question)
             if choix.upper() == "O" or choix == "":
                 return "O"
             elif choix.upper() == "N":
                 return "N"
 
-    @staticmethod
-    def display_tournament_details(tournament):
+    def display_tournament_details(self, tournament):
         """ method to display tournament details for reporting menu """
-        ReportView.clear_screen()
+        self.clear_screen()
         print(f'Tournoi "{tournament[0]}" se déroulant à {tournament[1]} et comportant'
               f' {tournament[4]} round(s).')
         print(f"Description : {tournament[8]}.")
@@ -226,13 +225,11 @@ class ReportView:
         if tournament[2]:
             print("Il y'a eu " + str(len(tournament[6])) + " match(s) joué(s).")
 
-    @staticmethod
-    def text_to_print(text):
+    def text_to_print(self, text):
         """ method to print text from controller """
         print(text)
 
-    @staticmethod
-    def clear_screen():
+    def clear_screen(self):
         if os.name == "posix":
             os.system("clear")
         elif os.name == "nt":

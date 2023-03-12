@@ -253,6 +253,7 @@ class TournamentModel:
     @staticmethod
     def export_tournament(tournaments_scores, detailed_rounds_list, tournament_start_date, tournament_end_date,
                           tournament_name, players_scores):
+        """ method to export in html file a tournament """
         rounds_list = tournaments_scores[0]
         matchs_list = tournaments_scores[1]
         p1names_list = tournaments_scores[2]
@@ -261,7 +262,6 @@ class TournamentModel:
         p2scores_list = tournaments_scores[5]
         round_max = tournaments_scores[6]
         index = 0
-        """ method to export in html file a tournament """
         data_folder = os.path.join(os.path.dirname(__file__), "..", "data", "reports")
         file_name = "Tournoi " + tournament_name + " " + datetime.datetime.today().strftime('%d-%m-%Y %H-%M-%S')\
                     + ".html"
