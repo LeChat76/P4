@@ -122,8 +122,8 @@ class ReportView:
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
 
-    def display_scores_scores(self, tournaments_scores, rounds_list_details, tournament_start_date, tournament_end_date,
-                              tournament_name, players_scores):
+    def display_scores_scores(self, tournaments_scores, rounds_list_details, tournament_start_date,
+                              tournament_end_date, tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with scores details """
         self.clear_screen()
         # extraction/creation of attributs
