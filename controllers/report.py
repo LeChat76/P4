@@ -38,7 +38,7 @@ class ReportController:
             elif choix == MENU_REPORT_EXIT:
                 break
 
-    def report_tournament_details(self, ):
+    def report_tournament_details(self):
         """ method to display detail of a tournament """
         player_fname_name_list = []
         tournaments = TournamentModel.search_all_tournaments()
@@ -61,8 +61,8 @@ class ReportController:
                 tournament = selected_tournament.extract_all_infos_tournaments()
                 self.report_view.display_tournament_details(tournament)
                 # display ordered player list of a tournament
-                if tournament[7]:
-                    for player_uuid in tournament[7]:
+                if tournament[6]:
+                    for player_uuid in tournament[6]:
                         player = PlayerModel.create_player_object(player_uuid)
                         player_fname_name_list.append(player.extract_player_fname_and_name())
                     player_fname_name_list.sort()
@@ -118,7 +118,7 @@ class ReportController:
                 tournament = ended_tournaments[int(choix) - 1]
 
                 # extraction of all matchs associated to selected tournament
-                matchs_ids_list = tournament.tournament_list_matchs
+                matchs_ids_list = tournament.extract_matchs_id_list()
 
                 # extract all players and scores from matchs id list
                 players_uuid_list, players_scores = MatchModel.extract_players_scores(matchs_ids_list)

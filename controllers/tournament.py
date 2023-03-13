@@ -229,7 +229,7 @@ class TournamentController:
                 # loop for all rounds
                 round_start_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                 players_list = PlayerModel.sort_player_list(players_list)
-                matchs_list = TournamentModel.extract_matchs_uuid_list_of_tournament(tournament)
+                matchs_list = TournamentModel.extract_matchs_id_list(tournament)
                 previous_matchs_players_list = MatchModel.create_matchs_players_list(matchs_list)
                 PlayerModel.update_score_in_player_object(players_list)
                 players_list = PlayerModel.check_players_list(players_list, previous_matchs_players_list)
@@ -239,6 +239,7 @@ class TournamentController:
                 players_list = players_list[0]
 
                 current_match = 1
+                list_matchs = []
                 for i in range(0, nb_match * 2, 2):
                     # loop for all matches for one round
                     p1 = players_list[i]
@@ -252,23 +253,24 @@ class TournamentController:
                     match = MatchModel(tournament.tournament_uuid, current_round, current_match, p1.player_uuid,
                                        p2.player_uuid, scores[0], scores[1])
                     match.create_tuple_for_match()
+                    list_matchs.append("T_" + tournament.tournament_uuid + "_R" + str(current_round) + "_M"
+                                       + str(current_match))
                     current_match += 1
-
                 tournament.store_current_round(current_round)
                 round_end_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                tournament.store_round_date(current_round, round_start_date, round_end_date)
+                tournament.save_round(current_round, round_start_date, round_end_date, list_matchs)
                 current_round += 1
                 if int(nb_round) >= current_round:
                     choix = self.tournament_view.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
-                        match_id_list = match.store_match()
-                        tournament.store_match_id(match_id_list)
+                        match.store_match()
+                        # tournament.store_match_id(match_id_list)
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                     tournament.store_tournament_end_date(date)
-                match_id_list = match.store_match()
-                tournament.store_match_id(match_id_list)
+                match.store_match()
+                # tournament.store_match_id(match_id_list)
             self.tournament_view.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
             break
 
@@ -311,7 +313,7 @@ class TournamentController:
                 # loop for all rounds
                 round_start_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                 # extract matches ids from a tournament
-                matchs_list = TournamentModel.extract_matchs_uuid_list_of_tournament(tournament)
+                matchs_list = tournament.extract_matchs_id_list()
                 # create players list from previous matches
                 previous_matchs_players_list = MatchModel.create_matchs_players_list(matchs_list)
                 # extract previous scores from matches
@@ -328,6 +330,7 @@ class TournamentController:
                 players_list = players_list[0]
 
                 current_match = 1
+                list_matchs = []
                 for i in range(0, nb_match * 2, 2):
                     # loop for all matches for one round
                     player_one = players_list[i].extract_player_fname_and_name()
@@ -341,23 +344,24 @@ class TournamentController:
                     match = MatchModel(tournament.tournament_uuid, current_round, current_match, player_one_uuid,
                                        player_two_uuid, scores[0], scores[1])
                     match.create_tuple_for_match()
+                    list_matchs.append("T_" + tournament.tournament_uuid + "_R" + str(current_round) + "_M"
+                                       + str(current_match))
                     current_match += 1
-
                 tournament.store_current_round(current_round)
                 round_end_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
-                tournament.store_round_date(current_round, round_start_date, round_end_date)
+                tournament.save_round(current_round, round_start_date, round_end_date, list_matchs)
                 current_round += 1
                 if int(nb_round) >= current_round:
                     choix = self.tournament_view.choice("Continuer l'enregistrement des scores (O/n) ?")
                     if choix == "N":
-                        match_id_list = match.store_match()
-                        tournament.store_match_id(match_id_list)
+                        match.store_match()
+                        # tournament.store_match_id(match_id_list)
                         break
                 else:
                     date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                     tournament.store_tournament_end_date(date)
-                match_id_list = match.store_match()
-                tournament.store_match_id(match_id_list)
+                match.store_match()
+                # tournament.store_match_id(match_id_list)
             self.tournament_view.choice("Fin du tour. Appuyez sur [ENTRER] pour revenir au menu.")
 
     def text_to_print(self, text):

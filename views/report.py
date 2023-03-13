@@ -60,8 +60,8 @@ class ReportView:
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
-            round_start = rounds_list_details[round_nb - 1][1]
-            round_end = rounds_list_details[round_nb - 1][2]
+            round_start = rounds_list_details[round_nb - 1]['startDate']
+            round_end = rounds_list_details[round_nb - 1]['endDate']
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
             blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : " + str(round_end))) / 2
@@ -126,8 +126,8 @@ class ReportView:
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
         for round_nb in range(1, int(round_max) + 1):
-            round_start = rounds_list_details[round_nb - 1][1]
-            round_end = rounds_list_details[round_nb - 1][2]
+            round_start = rounds_list_details[round_nb - 1]['startDate']
+            round_end = rounds_list_details[round_nb - 1]['endDate']
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
             blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : " + str(round_end)))/2
@@ -187,7 +187,7 @@ class ReportView:
         self.clear_screen()
         print(f'Tournoi "{tournament[0]}" se déroulant à {tournament[1]} et comportant'
               f' {tournament[4]} round(s).')
-        print(f"Description : {tournament[8]}.")
+        print(f"Description : {tournament[7]}.")
         if tournament[2] and tournament[3]:
             print(f"Ce tournoi a démarré le {tournament[2]} et s'est terminé le {tournament[3]}.")
         elif tournament[2] and not tournament[3]:
