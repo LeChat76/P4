@@ -188,13 +188,6 @@ class TournamentModel:
         matchs_id_list = result_doc[0]['list_matchs']
         return matchs_id_list
 
-    # def extract_tournament_name(self, tournament):
-    #     """ method to extract tournament's name of a tournament with tournament uuid """
-    #     self.tournament_uuid = tournament.tournament_uuid
-    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-    #     tournament_name = tournament[0]['name']
-    #     return tournament_name
-
     def extract_all_infos_tournaments(self):
         """ method to extract all infos of a tournament with the uuid's tournament """
         return self.tournament_name, self.tournament_town, self.tournament_start_date,\
@@ -242,13 +235,6 @@ class TournamentModel:
     def extract_end_date_tournament(self):
         """ method to extract start date of a tournament object """
         return self.tournament_end_date
-
-    # def extract_rounds_list(self, tournament):
-    #     """ method to extract all rounds details of a tournament"""
-    #     self.tournament_uuid = tournament.tournament_uuid
-    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-    #     rounds_list = tournament[0]['list_rounds']
-    #     return rounds_list
 
     @staticmethod
     def export_tournament(tournaments_scores, detailed_rounds_list, tournament_start_date, tournament_end_date,

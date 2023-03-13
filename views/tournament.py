@@ -6,11 +6,6 @@ from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY, MENU_T
 class TournamentView:
     """ Tournament class """
 
-    def __init__(self):
-        self.text = None
-        self.tournaments = None
-        self.question = None
-
     def tournament_menu(self):
         """ Menu 1 """
         choix = None

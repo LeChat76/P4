@@ -57,7 +57,7 @@ class MatchModel:
             match_id = matchs_ids_list[i]
             result = MATCHS.search(MATCH.match_id.matches(match_id))
             rounds.append((match_id.split("_")[2])[1:])
-            round_max = max(rounds)
+            round_max = (rounds[-1:])[0]
             matchs.append((match_id.split("_")[3])[1:])
             match_max = max(matchs)
             p1_uuid = result[0]['player_one_uuid']

@@ -143,11 +143,6 @@ class PlayerModel:
         player.score = result_doc['score']
         return player.score
 
-    # def search_player_uuid(self, player):
-    #     """method to search player's uuid """
-    #     player_uuid = self.player['player_uuid']
-    #     return player_uuid
-
     def extract_player_fname_and_name(self):
         """ method to extract players' fname and name from player object """
         player_uuid = self.player_uuid
@@ -156,22 +151,6 @@ class PlayerModel:
         self.player_name = result_doc[0]['name']
         player = self.player_fname + " " + self.player_name
         return player
-
-    # def extract_data_player(self, players_uuid):
-    #     """ method to extract players' fname, name, birthd and clubid with player's uuid """
-    #     players_list = []
-    #     self.players_uuid = players_uuid
-    #     for player_uuid in self.players_uuid:
-    #         result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player_uuid))
-    #         for doc in result_doc:
-    #             player = PlayerModel()
-    #             player.player_fname = result_doc['fname']
-    #             player.player_name = result_doc['name']
-    #             player.player_birthd = result_doc['birthd']
-    #             player.player_clubid = result_doc['clubid']
-    #             # player = [player_first_name, player_name, player_birthd, player_clubid]
-    #             players_list.append(player)
-    #     return players_list
 
     @staticmethod
     def store_score(player_uuid, score):

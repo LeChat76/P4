@@ -13,8 +13,6 @@ from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_TOURNAMENT_SC
 class ReportController:
     """ reports class """
     def __init__(self):
-        # self.by_fname = None
-        # self.by_name = None
         self.tournament_controller = TournamentController()
         self.report_view = ReportView()
         self.tournament_view = TournamentView()
@@ -81,8 +79,6 @@ class ReportController:
 
     def report_players_name(self, by_name, by_fname):
         """ method to display all players in alphabetic order """
-        # self.by_name = by_name
-        # self.by_fname = by_fname
         while True:
             if PlayerModel.search_all_players() == "no_result":
                 self.report_view.choice("Aucun joueurs. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
@@ -92,8 +88,6 @@ class ReportController:
                                                " le et recommencez.")
                 sys.exit()
             else:
-                # self.by_name = by_name
-                # self.by_fname = by_fname
                 players_list = PlayerModel.search_all_players(by_name, by_fname)
                 for player in players_list:
                     self.report_view.text_to_print(player)

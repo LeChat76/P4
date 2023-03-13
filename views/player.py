@@ -5,15 +5,6 @@ from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_
 
 class PlayerView:
     """ Menu class """
-#     def __init__(self):
-#         self.text = None
-#         self.score_is_float = None
-#         self.all_player_list = None
-#         self.player_one = None
-#         self.player_two = None
-#         self.nb_players = None
-#         self.nb_players_available = None
-#         self.question = None
 
     def player_menu(self):
         """ Menu 2 """
@@ -50,8 +41,8 @@ class PlayerView:
             while not player_fname:
                 while True:
                     player_fname = input("Prénom du joueur : ")
-                    if not player_fname.isalpha():
-                        print("Le prénom ne doit pas contenir de chiffre. Merci de ressaisir.")
+                    if not self.test_value(player_fname):
+                        print("Caractères interdit détecté, ressaisir le prénom SVP.")
                     else:
                         break
 
@@ -60,8 +51,8 @@ class PlayerView:
             while not player_name:
                 while True:
                     player_name = input("Nom du joueur : ")
-                    if not player_name.isalpha():
-                        print("Le nom ne doit pas contenir de chiffre. Merci de ressaisir.")
+                    if not self.test_value(player_name):
+                        print("Caractères interdit détecté, ressaisir le nom SVP.")
                     else:
                         break
 
@@ -137,16 +128,14 @@ class PlayerView:
 
     def select_available_players(self, nb_players_available, nb_players):
         """ method to select multiples players """
-        # self.nb_players_available = nb_players_available
-        # self.nb_players = nb_players
         while True:
             choice = input("Merci de sélectionner un joueur à ajouter [ENTRER pour terminer]: ")
             if choice.isalpha():
                 print("Merci de préciser un chiffre uniquement.")
             elif not choice:
                 if nb_players % 2 != 0 or nb_players == 0:
-                    print("Vous avez sélectionné " + str(nb_players) + " joueurs. Il faut un nombre pair de\njoueurs"
-                                                                       " pour former des équipes.")
+                    print("Vous avez sélectionné " + str(nb_players)
+                          + " joueurs. Il faut un nombre pair de\njoueurs pour former des équipes.")
                     continue
                 else:
                     return "end_players_selection"
@@ -160,8 +149,6 @@ class PlayerView:
     def record_score(self, player_one, player_two):
         """ method to request score for player's match """
         result1 = None
-        # self.player_one = player_one
-        # self.player_two = player_two
         while result1 != 0 and result1 != 0.5 and result1 != 1:
             result1 = input("Score du joueur " + player_one + " : ")
             if result1.isnumeric():
@@ -201,3 +188,14 @@ class PlayerView:
             os.system("clear")
         elif os.name == "nt":
             os.system('cls')
+
+    def test_value(self, value):
+        """ method to check if no forbidden characters are in a value"""
+        specials_authorized_char = [" ", "-"]
+        result = False
+        if not value.isalpha():
+            for special_authorized_char in specials_authorized_char:
+                if special_authorized_char in value:
+                    result = True
+                    continue
+        return result

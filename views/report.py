@@ -8,17 +8,6 @@ from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_PLAYER_NAME, 
 class ReportView:
     """ Result class """
 
-    # def __init__(self):
-    #     self.text = None
-    #     self.players_scores = None
-    #     self.tournament_start_date = None
-    #     self.tournament_end_date = None
-    #     self.rounds_list = None
-    #     self.tournament_info = None
-    #     self.question = None
-    #     self.tournament_name = None
-    #     self.tournaments_scores = None
-
     def report_menu(self):
         """ Menu 3 """
         choix = None
@@ -51,14 +40,7 @@ class ReportView:
     def display_scores_players(self, tournaments_scores, rounds_list_details, tournament_start_date,
                                tournament_end_date, tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with names details """
-        # self.clear_screen()
-        # extraction/creation of attributs
-        # self.tournaments_scores = tournaments_scores
-        # self.tournament_name = tournament_name
-        # self.tournament_end_date = tournament_end_date
-        # self.tournament_start_date = tournament_start_date
-        # self.rounds_list = rounds_list
-        # self.players_scores = players_scores
+        self.clear_screen()
         rounds_list = tournaments_scores[0]
         matchs_list = tournaments_scores[1]
         p1names_list = tournaments_scores[2]
@@ -82,8 +64,7 @@ class ReportView:
             round_end = rounds_list_details[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
-            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
-                                                     + str(round_end))) / 2
+            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : " + str(round_end))) / 2
             print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
             print("+" + " " * floor(blank_width2) + "Du : " + str(round_start) + " au : "
                   + str(round_end) + " " * ceil(blank_width2) + "+")
@@ -126,13 +107,6 @@ class ReportView:
                               tournament_end_date, tournament_name, players_scores):
         """ method to display all scores for one tournament displayed with scores details """
         self.clear_screen()
-        # extraction/creation of attributs
-        # self.tournaments_scores = tournaments_scores
-        # self.tournament_name = tournament_name
-        # self.tournament_end_date = tournament_end_date
-        # self.tournament_start_date = tournament_start_date
-        # self.rounds_list = rounds_list
-        # self.players_scores = players_scores
         rounds_list = tournaments_scores[0]
         matchs_list = tournaments_scores[1]
         p1names_list = tournaments_scores[2]
@@ -156,8 +130,7 @@ class ReportView:
             round_end = rounds_list_details[round_nb - 1][2]
             # print title round number
             blank_width = (REPORT_TABLE_WIDTH - len("Round " + str(round_nb)) - 2) / 2
-            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : "
-                                                     + str(round_end)))/2
+            blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(round_start) + " au : " + str(round_end)))/2
             print("+" + " " * floor(blank_width) + " Round  " + str(round_nb) + " " * ceil(blank_width) + "+")
             print("+" + " " * floor(blank_width2) + "Du : " + str(round_start) + " au : "
                   + str(round_end) + " " * ceil(blank_width2) + "+")
@@ -171,12 +144,12 @@ class ReportView:
                     p1score = p1scores_list[index]
                     p2score = p2scores_list[index]
                     blank_match_width = (REPORT_MATCH_WIDTH - len(str(" Match ")) - len(str(match)))
-                    blank_score_width = (REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1score)) -
-                                         len(str(p2score)) - len("|+"))/3
+                    blank_score_width = (REPORT_TABLE_WIDTH - REPORT_MATCH_WIDTH - len(str(p1score))
+                                         - len(str(p2score)) - len("|+"))/3
                     p1_blank = (PLAYER_MAX_LENGTH - len(p1name))
                     p2_blank = (PLAYER_MAX_LENGTH - len(p2name))
-                    print("+" + " Match " + str(match) + " " * int(blank_match_width) + " | " + " " * floor(p1_blank) +
-                          str(p1name) + " VS " + str(p2name) + " " * ceil(p2_blank) + " +")
+                    print("+" + " Match " + str(match) + " " * int(blank_match_width) + " | " + " " * floor(p1_blank)
+                          + str(p1name) + " VS " + str(p2name) + " " * ceil(p2_blank) + " +")
                     if isinstance(p1score, float):
                         score_float = "+"
                     else:
