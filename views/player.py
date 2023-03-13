@@ -192,10 +192,12 @@ class PlayerView:
     def test_value(self, value):
         """ method to check if no forbidden characters are in a value"""
         specials_authorized_char = [" ", "-"]
-        result = True
+        result = False
         if not value.isalpha():
             for special_authorized_char in specials_authorized_char:
                 if special_authorized_char in value:
                     result = True
                     continue
+        elif value.isalpha():
+            result = True
         return result
