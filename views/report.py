@@ -182,21 +182,24 @@ class ReportView:
             elif choix.upper() == "N":
                 return "N"
 
-    def display_tournament_details(self, tournament):
+    def display_tournament_details(self):
         """ method to display tournament details for reporting menu """
-        self.clear_screen()
-        print(f'Tournoi "{tournament[0]}" se déroulant à {tournament[1]} et comportant'
-              f' {tournament[4]} round(s).')
-        print(f"Description : {tournament[7]}.")
-        if tournament[2] and tournament[3]:
-            print(f"Ce tournoi a démarré le {tournament[2]} et s'est terminé le {tournament[3]}.")
-        elif tournament[2] and not tournament[3]:
-            print(f"Ce tournoi a démarré le {tournament[2]} mais n'est pas terminé,"
-                  f" {tournament[5]} round(s) sur {tournament[4]} joué(s).")
-        elif not tournament[2]:
+        ReportView().clear_screen()
+        print(f'Tournoi "{self.tournament_name}" se déroulant à {self.tournament_town} et comportant'
+              f' {self.tournament_nb_round} round(s).')
+        print(f"Description : {self.tournament_description}.")
+        if self.tournament_end_date:
+            print(f"Ce tournoi a démarré le {self.tournament_start_date} et s'est terminé"
+                  f" le {self.tournament_end_date}.")
+        if self.tournament_start_date and not self.tournament_end_date:
+            print(f"Ce tournoi a démarré le {self.tournament_start_date} mais n'est pas terminé,"
+                  f" {self.tournament_current_round} round(s) sur {self.tournament_nb_round} joué(s).")
+        if self.tournament_start_date:
+            print("Il y'a eu " + str(int(len(self.tournament_list_rounds) * len(self.tournament_list_players)/2))
+                  + " match(s) joué(s).")
+        if not self.tournament_start_date:
             print("Ce tournoi n'a pas encore démarré.")
-        if tournament[2]:
-            print("Il y'a eu " + str(len(tournament[6])) + " match(s) joué(s).")
+
 
     def text_to_print(self, text):
         """ method to print text from controller """

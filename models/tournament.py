@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
-from tinydb.operations import add
+from models.player import PlayerModel
+# from tinydb.operations import add
 import uuid
 import os
 import datetime
@@ -22,7 +23,6 @@ class TournamentModel:
     tournament_current_round = None
     tournament_list_rounds = None
     tournament_list_players = None
-    tournament_list_matchs = ""
 
     def __init__(self, tournament_uuid="", tournament_name="", tournament_town="", tournament_nb_round="",
                  tournament_description=""):
@@ -34,8 +34,8 @@ class TournamentModel:
         self.tournament_description = tournament_description
 
     def __str__(self):
-        return f"Tournoi {self.tournament_name} se déroulant à {self.tournament_town} et comportant" \
-               f" {self.tournament_nb_round} round(s)."
+        return f'Tournoi "{self.tournament_name}" se déroulant à {self.tournament_town} et comportant' \
+               f' {self.tournament_nb_round} round(s).'
 
     def save_tournament(self):
         """ method to save tournament in json file """
@@ -48,13 +48,13 @@ class TournamentModel:
         tournament_current_round = self.tournament_current_round
         tournament_list_rounds = self.tournament_list_rounds
         tournament_list_players = self.tournament_list_players
-        tournament_list_matchs = self.tournament_list_matchs
+        # tournament_list_matchs = self.tournament_list_matchs
         tournament_description = self.tournament_description
         TOURNAMENTS_DB.insert({'tournament_uuid': tournament_uuid, 'name': unidecode.unidecode(tournament_name),
                                'town': unidecode.unidecode(tournament_town), 'start_date': tournament_start_date,
                                'end_date': tournament_end_date, 'nb_round': int(tournament_nb_round),
                                'current_round': tournament_current_round, 'list_rounds': tournament_list_rounds,
-                               'list_players': tournament_list_players, 'list_matchs': tournament_list_matchs,
+                               'list_players': tournament_list_players,
                                'description': unidecode.unidecode(tournament_description)})
 
     @staticmethod
@@ -78,7 +78,7 @@ class TournamentModel:
             tournament.tournament_current_round = doc['current_round']
             tournament.tournament_list_rounds = doc['list_rounds']
             tournament.tournament_list_players = doc['list_players']
-            tournament.tournament_list_matchs = doc['list_matchs']
+            # tournament.tournament_list_matchs = doc['list_matchs']
             tournament.tournament_description = doc['description']
             tournaments.append(tournament)
         return tournaments
@@ -105,7 +105,7 @@ class TournamentModel:
                 tournament.tournament_current_round = doc['current_round']
                 tournament.tournament_list_rounds = doc['list_rounds']
                 tournament.tournament_list_players = doc['list_players']
-                tournament.tournament_list_matchs = doc['list_matchs']
+                # tournament.tournament_list_matchs = doc['list_matchs']
                 tournament.tournament_description = doc['description']
                 completed_tournaments.append(tournament)
         if not completed_tournaments:
@@ -133,7 +133,7 @@ class TournamentModel:
                 tournament.tournament_end_date = doc['end_date']
                 tournament.tournament_list_rounds = doc['list_rounds']
                 tournament.tournament_list_players = doc['list_players']
-                tournament.tournament_list_matchs = doc['list_matchs']
+                # tournament.tournament_list_matchs = doc['list_matchs']
                 tournament.tournament_description = doc['description']
                 current_tournaments.append(tournament)
         if not current_tournaments:
@@ -182,17 +182,12 @@ class TournamentModel:
         players_uuid_list = tournament[0]['list_players']
         return players_uuid_list
 
-    def extract_matchs_uuid_list_of_tournament(self):
-        """ method to extract all match's ids of a tournament """
-        result_doc = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        matchs_id_list = result_doc[0]['list_matchs']
-        return matchs_id_list
-
-    def extract_all_infos_tournaments(self):
-        """ method to extract all infos of a tournament with the uuid's tournament """
-        return self.tournament_name, self.tournament_town, self.tournament_start_date,\
-            self.tournament_end_date, self.tournament_nb_round, self.tournament_current_round,\
-            self.tournament_list_matchs, self.tournament_list_players, self.tournament_description
+    # def extract_all_infos_tournaments(self):
+    #     """ method to extract all infos of a tournament with the uuid's tournament """
+    #
+    #     return self.tournament_name, self.tournament_town, self.tournament_start_date,\
+    #         self.tournament_end_date, self.tournament_nb_round, self.tournament_current_round,\
+    #         self.tournament_list_players, self.tournament_description
 
     def store_tournament_start_date(self, tournament_start_date):
         """ method to store start date in tournament """
@@ -203,25 +198,17 @@ class TournamentModel:
         """ method to store end date in tournament """
         TOURNAMENTS_DB.update({'end_date': tournament_end_date}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    def store_match_id(self, match_id_list):
-        """ method to store matchs id in tournament """
-        is_list_matchs = TOURNAMENTS_DB.search(
-            TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_matchs']
-        if is_list_matchs:
-            TOURNAMENTS_DB.update(add('list_matchs', match_id_list), Query().tournament_uuid == self.tournament_uuid)
-        else:
-            TOURNAMENTS_DB.update({'list_matchs': match_id_list}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
-
     def store_current_round(self, tournament_current_round):
         """ method to store current_round number in tournaments.json"""
         TOURNAMENTS_DB.update({'current_round': int(tournament_current_round)},
                               TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    def store_round_date(self, current_round, round_start_date, round_end_date):
+    def save_round(self, current_round, round_start_date, round_end_date, list_matchs):
         """ method to store start and end dates for a round """
         all_rounds = TOURNAMENTS_DB.search(
             TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))[0]['list_rounds']
-        round = ["Round" + str(current_round), str(round_start_date), str(round_end_date)]
+        round = {"name": "Round" + str(current_round), "startDate": str(round_start_date),
+                 "endDate": str(round_end_date), "list_matchs": list_matchs}
         if all_rounds is None:
             all_rounds = [round]
         else:
@@ -273,8 +260,8 @@ class TournamentModel:
             report_file.write('  </tr>')
             report_file.write('  <tr>')
             for round_nb in range(1, int(round_max)+1):
-                round_start = detailed_rounds_list[round_nb - 1][1]
-                round_end = detailed_rounds_list[round_nb - 1][2]
+                round_start = detailed_rounds_list[round_nb - 1]['startDate']
+                round_end = detailed_rounds_list[round_nb - 1]['endDate']
                 report_file.write('    <td class="tg-2uuq" colspan="3">Round ' + str(round_nb) + ' du '
                                   + str(round_start) + ' au ' + str(round_end) + '</td>')
                 report_file.write('  </tr>')
@@ -304,3 +291,82 @@ class TournamentModel:
         report_file.close()
         return 'Le fichier "' + file_name + '" à été exporté\ndans le dossier '\
             + data_folder.replace("models\\..\\", "") + '\\.'
+
+    def extract_matchs_id_list(self):
+        """ method to extract matchs_id_list from a tournament object """
+        list_rounds = self.tournament_list_rounds
+        if list_rounds:
+            matchs_id_list = []
+            for round in list_rounds:
+                for matchs in round['list_matchs']:
+                    matchs_id_list.append(matchs)
+            return matchs_id_list
+
+    def create_matchs_players_list(self):
+        """ method to create list of matchs already played for a tournament """
+        previous_matchs_players_list = []
+        tournament_uuid = self.tournament_uuid
+        result_doc = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(tournament_uuid))
+        matchs_list = result_doc[0]['list_rounds']
+        if matchs_list:
+            for match in matchs_list:
+                for players in match['list_matchs']:
+                    if players[0][0] not in previous_matchs_players_list:
+                        previous_matchs_players_list.append(players[0][0])
+                    if players[1][0] not in previous_matchs_players_list:
+                        previous_matchs_players_list.append(players[1][0])
+        return previous_matchs_players_list
+
+    def extract_previous_scores(self, players_list):
+        """ method to extract all previous scores from stored matches """
+        scores = []
+        list_rounds = self.tournament_list_rounds
+        for player in players_list:
+            player_score = 0
+            for match in list_rounds[0]['list_matchs']:
+                if player == match[0][0]:
+                    player_score = player_score + match[0][1]
+                if player == match[1][0]:
+                    player_score = player_score + match[1][1]
+            scores.append(player_score)
+        return scores
+
+    def extract_players_scores(self):
+        """ method to extract players list and scores list from matchs ids list """
+        players_uuid_list, players_scores = [], []
+        list_rounds = self.tournament_list_rounds
+        for matchs in list_rounds:
+            for match in matchs['list_matchs']:
+                p1 = match[0][0]
+                p1_score = match[0][1]
+                p2 = match[1][0]
+                p2_score = match[1][1]
+                players_uuid_list.append(p1)
+                players_uuid_list.append(p2)
+                players_scores.append(p1_score)
+                players_scores.append(p2_score)
+        return players_uuid_list, players_scores
+
+    def extract_scores(self):
+        """ method to extract score from a match id """
+        previous_round = 1
+        match_index = 1
+        rounds, matchs, p1_name, p2_name, p1_scores, p2_scores = [], [], [], [], [], []
+        for round in self.tournament_list_rounds:
+            round_number = round['name'][-1:]
+            match_index = 1
+            for match in round['list_matchs']:
+                rounds.append(round_number)
+                matchs.append(match_index)
+                match_index += 1
+                p1_uuid = match[0][0]
+                player1 = PlayerModel.create_player_object(p1_uuid)
+                p1_name.append(PlayerModel.extract_player_fname_and_name(player1))
+                p2_uuid = match[1][0]
+                player2 = PlayerModel.create_player_object(p2_uuid)
+                p2_name.append(PlayerModel.extract_player_fname_and_name(player2))
+                p1_scores.append(match[0][1])
+                p2_scores.append(match[1][1])
+        round_max = (rounds[-1:])[0]
+        tournament_scores = [rounds, matchs, p1_name, p2_name, p1_scores, p2_scores, round_max]
+        return tournament_scores

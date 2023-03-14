@@ -42,7 +42,7 @@ class PlayerView:
                 while True:
                     player_fname = input("Prénom du joueur : ")
                     if not self.test_value(player_fname):
-                        print("Caractères interdit détecté, ressaisir le prénom SVP.")
+                        print("Caractère(s) interdit(s) détecté(s), ressaisir le prénom SVP.")
                     else:
                         break
 
@@ -52,7 +52,7 @@ class PlayerView:
                 while True:
                     player_name = input("Nom du joueur : ")
                     if not self.test_value(player_name):
-                        print("Caractères interdit détecté, ressaisir le nom SVP.")
+                        print("Caractère(s) interdit(s) détecté(s), ressaisir le nom SVP.")
                     else:
                         break
 
@@ -64,7 +64,7 @@ class PlayerView:
                     try:
                         datetime.datetime.strptime(player_birthd, '%d/%m/%Y')
                     except ValueError:
-                        print("Mauvais format de date. Merci de ressaisir.")
+                        print("Mauvais format de date, ressaisir la date d'anniversaire SVP.")
                     else:
                         break
 
@@ -74,11 +74,11 @@ class PlayerView:
                 while True:
                     player_clubid = input("ID du club (au format AB12345) : ")
                     if len(player_clubid) != 7:
-                        print("Le club ID doit comporter 7 caractères. Merci de ressaisir.")
+                        print("Le club ID doit comporter 7 caractères, ressaisir le club ID.")
                     elif not player_clubid[:2].isalpha():
-                        print("Les 2 premiers caractères doivent être des lettres. Merci de ressaisir.")
+                        print("Les 2 premiers caractères doivent être des lettres, ressaisir le club ID.")
                     elif not player_clubid[2:].isnumeric():
-                        print("les 5 derniers caractères doivent être des chiffres. Merci de ressaisir.")
+                        print("les 5 derniers caractères doivent être des chiffres, ressaisir le club ID.")
                     else:
                         player_clubid = str(player_clubid[:2].upper()) + str(player_clubid[2:])
                         break
@@ -194,6 +194,7 @@ class PlayerView:
         specials_authorized_char = [" ", "-"]
         result = False
         if not value.isalpha():
+            # methode ne fonctionne pas, si caractère autorisé + caractère interdit : ça passe donc pas bon
             for special_authorized_char in specials_authorized_char:
                 if special_authorized_char in value:
                     result = True

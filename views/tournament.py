@@ -89,7 +89,7 @@ class TournamentView:
                 elif dis_tournament_menu == "n":
                     return "display_not_started_tournaments"
                 elif dis_tournament_menu == "c":
-                    return "display_current_tournaments"
+                    return "display_ongoing_tournaments"
 
     def choice(self, question):
         """ method for asking to restart request """

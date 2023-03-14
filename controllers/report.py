@@ -2,7 +2,6 @@ from controllers.tournament import TournamentController
 from views.report import ReportView
 from views.tournament import TournamentView
 from models.tournament import TournamentModel
-from models.match import MatchModel
 from models.player import PlayerModel
 import sys
 from constantes import MENU_REPORT_TOURNAMENT_PLAYERS, MENU_REPORT_TOURNAMENT_SCORES, MENU_REPORT_PLAYER_NAME,\
@@ -57,12 +56,14 @@ class ReportController:
                     self.report_view.text_to_print(str(index) + " - " + str(tournament))
                 # select a tournament
                 choix = self.tournament_view.select(tournaments)
-                selected_tournament = tournaments[int(choix) - 1]
-                tournament = selected_tournament.extract_all_infos_tournaments()
-                self.report_view.display_tournament_details(tournament)
+                tournament = tournaments[int(choix) - 1]
+                # tournament = tournament.extract_all_infos_tournaments()
+                ReportView.display_tournament_details(tournament)
+
                 # display ordered player list of a tournament
-                if tournament[6]:
-                    for player_uuid in tournament[6]:
+                player_fname_name_list = []
+                if tournament.tournament_list_players:
+                    for player_uuid in tournament.tournament_list_players:
                         player = PlayerModel.create_player_object(player_uuid)
                         player_fname_name_list.append(player.extract_player_fname_and_name())
                     player_fname_name_list.sort()
@@ -70,8 +71,9 @@ class ReportController:
                         "La liste des joueurs (triée par ordre alphabétique) est la suivante :")
                     for player in player_fname_name_list:
                         self.report_view.text_to_print("- " + player)
-                self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
-                break
+                choix = self.report_view.choice("Faire une autre recherche (O/n)? ")
+                if choix.upper() == "N":
+                    break
 
     def report_tournament_list(self):
         """ method to display list of tournaments """
@@ -118,10 +120,10 @@ class ReportController:
                 tournament = ended_tournaments[int(choix) - 1]
 
                 # extraction of all matchs associated to selected tournament
-                matchs_ids_list = tournament.extract_matchs_id_list()
+                # matchs_ids_list = tournament.extract_matchs_id_list()
 
                 # extract all players and scores from matchs id list
-                players_uuid_list, players_scores = MatchModel.extract_players_scores(matchs_ids_list)
+                players_uuid_list, players_scores = tournament.extract_players_scores()
 
                 # reinit scores in players.json
                 PlayerModel.delete_score_player(players_uuid_list)
@@ -130,12 +132,10 @@ class ReportController:
                 for player_uuid, player_score in zip(players_uuid_list, players_scores):
                     PlayerModel.store_score(player_uuid, player_score)
 
-                # create tuple contains players names + scores
+                # create tuple contains players fname & name + scores
                 players_uuid_list = list(set(players_uuid_list))
-
-                # create [(fname + name), score] list
                 players_uuid = []
-                players_object = []
+                players = []
                 scores = []
                 for player_uuid in players_uuid_list:
                     score = PlayerModel.search_player_score(player_uuid)
@@ -145,8 +145,8 @@ class ReportController:
                 for player_uuid in players_uuid:
                     player = PlayerModel.create_player_object(player_uuid)
                     player_fname_name = player.extract_player_fname_and_name()
-                    players_object.append(player_fname_name)
-                players_scores = [players_object, scores]
+                    players.append(player_fname_name)
+                players_scores = [players, scores]
 
                 # extraction of all rounds details
                 rounds_list = tournament.tournament_list_rounds
@@ -156,7 +156,7 @@ class ReportController:
                 tournament_end_date = tournament.tournament_end_date
 
                 # extraction of all scores of matchs list associated to the selected tournament
-                tournaments_scores = MatchModel.extract_scores(matchs_ids_list)
+                tournaments_scores = TournamentModel.extract_scores(tournament)
                 if display_type == "players":
                     self.report_view.display_scores_players(tournaments_scores, rounds_list, tournament_start_date,
                                                             tournament_end_date, tournament.tournament_name,

@@ -64,30 +64,24 @@ class PlayerController:
 
     def display_player(self):
         """ method to display players by selecting name or all players """
-        while True:
-            player_to_search = self.player_view.display_player()
-            players_list = PlayerModel.search_player(player_to_search)
-
-            # case when you specify a name with no result
-            if players_list == "no_result" and not player_to_search == "display_all":
-                choix = self.player_view.choice("Aucun résultat. Recommencer (O/n)? ")
-                if choix == "N":
-                    break
-
-            # case of error structure file players.json
-            elif players_list == "error":
-                self.player_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                               " le et recommencez.")
-                sys.exit()
-
-            # case when you want to display all users [ENTER]
-            elif players_list == "no_result" and player_to_search == "display_all":
+        # test if players.json is empty
+        players_list = PlayerModel.search_all_players()
+        if players_list == "no_result":
+            self.player_view.choice("Liste vide. Veuillez en créer. Appuyez sur [ENTRER] pour revenir au menu.")
+        else:
+            while True:
                 players_list = PlayerModel.search_all_players()
-                if players_list == "no_result":
-                    self.player_view.choice("Liste vide. Veuillez en créer. Appuyez sur [ENTRER] pour revenir"
-                                            " au menu.")
-                    break
-                else:
+
+                # case of error structure file players.json
+                if players_list == "error":
+                    self.player_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                   " le et recommencez.")
+                    sys.exit()
+
+                player_to_search = self.player_view.display_player()
+
+                # case when you want to display all users [ENTER]
+                if player_to_search == "display_all":
                     self.player_view.text_to_print(str(len(players_list)) + " résultat(s).")
                     for player in players_list:
                         self.player_view.text_to_print(player)
@@ -95,11 +89,12 @@ class PlayerController:
                     if choix == "N":
                         break
 
-            # case when you specify a name and there is some results
-            elif len(players_list) > 0:
-                self.player_view.text_to_print(str(len(players_list)) + " résultat(s):")
-                for player in players_list:
-                    self.player_view.text_to_print(player)
-                choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
-                if choix.upper() == "N":
-                    break
+                # case when you specify a name and there is some results
+                else:
+                    players_list = PlayerModel.search_player(player_to_search)
+                    self.player_view.text_to_print(str(len(players_list)) + " résultat(s):")
+                    for player in players_list:
+                        self.player_view.text_to_print(player)
+                    choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
+                    if choix.upper() == "N":
+                        break
