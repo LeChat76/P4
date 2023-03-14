@@ -292,7 +292,7 @@ class TournamentController:
             for player_uuid in players_uuid_list:
                 player = PlayerModel.create_player_object(player_uuid)
                 players.append(player)
-                self.tournament_view.text_to_print(" - " + str(player))
+                self.tournament_view.text_to_print(" - " + str(PlayerModel.extract_player_fname_and_name(player)))
             self.tournament_view.text_to_print(f"Le prochain round est le {current_round} ème.")
 
             # resume the tournament

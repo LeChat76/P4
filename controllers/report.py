@@ -92,7 +92,7 @@ class ReportController:
             else:
                 players_list = PlayerModel.search_all_players(by_name, by_fname)
                 for player in players_list:
-                    self.report_view.text_to_print(player)
+                    self.report_view.text_to_print(str(PlayerModel.extract_player_fname_and_name(player)))
                 self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
