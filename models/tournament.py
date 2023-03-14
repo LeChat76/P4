@@ -1,16 +1,24 @@
 from tinydb import TinyDB, Query
 from models.player import PlayerModel
-# from tinydb.operations import add
 import uuid
 import os
 import datetime
 import unidecode
+
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "tournaments")
 if not os.path.exists(DATA_FOLDER):
     os.makedirs(DATA_FOLDER)
     with open(os.path.join(DATA_FOLDER, "tournaments.json"), 'w') as tournaments_file:
         pass
     tournaments_file.close()
+
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "reports")
+if not os.path.exists(DATA_FOLDER):
+    os.makedirs(DATA_FOLDER)
+    with open(os.path.join(DATA_FOLDER, "report.html"), 'w') as report_file:
+        pass
+    report_file.close()
+
 DB = TinyDB('data/tournaments/tournaments.json')
 TOURNAMENTS_DB = DB.table('tournaments')
 TOURNAMENT = Query()
