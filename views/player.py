@@ -108,7 +108,7 @@ class PlayerView:
         dis_player_menu = None
         while not dis_player_menu:
             while True:
-                dis_player_name = input("Afficher les noms contenant ([ENTER] = afficher tout) : ")
+                dis_player_name = input("Afficher les noms commençant par ([ENTER] = afficher tout) : ")
                 if not dis_player_name:
                     return "display_all"
                 elif not dis_player_name.isalpha():
