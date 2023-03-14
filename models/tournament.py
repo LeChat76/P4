@@ -182,13 +182,6 @@ class TournamentModel:
         players_uuid_list = tournament[0]['list_players']
         return players_uuid_list
 
-    # def extract_all_infos_tournaments(self):
-    #     """ method to extract all infos of a tournament with the uuid's tournament """
-    #
-    #     return self.tournament_name, self.tournament_town, self.tournament_start_date,\
-    #         self.tournament_end_date, self.tournament_nb_round, self.tournament_current_round,\
-    #         self.tournament_list_players, self.tournament_description
-
     def store_tournament_start_date(self, tournament_start_date):
         """ method to store start date in tournament """
         TOURNAMENTS_DB.update({'start_date': tournament_start_date},
@@ -349,8 +342,6 @@ class TournamentModel:
 
     def extract_scores(self):
         """ method to extract score from a match id """
-        previous_round = 1
-        match_index = 1
         rounds, matchs, p1_name, p2_name, p1_scores, p2_scores = [], [], [], [], [], []
         for round in self.tournament_list_rounds:
             round_number = round['name'][-1:]

@@ -200,7 +200,6 @@ class ReportView:
         if not self.tournament_start_date:
             print("Ce tournoi n'a pas encore démarré.")
 
-
     def text_to_print(self, text):
         """ method to print text from controller """
         print(text)
