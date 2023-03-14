@@ -92,9 +92,14 @@ class PlayerController:
                 # case when you specify a name and there is some results
                 else:
                     players_list = PlayerModel.search_player(player_to_search)
-                    self.player_view.text_to_print(str(len(players_list)) + " résultat(s):")
-                    for player in players_list:
-                        self.player_view.text_to_print(player)
-                    choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
-                    if choix.upper() == "N":
-                        break
+                    if players_list == "no_result":
+                        choix = self.player_view.choice("Aucun résultat. Faire une autre recherche (O/n)? ")
+                        if choix.upper() == "N":
+                            break
+                    else:
+                        self.player_view.text_to_print(str(len(players_list)) + " résultat(s):")
+                        for player in players_list:
+                            self.player_view.text_to_print(player)
+                        choix = self.player_view.choice("Faire une autre recherche (O/n)? ")
+                        if choix.upper() == "N":
+                            break
