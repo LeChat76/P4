@@ -1,5 +1,4 @@
 import sys
-import os
 from views.start_menu import MainMenu
 from constantes import MENU_PLAYERS, MENU_TOURNAMENTS, MENU_REPORTS, MENU_EXIT
 from controllers.tournament import TournamentController
