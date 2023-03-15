@@ -45,25 +45,44 @@ class TournamentModel:
         return f'Tournoi "{self.tournament_name}" se déroulant à {self.tournament_town} et comportant' \
                f' {self.tournament_nb_round} round(s).'
 
+    @staticmethod
+    def deserialize(doc):
+        """ method for deserialize a tournament object """
+        tournament = TournamentModel()
+        tournament.tournament_uuid = doc['tournament_uuid']
+        tournament.tournament_name = doc['name']
+        tournament.tournament_town = doc['town']
+        tournament.tournament_start_date = doc['start_date']
+        tournament.tournament_end_date = doc['end_date']
+        tournament.tournament_nb_round = doc['nb_round']
+        tournament.tournament_current_round = doc['current_round']
+        tournament.tournament_list_rounds = doc['list_rounds']
+        tournament.tournament_list_players = doc['list_players']
+        tournament.tournament_description = doc['description']
+        return tournament
+
+    def serialize(self):
+        uid = str(uuid.uuid1())
+        name = self.tournament_name
+        town = self.tournament_town
+        nb_round = self.tournament_nb_round
+        description = self.tournament_description
+        tournament = {'uuid': uid, 'name': name, 'town': town, 'nb_round': nb_round, 'description': description}
+        return tournament
+
     def save_tournament(self):
         """ method to save tournament in json file """
-        tournament_uuid = str(uuid.uuid1())
-        tournament_name = self.tournament_name
-        tournament_town = self.tournament_town
-        tournament_start_date = self.tournament_start_date
-        tournament_end_date = self.tournament_end_date
-        tournament_nb_round = self.tournament_nb_round
-        tournament_current_round = self.tournament_current_round
-        tournament_list_rounds = self.tournament_list_rounds
-        tournament_list_players = self.tournament_list_players
-        # tournament_list_matchs = self.tournament_list_matchs
-        tournament_description = self.tournament_description
-        TOURNAMENTS_DB.insert({'tournament_uuid': tournament_uuid, 'name': unidecode.unidecode(tournament_name),
-                               'town': unidecode.unidecode(tournament_town), 'start_date': tournament_start_date,
-                               'end_date': tournament_end_date, 'nb_round': int(tournament_nb_round),
-                               'current_round': tournament_current_round, 'list_rounds': tournament_list_rounds,
-                               'list_players': tournament_list_players,
-                               'description': unidecode.unidecode(tournament_description)})
+        tournament = self.serialize()
+        TOURNAMENTS_DB.insert({'tournament_uuid': tournament["uuid"],
+                               'name': unidecode.unidecode(tournament["name"]),
+                               'town': unidecode.unidecode(tournament["town"]),
+                               'start_date': TournamentModel.tournament_start_date,
+                               'end_date': TournamentModel.tournament_end_date,
+                               'nb_round': int(tournament["nb_round"]),
+                               'current_round': TournamentModel.tournament_current_round,
+                               'list_rounds': TournamentModel.tournament_list_rounds,
+                               'list_players': TournamentModel.tournament_list_players,
+                               'description': unidecode.unidecode(tournament["description"])})
 
     @staticmethod
     def search_all_tournaments():
@@ -76,18 +95,7 @@ class TournamentModel:
             return "no_result"
         tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel()
-            tournament.tournament_uuid = doc['tournament_uuid']
-            tournament.tournament_name = doc['name']
-            tournament.tournament_town = doc['town']
-            tournament.tournament_start_date = doc['start_date']
-            tournament.tournament_end_date = doc['end_date']
-            tournament.tournament_nb_round = doc['nb_round']
-            tournament.tournament_current_round = doc['current_round']
-            tournament.tournament_list_rounds = doc['list_rounds']
-            tournament.tournament_list_players = doc['list_players']
-            # tournament.tournament_list_matchs = doc['list_matchs']
-            tournament.tournament_description = doc['description']
+            tournament = TournamentModel.deserialize(doc)
             tournaments.append(tournament)
         return tournaments
 
@@ -100,28 +108,15 @@ class TournamentModel:
             return "error"
         completed_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel()
-            tournament.tournament_nb_round = doc['nb_round']
-            tournament.tournament_current_round = doc['current_round']
+            tournament = TournamentModel.deserialize(doc)
             if tournament.tournament_nb_round == tournament.tournament_current_round:
-                tournament.tournament_uuid = doc['tournament_uuid']
-                tournament.tournament_name = doc['name']
-                tournament.tournament_town = doc['town']
-                tournament.tournament_start_date = doc['start_date']
-                tournament.tournament_end_date = doc['end_date']
-                tournament.tournament_nb_round = doc['nb_round']
-                tournament.tournament_current_round = doc['current_round']
-                tournament.tournament_list_rounds = doc['list_rounds']
-                tournament.tournament_list_players = doc['list_players']
-                # tournament.tournament_list_matchs = doc['list_matchs']
-                tournament.tournament_description = doc['description']
                 completed_tournaments.append(tournament)
         if not completed_tournaments:
             return "no_result"
         return completed_tournaments
 
     @staticmethod
-    def search_current_tournaments():
+    def search_ongoing_tournaments():
         """ method to select tournaments where nb_round != current_round """
         try:
             result_doc = TOURNAMENTS_DB.search(TOURNAMENT.name.matches('[aZ]*'))
@@ -129,20 +124,9 @@ class TournamentModel:
             return "error"
         current_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel()
-            tournament.tournament_nb_round = doc['nb_round']
-            tournament.tournament_current_round = doc['current_round']
+            tournament = TournamentModel.deserialize(doc)
             if tournament.tournament_nb_round != tournament.tournament_current_round and\
                     tournament.tournament_current_round is not None:
-                tournament.tournament_uuid = doc['tournament_uuid']
-                tournament.tournament_name = doc['name']
-                tournament.tournament_town = doc['town']
-                tournament.tournament_start_date = doc['start_date']
-                tournament.tournament_end_date = doc['end_date']
-                tournament.tournament_list_rounds = doc['list_rounds']
-                tournament.tournament_list_players = doc['list_players']
-                # tournament.tournament_list_matchs = doc['list_matchs']
-                tournament.tournament_description = doc['description']
                 current_tournaments.append(tournament)
         if not current_tournaments:
             return "no_result"
@@ -158,14 +142,8 @@ class TournamentModel:
             return "error"
         not_started_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel()
-            tournament.tournament_nb_round = doc['nb_round']
-            tournament.tournament_current_round = doc['current_round']
+            tournament = TournamentModel.deserialize(doc)
             if not tournament.tournament_current_round:
-                tournament.tournament_name = doc['name']
-                tournament.tournament_town = doc['town']
-                tournament.tournament_current_round = doc['nb_round']
-                tournament.tournament_uuid = doc['tournament_uuid']
                 not_started_tournaments.append(tournament)
         if not not_started_tournaments:
             return "no_result"
@@ -349,7 +327,7 @@ class TournamentModel:
         return players_uuid_list, players_scores
 
     def extract_scores(self):
-        """ method to extract score from a match id """
+        """ method to extract score from a tournament object """
         rounds, matchs, p1_name, p2_name, p1_scores, p2_scores = [], [], [], [], [], []
         for round in self.tournament_list_rounds:
             round_number = round['name'][-1:]

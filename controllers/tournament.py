@@ -84,7 +84,7 @@ class TournamentController:
 
                 # case for ongoing tournaments
                 elif tournament_to_display == "display_ongoing_tournaments":
-                    result = TournamentModel.search_current_tournaments()
+                    result = TournamentModel.search_ongoing_tournaments()
                     if result == "no_result":
                         choix = self.tournament_view.choice("Aucun tournoi à afficher. Recommencer (O/n)? ")
                         if choix == "N":
@@ -266,7 +266,7 @@ class TournamentController:
 
     def resume_tournament(self):
         """ method to resume a not ended tournament """
-        not_ended_tournament = TournamentModel.search_current_tournaments()
+        not_ended_tournament = TournamentModel.search_ongoing_tournaments()
         if not_ended_tournament == "no_result":
             self.tournament_view.choice("Aucun tournoi(s) non terminé(s). Appuyez sur [ENTRER] pour continuer.")
         elif not_ended_tournament == "error":

@@ -34,15 +34,26 @@ class PlayerModel:
         return f"{self.player_fname} {self.player_name} né le {self.player_birthd}," \
                f" affilié au club {self.player_clubid}."
 
+    def serialize(self):
+        """ method to serialize data """
+        uid = str(uuid.uuid1())
+        fname = unidecode.unidecode(self.player_fname.capitalize())
+        name = unidecode.unidecode(self.player_name.capitalize())
+        birthd = self.player_birthd
+        clubid = self.player_clubid
+        player = {'uuid': uid, 'fname': fname, 'name': name, 'birthd': birthd, 'clubid': clubid}
+        return player
+
     def save_player(self):
         """ method to store player in DB """
-        player_fname = unidecode.unidecode(self.player_fname.capitalize())
-        player_name = unidecode.unidecode(self.player_name.capitalize())
-        player_birthd = self.player_birthd
-        player_clubid = self.player_clubid
-        PLAYERS_DB.insert({'player_uuid': str(uuid.uuid1()), 'fname': player_fname,
-                           'name': player_name, 'birthd': player_birthd, 'clubid': player_clubid, 'score': 0,
-                           'enable': "Y"})
+        player = self.serialize()
+        PLAYERS_DB.insert({'player_uuid': player['uuid'],
+                           'fname': player['fname'],
+                           'name': player['name'],
+                           'birthd': player['birthd'],
+                           'clubid': player['clubid'],
+                           'score': PlayerModel.score,
+                           'enable': PlayerModel.enable})
 
     def delete_player(self):
         """ method to delete a player (delete = modify 'enable' value with 'N' """
