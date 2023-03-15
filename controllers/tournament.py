@@ -1,5 +1,4 @@
 import sys
-import uuid
 from datetime import datetime
 from views.tournament import TournamentView
 from views.player import PlayerView
@@ -37,7 +36,7 @@ class TournamentController:
         """ method to record new tournaments """
         new_tournament = self.tournament_view.add_tournament()
         for tournament in new_tournament:
-            tournament_to_add = TournamentModel(tournament_uuid=str(uuid.uuid1()), tournament_name=tournament[0],
+            tournament_to_add = TournamentModel(tournament_uuid=tournament[4], tournament_name=tournament[0],
                                                 tournament_town=tournament[1], tournament_nb_round=tournament[2],
                                                 tournament_description=tournament[3])
             tournament_to_add.save_tournament()

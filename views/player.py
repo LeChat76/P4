@@ -1,5 +1,6 @@
 import datetime
 import os
+import uuid
 from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT, PLAYER_LIST
 
 
@@ -83,7 +84,7 @@ class PlayerView:
                         player_clubid = str(player_clubid[:2].upper()) + str(player_clubid[2:])
                         break
 
-            PLAYER_LIST.append([player_fname, player_name, player_birthd, player_clubid])
+            PLAYER_LIST.append([player_fname, player_name, player_birthd, player_clubid, str(uuid.uuid1())])
 
             new_one_player = input("Ajouter un autre joueur au tournoi (O/n)?")
             if new_one_player.upper() == "N" and associate_to_tournament and len(PLAYER_LIST) % 2 != 0:

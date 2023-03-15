@@ -1,4 +1,5 @@
 import os
+import uuid
 from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY, MENU_TOURNAMENT_START,\
     MENU_TOURNAMENT_RECOVERY, MENU_TOURNAMENT_EXIT, TOURNAMENT_LIST
 
@@ -68,7 +69,8 @@ class TournamentView:
             tournament_description = input("Description du tournoi ([ENTRER pour laisser vide) : ")
             if not tournament_description:
                 tournament_description = ""
-            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_nb_round, tournament_description])
+            TOURNAMENT_LIST.append([tournament_name, tournament_town, tournament_nb_round, tournament_description,
+                                   str(uuid.uuid1())])
 
             new_one_tournament = input("Créer un autre tournoi (O/n)?")
 
