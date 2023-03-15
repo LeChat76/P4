@@ -234,7 +234,7 @@ class TournamentModel:
             report_file.write('</style>')
             report_file.write('<table class="tg">')
             report_file.write("  <tr>")
-            report_file.write('    <th class="tg-33h5" colspan="3">Tournoi ' + str(tournament_name) + ' du '
+            report_file.write('    <th class="tg-33h5" colspan="3">Tournoi "' + str(tournament_name) + '" du '
                               + str(tournament_start_date) + ' au ' + str(tournament_end_date) + '</th>')
             report_file.write('  </tr>')
             report_file.write('  <tr>')
@@ -265,11 +265,11 @@ class TournamentModel:
             report_file.write('  <tr>')
             result = '    <td class="tg-73oq" colspan="3">'
             for i in range(len(players_scores[0])):
-                result = result + str(players_scores[0][i] + ' - score : ' + str(players_scores[1][i]) + '<br>')
+                result = result + " - " + str(players_scores[0][i] + ' - score : ' + str(players_scores[1][i]) + '<br>')
             report_file.write(result)
         report_file.close()
         return 'Le fichier "' + file_name + '" à été exporté\ndans le dossier '\
-            + data_folder.replace("models\\..\\", "") + '\\.'
+            + data_folder.replace("models\\..\\", "")
 
     def extract_matchs_id_list(self):
         """ method to extract matchs_id_list from a tournament object """

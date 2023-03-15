@@ -52,10 +52,10 @@ class ReportView:
 
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + tournament_name) - 1) / 2
+        blank_width = (REPORT_TABLE_WIDTH - len('Tournoi "' + tournament_name + '"') - 2) / 2
         blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(tournament_start_date) + " au : "
                                                  + str(tournament_end_date)) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + tournament_name + " " * ceil(blank_width) + "+")
+        print('+' + ' ' * floor(blank_width) + ' Tournoi "' + tournament_name + '" ' + ' ' * ceil(blank_width) + '+')
         print("+" + " " * floor(blank_width2) + " Du : " + str(tournament_start_date) + " au : "
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
@@ -96,9 +96,9 @@ class ReportView:
         print("+" + " " * floor(blank_width) + "Résultats(triés par score)" + " " * ceil(blank_width) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         for i in range(len(players_scores[0])):
-            blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
+            blank_width = (REPORT_TABLE_WIDTH - len("- " + str(players_scores[0][i]) + " - score : "
                                                     + str(players_scores[1][i])))
-            print("+ " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
+            print("+ - " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
                   + " " * (blank_width - 1) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
@@ -118,10 +118,10 @@ class ReportView:
 
         # print report's table (title)
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
-        blank_width = (REPORT_TABLE_WIDTH - len("Tournoi " + tournament_name) - 1) / 2
+        blank_width = (REPORT_TABLE_WIDTH - len('Tournoi "' + tournament_name + '"') - 2) / 2
         blank_width2 = (REPORT_TABLE_WIDTH - len("Du : " + str(tournament_start_date) + " au : "
                                                  + str(tournament_end_date)) - 1) / 2
-        print("+" + " " * floor(blank_width) + " Tournoi " + tournament_name + " " * ceil(blank_width) + "+")
+        print('+' + ' ' * floor(blank_width) + ' Tournoi "' + tournament_name + '" ' + ' ' * ceil(blank_width) + '+')
         print("+" + " " * floor(blank_width2) + " Du : " + str(tournament_start_date) + " au : "
               + str(tournament_end_date) + " " * ceil(blank_width2) + "+")
         print("+" + "=" * REPORT_TABLE_WIDTH + "+")
@@ -164,9 +164,9 @@ class ReportView:
         print("+" + " " * floor(blank_width) + "Résultats(triés par score)" + " " * ceil(blank_width) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         for i in range(len(players_scores[0])):
-            blank_width = (REPORT_TABLE_WIDTH - len(str(players_scores[0][i]) + " - score : "
+            blank_width = (REPORT_TABLE_WIDTH - len("- " + str(players_scores[0][i]) + " - score : "
                                                     + str(players_scores[1][i])))
-            print("+ " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
+            print("+ - " + str(players_scores[0][i]) + " - score : " + str(players_scores[1][i])
                   + " " * (blank_width - 1) + "+")
         print("+" + "-" * REPORT_TABLE_WIDTH + "+")
         input("Appuyez sur [ENTRER] pour retourner au menu.")
