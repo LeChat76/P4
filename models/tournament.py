@@ -264,7 +264,8 @@ class TournamentModel:
             report_file.write('  <tr>')
             result = '    <td class="tg-73oq" colspan="3">'
             for i in range(len(players_scores[0])):
-                result = result + " - " + str(players_scores[0][i] + ' - score : ' + str(players_scores[1][i]) + '<br>')
+                result = result + " - " + str(players_scores[0][i] + ' - score : ' + str(players_scores[1][i])
+                                              + '<br>')
             report_file.write(result)
         report_file.close()
         return 'Le fichier "' + file_name + '" à été exporté\ndans le dossier '\
