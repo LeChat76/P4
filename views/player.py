@@ -29,7 +29,7 @@ class PlayerView:
         self.clear_screen()
         return choix
 
-    def add_player(self):
+    def add_player(self, associate_to_tournament):
         """ Requests for player first name """
         new_one_player = " "
         PLAYER_LIST.clear()
@@ -86,6 +86,9 @@ class PlayerView:
             PLAYER_LIST.append([player_fname, player_name, player_birthd, player_clubid])
 
             new_one_player = input("Ajouter un autre joueur au tournoi (O/n)?")
+            if new_one_player.upper() == "N" and associate_to_tournament and len(PLAYER_LIST)%2 != 0:
+                print("Vous devez avoir un nombre pair de joueurs. Saisissez un dernier joueur SVP.")
+                new_one_player = "Y"
 
         return PLAYER_LIST
 
@@ -135,7 +138,7 @@ class PlayerView:
             elif not choice:
                 if nb_players % 2 != 0 or nb_players == 0:
                     print("Vous avez sélectionné " + str(nb_players)
-                          + " joueurs. Il faut un nombre pair de\njoueurs pour former des équipes.")
+                          + " joueurs. Il faut un nombre pair de joueurs pour former des équipes.")
                     continue
                 else:
                     return "end_players_selection"

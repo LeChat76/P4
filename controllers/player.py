@@ -1,4 +1,5 @@
 import sys
+import uuid
 from views.player import PlayerView
 from models.player import PlayerModel
 from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT
@@ -22,13 +23,16 @@ class PlayerController:
             elif choix == MENU_PLAYERS_EXIT:
                 break
 
-    def add_player(self):
+    def add_player(self, associate_to_tournament=False):
         """ Method for recording new players """
-        players_list = self.player_view.add_player()
+        players_list = self.player_view.add_player(associate_to_tournament)
+        players_obj_list = []
         for player in players_list:
-            player = PlayerModel(player_fname=player[0], player_name=player[1], player_birthd=player[2],
-                                 player_clubid=player[3])
+            player = PlayerModel(player_uuid=str(uuid.uuid1()), player_fname=player[0],
+                                 player_name=player[1], player_birthd=player[2], player_clubid=player[3])
+            players_obj_list.append(player)
             player.save_player()
+        return players_obj_list
 
     def delete_player(self):
         """ method to delete players """

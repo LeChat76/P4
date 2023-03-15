@@ -1,6 +1,5 @@
 from tinydb import TinyDB, Query
 from models.player import PlayerModel
-import uuid
 import os
 import datetime
 import unidecode
@@ -62,7 +61,7 @@ class TournamentModel:
         return tournament
 
     def serialize(self):
-        uid = str(uuid.uuid1())
+        uid = self.tournament_uuid
         name = self.tournament_name
         town = self.tournament_town
         nb_round = self.tournament_nb_round

@@ -1,7 +1,9 @@
 import sys
+import uuid
 from datetime import datetime
 from views.tournament import TournamentView
 from views.player import PlayerView
+from controllers.player import PlayerController
 from models.tournament import TournamentModel
 from models.player import PlayerModel
 from constantes import MENU_TOURNAMENT_CREATION, MENU_TOURNAMENT_DISPLAY, MENU_TOURNAMENT_START,\
@@ -14,6 +16,7 @@ class TournamentController:
         self.text = None
         self.tournament_view = TournamentView()
         self.player_view = PlayerView()
+        self.player_controller = PlayerController()
 
     def menu_tournament(self):
         """ Tournament Menu """
@@ -24,7 +27,7 @@ class TournamentController:
             elif choix == MENU_TOURNAMENT_DISPLAY:
                 self.display_tournament()
             elif choix == MENU_TOURNAMENT_START:
-                self.begin_new_tournament()
+                self.begin_tournament()
             elif choix == MENU_TOURNAMENT_RECOVERY:
                 self.resume_tournament()
             elif choix == MENU_TOURNAMENT_EXIT:
@@ -34,10 +37,30 @@ class TournamentController:
         """ method to record new tournaments """
         new_tournament = self.tournament_view.add_tournament()
         for tournament in new_tournament:
-            tournament_to_add = TournamentModel(tournament_name=tournament[0], tournament_town=tournament[1],
-                                                tournament_nb_round=tournament[2],
+            tournament_to_add = TournamentModel(tournament_uuid=str(uuid.uuid1()), tournament_name=tournament[0],
+                                                tournament_town=tournament[1], tournament_nb_round=tournament[2],
                                                 tournament_description=tournament[3])
             tournament_to_add.save_tournament()
+        if len(new_tournament) == 1:
+            while True:
+                choice = self.tournament_view.choice("Vouez vous démarrer ce tournoi maintenant (O/n)? ")
+                if choice == "O":
+                    self.begin_tournament(tournament_to_add)
+                    break
+                elif choice == "N":
+                    break
+                else:
+                    print("Choix incorrect, merci de ressaisir.")
+        else:
+            while True:
+                choice = self.tournament_view.choice("Voulez-vous lancer un tournoi des maintenant (O/n)? ")
+                if choice == "O":
+                    self.begin_tournament()
+                    break
+                elif choice == "N":
+                    break
+                else:
+                    print("Mauvais choix, merci de ressaisir.")
 
     def display_tournament(self):
         """ method to display tournaments completed, current or all """
@@ -112,9 +135,10 @@ class TournamentController:
                         if choix == "N":
                             break
 
-    def begin_new_tournament(self):
+    def begin_tournament(self, new_tournament=None):
         """ request for needed information (which tournament and players to associate) to begin new tournament """
         players_available_list = []
+        players_list = None
         while True:
             players_available = PlayerModel.search_all_players()
             if players_available == "error":
@@ -141,15 +165,30 @@ class TournamentController:
                 sys.exit()
 
             # displayer list of available tournaments
-            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
-            index = 0
-            for tournament in not_started_tournament:
-                index += 1
-                self.tournament_view.text_to_print(str(index) + " - " + str(tournament))
+            if new_tournament:
+                tournament = new_tournament
+            else:
+                self.tournament_view.text_to_print("Liste des tournois non démarrés:")
+                index = 0
+                for tournament in not_started_tournament:
+                    index += 1
+                    self.tournament_view.text_to_print(str(index) + " - " + str(tournament))
 
-            # choose tournament
-            result = self.tournament_view.select(not_started_tournament)
-            tournament = not_started_tournament[int(result) - 1]
+                # choose tournament
+                result = self.tournament_view.select(not_started_tournament)
+                tournament = not_started_tournament[int(result) - 1]
+
+            while True:
+                choice = self.tournament_view.choice("Voulez vous créer de nouveaux joueurs et les associer"
+                                                     " maintenant (O/n)? ")
+                if choice == "O":
+                    # True = store immediately new players after creation
+                    players_list = self.player_controller.add_player(True)
+                    break
+                elif choice == "N":
+                    break
+                else:
+                    print("Choix incorrect, merci de ressaisir.")
 
             tournament_nb_round = tournament.search_nb_round_for_tournament()
             # compare nb rounds and nb players available to check if some players will play with the same
@@ -163,43 +202,47 @@ class TournamentController:
                 self.tournament_view.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
                                                    + " round(s) donc pas assez de joueurs disponibles"
                                                    " pour éviter que certains ne se rencontrent plusieurs fois.")
-            # Selection of players to add to the selected tournament
-            nb_players = 0
-            nb_players_available = len(players_available_list)
 
-            # check if nb players available is pair because in case of nb players selected is odd,
-            # sometime a player will not play so it s mandatory to select only pair numbers of players
-            if nb_players_available % 2 != 0:
-                nb_players_available_pair = False
-            else:
-                nb_players_available_pair = True
-            players_list = []
-            while True:
-                self.tournament_view.clear_screen()
-                self.tournament_view.text_to_print(str(nb_players_available) + " joueurs disponibles:")
-                index = 0
-                for player in players_available_list:
-                    index += 1
-                    player_fname_name = player.extract_player_fname_and_name()
-                    self.tournament_view.text_to_print(str(index) + " - " + player_fname_name + ".")
-                self.tournament_view.text_to_print(str(nb_players) + " sélectionné(s).")
-                result = self.player_view.select_available_players(len(players_available_list), nb_players)
-                if result == "end_players_selection":
-                    break
-                selected_player = (players_available_list[int(result) - 1])
-                players_list.append(selected_player)
-                nb_players_available -= 1
-                nb_players += 1
-                players_available_list.remove(selected_player)
-                if nb_players_available == 1 and nb_players_available_pair is False:
-                    self.tournament_view.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
-                                                       " pair.\nFin de la selection.")
-                    break
-                elif nb_players_available == 0 or nb_players_available_pair == "True":
-                    self.tournament_view.text_to_print("Plus de personne à ajouter.")
-                    break
+            if not players_list:
+
+                # Selection of players to add to the selected tournament
+                nb_players = 0
+                nb_players_available = len(players_available_list)
+
+                # check if nb players available is pair because in case of nb players selected is odd,
+                # sometime a player will not play so it s mandatory to select only pair numbers of players
+                if nb_players_available % 2 != 0:
+                    nb_players_available_pair = False
+                else:
+                    nb_players_available_pair = True
+                players_list = []
+                while True:
+                    self.tournament_view.clear_screen()
+                    self.tournament_view.text_to_print(str(nb_players_available) + " joueurs disponibles:")
+                    index = 0
+                    for player in players_available_list:
+                        index += 1
+                        player_fname_name = player.extract_player_fname_and_name()
+                        self.tournament_view.text_to_print(str(index) + " - " + player_fname_name + ".")
+                    self.tournament_view.text_to_print(str(nb_players) + " joueurs sélectionné(s).")
+                    result = self.player_view.select_available_players(len(players_available_list), nb_players)
+                    if result == "end_players_selection":
+                        break
+                    selected_player = (players_available_list[int(result) - 1])
+                    players_list.append(selected_player)
+                    nb_players_available -= 1
+                    nb_players += 1
+                    players_available_list.remove(selected_player)
+                    if nb_players_available == 1 and nb_players_available_pair is False:
+                        self.tournament_view.text_to_print("Il ne reste plus qu'une personne, impossible de former une"
+                                                           " pair. Fin de la selection.")
+                        break
+                    elif nb_players_available == 0 or nb_players_available_pair == "True":
+                        self.tournament_view.text_to_print("Plus de personne à ajouter.")
+                        break
 
             tournament.store_players(PlayerModel.extract_player_uuid_list(players_list))
+            nb_players = len(players_list)
             self.tournament_view.text_to_print('Tournoi "' + tournament.tournament_name + '" prêt.')
             if (nb_players - 1) < int(tournament_nb_round):
                 self.tournament_view.text_to_print("Pour information : vu le faible nombre de joueurs sélectionnés"
@@ -226,7 +269,6 @@ class TournamentController:
                 # loop for all rounds
                 round_start_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                 players_list = PlayerModel.sort_player_list(players_list)
-                # matchs_list = TournamentModel.extract_matchs_id_list(tournament)
                 previous_matchs_players_list = TournamentModel.create_matchs_players_list(tournament)
                 PlayerModel.update_score_in_player_object(players_list)
                 players_list = PlayerModel.check_players_list(players_list, previous_matchs_players_list)

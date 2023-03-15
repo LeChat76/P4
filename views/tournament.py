@@ -18,7 +18,7 @@ class TournamentView:
             print("+-------------------------------+")
             print("| 1 - création d'un tournoi     |")
             print("| 2 - affichage des tournois    |")
-            print("| 3 - démarrer nouveau tournoi  |")
+            print("| 3 - démarrer un tournoi       |")
             print("| 4 - reprise d'un tournoi      |")
             print("| 5 - revenir au menu principal |")
             print("+-------------------------------+")
@@ -100,6 +100,8 @@ class TournamentView:
                 return "O"
             elif choix.upper() == "N":
                 return "N"
+            else:
+                return "no_choice"
 
     def select(self, tournaments):
         """ method to select tournament """
