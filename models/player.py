@@ -126,6 +126,11 @@ class PlayerModel:
         """ method to compare matchs players VS previous matchs players """
         already_played = False
         if previous_matchs_list:
+            pml = []
+            for i in range(0, len(previous_matchs_list), 2):
+                peer_previous_matchs_list = [previous_matchs_list[i], previous_matchs_list[i + 1]]
+                pml.append(peer_previous_matchs_list)
+            previous_matchs_list = pml
             checked_players_list = []
             while players_list:
                 player1 = players_list[0]
@@ -134,13 +139,13 @@ class PlayerModel:
                 for player2 in players_list:
                     p2_uuid = player2.player_uuid
                     match = [p1_uuid, p2_uuid]
-                    match_players = [player1, player2]
                     if match in previous_matchs_list or match[::-1] in previous_matchs_list:
                         already_played = True
                         continue
                     elif match not in previous_matchs_list or match[::-1] not in previous_matchs_list:
                         already_played = False
                         break
+                match_players = [player1, player2]
                 checked_players_list.append(match_players)
                 players_list.remove(player2)
             for player in checked_players_list:

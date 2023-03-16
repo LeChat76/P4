@@ -194,14 +194,6 @@ class TournamentModel:
             all_rounds.append(round)
         TOURNAMENTS_DB.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    # def extract_start_date_tournament(self):
-    #     """ method to extract start date of a tournament object """
-    #     return self.tournament_start_date
-
-    # def extract_end_date_tournament(self):
-    #     """ method to extract start date of a tournament object """
-    #     return self.tournament_end_date
-
     @staticmethod
     def export_tournament(tournaments_scores, detailed_rounds_list, tournament_start_date, tournament_end_date,
                           tournament_name, players_scores):
@@ -291,10 +283,10 @@ class TournamentModel:
         if matchs_list:
             for match in matchs_list:
                 for players in match['list_matchs']:
-                    if players[0][0] not in previous_matchs_players_list:
-                        previous_matchs_players_list.append(players[0][0])
-                    if players[1][0] not in previous_matchs_players_list:
-                        previous_matchs_players_list.append(players[1][0])
+                    # if players[0][0] not in PREVIOUS_MATCHS_PLAYERS_LIST:
+                    previous_matchs_players_list.append(players[0][0])
+                    # if players[1][0] not in PREVIOUS_MATCHS_PLAYERS_LIST:
+                    previous_matchs_players_list.append(players[1][0])
         return previous_matchs_players_list
 
     def extract_previous_scores(self, players_list):
