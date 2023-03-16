@@ -39,7 +39,6 @@ class ReportController:
 
     def report_tournament_details(self):
         """ method to display detail of a tournament """
-        player_fname_name_list = []
         tournaments = TournamentModel.search_all_tournaments()
         while True:
             if tournaments == "no_result":
@@ -58,7 +57,7 @@ class ReportController:
                 choix = self.tournament_view.select(tournaments)
                 tournament = tournaments[int(choix) - 1]
                 # tournament = tournament.extract_all_infos_tournaments()
-                ReportView.display_tournament_details(tournament)
+                self.report_view.display_tournament_details(tournament)
 
                 # display ordered player list of a tournament
                 player_fname_name_list = []
@@ -92,7 +91,7 @@ class ReportController:
             else:
                 players_list = PlayerModel.search_all_players(by_name, by_fname)
                 for player in players_list:
-                    self.report_view.text_to_print(" - " + str(PlayerModel.extract_player_fname_and_name(player)))
+                    self.report_view.text_to_print(" - " + str(player.extract_player_fname_and_name()))
                 self.report_view.choice("Appuyez sur [ENTRER] pour revenir au menu.")
                 break
 
@@ -156,7 +155,7 @@ class ReportController:
                 tournament_end_date = tournament.tournament_end_date
 
                 # extraction of all scores of matchs list associated to the selected tournament
-                tournaments_scores = TournamentModel.extract_scores(tournament)
+                tournaments_scores = tournament.extract_scores()
                 if display_type == "players":
                     self.report_view.display_scores_players(tournaments_scores, rounds_list, tournament_start_date,
                                                             tournament_end_date, tournament.tournament_name,

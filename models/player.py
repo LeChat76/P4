@@ -33,8 +33,21 @@ class PlayerModel:
         return f"{self.player_fname} {self.player_name} né le {self.player_birthd}," \
                f" affilié au club {self.player_clubid}."
 
+    @staticmethod
+    def unserialize(doc):
+        """ method for unserialize from TinyDB database to player object """
+        player = PlayerModel()
+        player.player_uuid = doc['player_uuid']
+        player.player_name = doc['name']
+        player.player_fname = doc['fname']
+        player.player_birthd = doc['birthd']
+        player.player_clubid = doc['clubid']
+        player.score = doc['score']
+        player.enable = doc['enable']
+        return player
+
     def serialize(self):
-        """ method to serialize data """
+        """ method to serialize data from object to TinyDB database """
         player = {'player_uuid': self.player_uuid,
                   'fname': unidecode.unidecode(self.player_fname.capitalize()),
                   'name': unidecode.unidecode(self.player_name.capitalize()),
@@ -51,11 +64,9 @@ class PlayerModel:
 
     def delete_player(self):
         """ method to delete a player (delete = modify 'enable' value with 'N' """
-        player_uuid = self.player_uuid
-        player_fname = self.player_fname
-        player_name = self.player_name
-        PLAYERS_DB.update({'enable': "N"}, PLAYER.player_uuid == player_uuid)
-        return player_fname + " " + player_name
+        player = self.serialize()
+        PLAYERS_DB.update({'enable': "N"}, PLAYER.player_uuid == player['player_uuid'])
+        return player['fname'] + " " + player['name']
 
     @staticmethod
     def search_player(player_to_search):
@@ -65,12 +76,7 @@ class PlayerModel:
                                            & (PLAYER.enable != "N"))
             players_list = []
             for doc in result_doc:
-                player = PlayerModel()
-                player.player_uuid = doc['player_uuid']
-                player.player_name = doc['name']
-                player.player_fname = doc['fname']
-                player.player_birthd = doc['birthd']
-                player.player_clubid = doc['clubid']
+                player = PlayerModel.unserialize(doc)
                 players_list.append(player)
         except ValueError:
             return "error"
@@ -86,12 +92,7 @@ class PlayerModel:
             result_doc = PLAYERS_DB.search(PLAYER.enable != "N")
             players_list = []
             for doc in result_doc:
-                player = PlayerModel()
-                player.player_uuid = doc['player_uuid']
-                player.player_name = doc['name']
-                player.player_fname = doc['fname']
-                player.player_birthd = doc['birthd']
-                player.player_clubid = doc['clubid']
+                player = PlayerModel.unserialize(doc)
                 players_list.append(player)
         except ValueError:
             return "error"
@@ -158,11 +159,9 @@ class PlayerModel:
 
     def extract_player_fname_and_name(self):
         """ method to extract players' fname and name from player object """
-        player_uuid = self.player_uuid
-        result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player_uuid))
-        self.player_fname = result_doc[0]['fname']
-        self.player_name = result_doc[0]['name']
-        player = self.player_fname + " " + self.player_name
+        player = self.serialize()
+        # result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player['player_uuid']))
+        player = player['fname'] + " " + player['name']
         return player
 
     @staticmethod
@@ -217,20 +216,12 @@ class PlayerModel:
         """ method to create a player object from uuid """
         result_doc = PLAYERS_DB.search(PLAYER.player_uuid == player_uuid)
         for doc in result_doc:
-            player = PlayerModel()
-            player.player_uuid = doc['player_uuid']
-            player.player_name = doc['name']
-            player.player_fname = doc['fname']
-            player.player_birthd = doc['birthd']
-            player.player_clubid = doc['clubid']
-            player.score = doc['score']
-            player.enable = doc['enable']
+            player = PlayerModel.unserialize(doc)
         return player
 
     @staticmethod
     def update_score_in_player_object(players_list):
         """ method to update score in players objects from players.json """
-        players_list = players_list
         for player in players_list:
             player_uuid = player.player_uuid
             result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player_uuid))

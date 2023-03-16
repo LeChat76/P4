@@ -45,8 +45,8 @@ class TournamentModel:
                f' {self.tournament_nb_round} round(s).'
 
     @staticmethod
-    def deserialize(doc):
-        """ method for deserialize a tournament object """
+    def unserialize(doc):
+        """ method for unserialize from TinyDB database to tournament object """
         tournament = TournamentModel()
         tournament.tournament_uuid = doc['tournament_uuid']
         tournament.tournament_name = doc['name']
@@ -61,6 +61,7 @@ class TournamentModel:
         return tournament
 
     def serialize(self):
+        """ method to serialize data from object to TinyDB database """
         uid = self.tournament_uuid
         name = self.tournament_name
         town = self.tournament_town
@@ -94,7 +95,7 @@ class TournamentModel:
             return "no_result"
         tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel.deserialize(doc)
+            tournament = TournamentModel.unserialize(doc)
             tournaments.append(tournament)
         return tournaments
 
@@ -107,7 +108,7 @@ class TournamentModel:
             return "error"
         completed_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel.deserialize(doc)
+            tournament = TournamentModel.unserialize(doc)
             if tournament.tournament_nb_round == tournament.tournament_current_round:
                 completed_tournaments.append(tournament)
         if not completed_tournaments:
@@ -123,7 +124,7 @@ class TournamentModel:
             return "error"
         current_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel.deserialize(doc)
+            tournament = TournamentModel.unserialize(doc)
             if tournament.tournament_nb_round != tournament.tournament_current_round and\
                     tournament.tournament_current_round is not None:
                 current_tournaments.append(tournament)
@@ -141,7 +142,7 @@ class TournamentModel:
             return "error"
         not_started_tournaments = []
         for doc in result_doc:
-            tournament = TournamentModel.deserialize(doc)
+            tournament = TournamentModel.unserialize(doc)
             if not tournament.tournament_current_round:
                 not_started_tournaments.append(tournament)
         if not not_started_tournaments:
@@ -161,11 +162,11 @@ class TournamentModel:
         TOURNAMENTS_DB.update({'list_players': players_uuid_list}, TOURNAMENT.tournament_uuid
                               == self.tournament_uuid)
 
-    def extract_players_uuid_of_tournament(self):
-        """ method to extract all player's uuid of a tournament """
-        tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-        players_uuid_list = tournament[0]['list_players']
-        return players_uuid_list
+    # def extract_players_uuid_of_tournament(self):
+    #     """ method to extract all player's uuid of a tournament """
+    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
+    #     players_uuid_list = tournament[0]['list_players']
+    #     return players_uuid_list
 
     def store_tournament_start_date(self, tournament_start_date):
         """ method to store start date in tournament """
@@ -193,13 +194,13 @@ class TournamentModel:
             all_rounds.append(round)
         TOURNAMENTS_DB.update({'list_rounds': all_rounds}, TOURNAMENT.tournament_uuid == self.tournament_uuid)
 
-    def extract_start_date_tournament(self):
-        """ method to extract start date of a tournament object """
-        return self.tournament_start_date
+    # def extract_start_date_tournament(self):
+    #     """ method to extract start date of a tournament object """
+    #     return self.tournament_start_date
 
-    def extract_end_date_tournament(self):
-        """ method to extract start date of a tournament object """
-        return self.tournament_end_date
+    # def extract_end_date_tournament(self):
+    #     """ method to extract start date of a tournament object """
+    #     return self.tournament_end_date
 
     @staticmethod
     def export_tournament(tournaments_scores, detailed_rounds_list, tournament_start_date, tournament_end_date,
@@ -338,10 +339,10 @@ class TournamentModel:
                 match_index += 1
                 p1_uuid = match[0][0]
                 player1 = PlayerModel.create_player_object(p1_uuid)
-                p1_name.append(PlayerModel.extract_player_fname_and_name(player1))
+                p1_name.append(player1.extract_player_fname_and_name())
                 p2_uuid = match[1][0]
                 player2 = PlayerModel.create_player_object(p2_uuid)
-                p2_name.append(PlayerModel.extract_player_fname_and_name(player2))
+                p2_name.append(player2.extract_player_fname_and_name())
                 p1_scores.append(match[0][1])
                 p2_scores.append(match[1][1])
         round_max = (rounds[-1:])[0]

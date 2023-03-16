@@ -268,7 +268,7 @@ class TournamentController:
                 # loop for all rounds
                 round_start_date = (datetime.now()).strftime("%d-%m-%Y %H:%M:%S")
                 players_list = PlayerModel.sort_player_list(players_list)
-                previous_matchs_players_list = TournamentModel.create_matchs_players_list(tournament)
+                previous_matchs_players_list = tournament.create_matchs_players_list()
                 PlayerModel.update_score_in_player_object(players_list)
                 players_list = PlayerModel.check_players_list(players_list, previous_matchs_players_list)
                 if players_list[1]:
@@ -333,7 +333,7 @@ class TournamentController:
             for player_uuid in players_uuid_list:
                 player = PlayerModel.create_player_object(player_uuid)
                 players.append(player)
-                self.tournament_view.text_to_print(" - " + str(PlayerModel.extract_player_fname_and_name(player)))
+                self.tournament_view.text_to_print(" - " + str(player.extract_player_fname_and_name()))
             self.tournament_view.text_to_print(f"Le prochain round est le {current_round} ème.")
 
             # resume the tournament

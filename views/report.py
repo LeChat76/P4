@@ -182,22 +182,23 @@ class ReportView:
             elif choix.upper() == "N":
                 return "N"
 
-    def display_tournament_details(self):
+    def display_tournament_details(self, tournament):
         """ method to display tournament details for reporting menu """
         ReportView().clear_screen()
-        print(f'Tournoi "{self.tournament_name}" se déroulant à {self.tournament_town} et comportant'
-              f' {self.tournament_nb_round} round(s).')
-        print(f"Description : {self.tournament_description}.")
-        if self.tournament_end_date:
-            print(f"Ce tournoi a démarré le {self.tournament_start_date} et s'est terminé"
-                  f" le {self.tournament_end_date}.")
-        if self.tournament_start_date and not self.tournament_end_date:
-            print(f"Ce tournoi a démarré le {self.tournament_start_date} mais n'est pas terminé,"
-                  f" {self.tournament_current_round} round(s) sur {self.tournament_nb_round} joué(s).")
-        if self.tournament_start_date:
-            print("Il y'a eu " + str(int(len(self.tournament_list_rounds) * len(self.tournament_list_players)/2))
+        print(f'Tournoi "{tournament.tournament_name}" se déroulant à {tournament.tournament_town} et comportant'
+              f' {tournament.tournament_nb_round} round(s).')
+        print(f"Description : {tournament.tournament_description}.")
+        if tournament.tournament_end_date:
+            print(f"Ce tournoi a démarré le {tournament.tournament_start_date} et s'est terminé"
+                  f" le {tournament.tournament_end_date}.")
+        if tournament.tournament_start_date and not tournament.tournament_end_date:
+            print(f"Ce tournoi a démarré le {tournament.tournament_start_date} mais n'est pas terminé,"
+                  f" {tournament.tournament_current_round} round(s) sur {tournament.tournament_nb_round} joué(s).")
+        if tournament.tournament_start_date:
+            print("Il y'a eu " + str(int(len(tournament.tournament_list_rounds) *
+                                         len(tournament.tournament_list_players)/2))
                   + " match(s) joué(s).")
-        if not self.tournament_start_date:
+        if not tournament.tournament_start_date:
             print("Ce tournoi n'a pas encore démarré.")
 
     def text_to_print(self, text):
