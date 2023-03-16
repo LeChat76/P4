@@ -67,22 +67,22 @@ class TournamentModel:
         town = self.tournament_town
         nb_round = self.tournament_nb_round
         description = self.tournament_description
-        tournament = {'uuid': uid, 'name': name, 'town': town, 'nb_round': nb_round, 'description': description}
+        tournament = {'uuid': uid,
+                      'name': name,
+                      'town': town,
+                      'start_date': TournamentModel.tournament_start_date,
+                      'end_date': TournamentModel.tournament_end_date,
+                      'nb_round': nb_round,
+                      'current_round': TournamentModel.tournament_current_round,
+                      'list_rounds': TournamentModel.tournament_list_rounds,
+                      'list_players': TournamentModel.tournament_list_players,
+                      'description': description}
         return tournament
 
     def save_tournament(self):
         """ method to save tournament in json file """
         tournament = self.serialize()
-        TOURNAMENTS_DB.insert({'tournament_uuid': tournament["uuid"],
-                               'name': unidecode.unidecode(tournament["name"]),
-                               'town': unidecode.unidecode(tournament["town"]),
-                               'start_date': TournamentModel.tournament_start_date,
-                               'end_date': TournamentModel.tournament_end_date,
-                               'nb_round': int(tournament["nb_round"]),
-                               'current_round': TournamentModel.tournament_current_round,
-                               'list_rounds': TournamentModel.tournament_list_rounds,
-                               'list_players': TournamentModel.tournament_list_players,
-                               'description': unidecode.unidecode(tournament["description"])})
+        TOURNAMENTS_DB.insert(tournament)
 
     @staticmethod
     def search_all_tournaments():
@@ -161,12 +161,6 @@ class TournamentModel:
             players_uuid_list.append(player_uuid)
         TOURNAMENTS_DB.update({'list_players': players_uuid_list}, TOURNAMENT.tournament_uuid
                               == self.tournament_uuid)
-
-    # def extract_players_uuid_of_tournament(self):
-    #     """ method to extract all player's uuid of a tournament """
-    #     tournament = TOURNAMENTS_DB.search(TOURNAMENT.tournament_uuid.matches(self.tournament_uuid))
-    #     players_uuid_list = tournament[0]['list_players']
-    #     return players_uuid_list
 
     def store_tournament_start_date(self, tournament_start_date):
         """ method to store start date in tournament """

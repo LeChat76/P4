@@ -165,7 +165,6 @@ class PlayerModel:
     def extract_player_fname_and_name(self):
         """ method to extract players' fname and name from player object """
         player = self.serialize()
-        # result_doc = PLAYERS_DB.search(PLAYER.player_uuid.matches(player['player_uuid']))
         player = player['fname'] + " " + player['name']
         return player
 
