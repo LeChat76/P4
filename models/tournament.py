@@ -2,7 +2,6 @@ from tinydb import TinyDB, Query
 from models.player import PlayerModel
 import os
 import datetime
-import unidecode
 
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "tournaments")
 if not os.path.exists(DATA_FOLDER):
