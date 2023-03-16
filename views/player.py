@@ -88,8 +88,7 @@ class PlayerView:
 
             new_one_player = input("Ajouter un autre joueur au tournoi (O/n)?")
             if new_one_player.upper() == "N" and associate_to_tournament and len(PLAYER_LIST) % 2 != 0:
-                input("Vous devez avoir un nombre pair de joueurs. Saisissez un dernier joueur SVP [ENTRER]"
-                      " pour créer un autre joueur.")
+                input("Vous devez avoir un nombre pair de joueurs. Appuyez sur [ENTRER] pour créer un autre joueur.")
                 new_one_player = "Y"
 
         return PLAYER_LIST
