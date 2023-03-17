@@ -316,7 +316,7 @@ class TournamentController:
             sys.exit()
         else:
             # displayer list of not ended tournaments
-            self.tournament_view.text_to_print("Liste des tournois non démarrés:")
+            self.tournament_view.text_to_print("Liste des tournois en cours:")
             index = 0
             for tournament in not_ended_tournament:
                 index += 1
