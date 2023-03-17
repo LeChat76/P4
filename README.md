@@ -21,7 +21,7 @@ Simply launch "py main.py" from "Projet4OC" folder and follow instructions.
 - Create somes users            (menu 1-1)
 - Create tournament             (menu 2-1)
 - Start tournament              (menu 2-3)
-- Display reports               (menu 3  )
+- Display reports               (menu 3)
 
 Detailled menu branches :
 1 ) manage players              (menu 1)
