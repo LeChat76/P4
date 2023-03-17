@@ -66,7 +66,7 @@ class TournamentModel:
         town = self.tournament_town
         nb_round = self.tournament_nb_round
         description = self.tournament_description
-        tournament = {'uuid': uid,
+        tournament = {'tournament_uuid': uid,
                       'name': name,
                       'town': town,
                       'start_date': TournamentModel.tournament_start_date,
