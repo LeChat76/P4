@@ -42,7 +42,7 @@ class TournamentController:
             tournament_to_add.save_tournament()
         if len(new_tournament) == 1:
             while True:
-                choice = self.tournament_view.choice("Vouez vous démarrer ce tournoi maintenant (O/n)? ")
+                choice = self.tournament_view.choice("Voulez-vous démarrer ce tournoi maintenant (O/n)? ")
                 if choice == "O":
                     self.begin_tournament(tournament_to_add)
                     break
@@ -138,35 +138,26 @@ class TournamentController:
         """ request for needed information (which tournament and players to associate) to begin new tournament """
         players_available_list = []
         players_list = None
+
+        # if new_tournament:
+
+
         while True:
-            players_available = PlayerModel.search_all_players()
-            if players_available == "error":
-                self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                   " le et recommencez.")
-                sys.exit()
-            if players_available == "no_result" or len(players_available) <= 1:
-                self.tournament_view.choice("Liste des joueurs vide. Merci d'en créer au moins deux\ndisponibles"
-                                            " pour démarrer un tournoi [ENTRER] pour revenir au menu.")
-                break
-            # create list of players (uuid)
-            for player in players_available:
-                players_available_list.append(player)
-
-            # create list of available tournaments (tournament not already started)
-            not_started_tournament = TournamentModel.search_not_started_tournaments()
-            if not_started_tournament == "no_result":
-                self.tournament_view.choice("Aucun tournoi disponible. Vous devez en créer un nouveau. [ENTRER]"
-                                            " pour continuer.")
-                break
-            elif not_started_tournament == "error":
-                self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
-                                                   " le et recommencez.")
-                sys.exit()
-
-            # displayer list of available tournaments
             if new_tournament:
                 tournament = new_tournament
             else:
+                # create list of available tournaments (tournament not already started)
+                not_started_tournament = TournamentModel.search_not_started_tournaments()
+                if not_started_tournament == "no_result":
+                    self.tournament_view.choice("Aucun tournoi disponible. Vous devez en créer un nouveau. [ENTRER]"
+                                                " pour continuer.")
+                    break
+                elif not_started_tournament == "error":
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
+                    sys.exit()
+
+                # displayer list of available tournaments
                 self.tournament_view.text_to_print("Liste des tournois non démarrés:")
                 index = 0
                 for tournament in not_started_tournament:
@@ -178,7 +169,7 @@ class TournamentController:
                 tournament = not_started_tournament[int(result) - 1]
 
             while True:
-                choice = self.tournament_view.choice("Voulez vous créer de nouveaux joueurs et les associer"
+                choice = self.tournament_view.choice("Voulez-vous créer de nouveaux joueurs et les associer"
                                                      " maintenant (O/n)? ")
                 if choice == "O":
                     # True = store immediately new players after creation
@@ -189,6 +180,22 @@ class TournamentController:
                 else:
                     print("Choix incorrect, merci de ressaisir.")
 
+            if not players_list:
+                players_available = PlayerModel.search_all_players()
+                if players_available == "error":
+                    self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
+                                                       " le et recommencez.")
+                    sys.exit()
+                while players_available == "no_result" or len(players_available) <= 1:
+                    self.tournament_view.choice("Pas assez de joueurs disponibles. Merci d'en créer pour démarrer un"
+                                                " tournoi. Appuyez sur [ENTRER] pour en créer.")
+                    self.player_controller.add_player()
+                    players_available = PlayerModel.search_all_players()
+
+                # create list of players (uuid)
+                for player in players_available:
+                    players_available_list.append(player)
+
             tournament_nb_round = tournament.search_nb_round_for_tournament()
             # compare nb rounds and nb players available to check if some players will play with the same
             # players twice - formula is nb# round should not be superior of nb players available - 1
@@ -197,12 +204,11 @@ class TournamentController:
                 self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
                                                    " le et recommencez.")
                 sys.exit()
-            elif int(tournament_nb_round) > (int(len(players_available)) - 1):
-                self.tournament_view.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
-                                                   + " round(s) donc pas assez de joueurs disponibles"
-                                                   " pour éviter que certains ne se rencontrent plusieurs fois.")
-
             if not players_list:
+                if int(tournament_nb_round) > (int(len(players_available)) - 1):
+                    self.tournament_view.text_to_print("Ce tournoi comporte " + str(tournament_nb_round)
+                                                       + " round(s) donc pas assez de joueurs disponibles"
+                                                       " pour éviter que certains ne se rencontrent plusieurs fois.")
 
                 # Selection of players to add to the selected tournament
                 nb_players = 0

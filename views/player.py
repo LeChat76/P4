@@ -95,15 +95,17 @@ class PlayerView:
 
     def delete_player(self, players_list):
         """ Request for select player to delete """
-        index = 1
+        index = 0
         for player in players_list:
-            print(str(index) + " - " + str(player))
             index += 1
+            print(str(index) + " - " + str(player))
         while True:
             while True:
                 choice = input("Saisir le numéro du joueur à supprimer : ")
                 if not choice.isnumeric():
                     print("La saisie doit être uniquement un chiffre. Merci de ressaisir.")
+                elif int(choice) > index or int(choice) < 1:
+                    print("Choix incorrect, merci de ressaisir")
                 else:
                     return players_list[int(choice) - 1]
 
