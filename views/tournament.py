@@ -63,6 +63,7 @@ class TournamentView:
                         tournament_nb_round = 4
                         break
                     elif str(tournament_nb_round).isnumeric():
+                        tournament_nb_round = int(tournament_nb_round)
                         break
 
             # Requests for description of the tournament

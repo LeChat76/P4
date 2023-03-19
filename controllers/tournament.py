@@ -329,7 +329,7 @@ class TournamentController:
             result = self.tournament_view.select(not_ended_tournament)
             tournament = not_ended_tournament[int(result) - 1]
             players_uuid_list = tournament.tournament_list_players
-            nb_round = int(tournament.tournament_nb_round)
+            nb_round = tournament.tournament_nb_round
             current_round = int(tournament.tournament_current_round) + 1
             self.tournament_view.text_to_print(f"Ce tournoi comporte {len(players_uuid_list)} joueurs :")
             players = []
