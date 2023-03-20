@@ -87,8 +87,7 @@ class TournamentModel:
     def search_all_tournaments():
         """ method to select all tournaments and record in a list """
         try:
-            result_doc = TOURNAMENTS_DB.search(TOURNAMENT.name.matches('[aZ]*') & (TOURNAMENT.nb_round
-                                                                                   == TOURNAMENT.current_round))
+            result_doc = TOURNAMENTS_DB.search(TOURNAMENT.name.matches('[aZ]*'))
         except ValueError:
             return "error"
         if len(result_doc) == 0:

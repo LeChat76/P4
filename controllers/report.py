@@ -98,10 +98,10 @@ class ReportController:
     def report_tournament(self, display_type=None):
         """ method to display tournament report """
         while True:
-            if TournamentModel.search_all_tournaments() == "no_result":
+            if TournamentModel.search_completed_tournaments() == "no_result":
                 self.report_view.choice("Aucun tournoi. Appuyez sur [ENTRER] pour revenir au menu et en créer.")
                 break
-            elif TournamentModel.search_all_tournaments() == "error":
+            elif TournamentModel.search_completed_tournaments() == "error":
                 self.report_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
                                                " le et recommencez.")
                 sys.exit()
