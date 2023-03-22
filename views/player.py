@@ -1,7 +1,6 @@
 import datetime
 import os
 import uuid
-import re
 from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT, PLAYER_LIST
 
 
