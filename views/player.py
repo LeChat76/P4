@@ -1,6 +1,7 @@
 import datetime
 import os
 import uuid
+import re
 from constantes import MENU_PLAYER_CREATION, MENU_PLAYERS_DISPLAY, MENU_PLAYERS_DELETE, MENU_PLAYERS_EXIT, PLAYER_LIST
 
 
@@ -198,13 +199,13 @@ class PlayerView:
     def test_value(self, value):
         """ method to check if no forbidden characters are in a value"""
         specials_authorized_char = [" ", "-"]
-        result = False
-        if not value.isalpha():
-            # methode ne fonctionne pas, si caractère autorisé + caractère interdit : ça passe donc pas bon
-            for special_authorized_char in specials_authorized_char:
-                if special_authorized_char in value:
-                    result = True
-                    continue
-        elif value.isalpha():
-            result = True
+        result = True
+        for char in value:
+            if not char.isalpha():
+                for spec_char in specials_authorized_char:
+                    if char == spec_char:
+                        result = True
+                        break
+                    else:
+                        result = False
         return result
