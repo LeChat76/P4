@@ -312,7 +312,7 @@ class TournamentController:
         """ method to resume a not ended tournament """
         not_ended_tournament = TournamentModel.search_ongoing_tournaments()
         if not_ended_tournament == "no_result":
-            self.tournament_view.choice("Aucun tournoi(s) non terminé(s). Appuyez sur [ENTRER] pour continuer.")
+            self.tournament_view.choice("Aucun tournoi non terminé. Appuyez sur [ENTRER] pour continuer.")
         elif not_ended_tournament == "error":
             self.tournament_view.text_to_print("Problème de structure sur fichier tournaments.json.\nVérifiez"
                                                " le et recommencez.")
